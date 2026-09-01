@@ -17,9 +17,28 @@ const authMiddleware = require("./middleware/authMiddleware");
 
 app.use(helmet());
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://exam-platform-inky-nine.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      // Allow requests without an origin
+      // such as Postman/server-to-server requests
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(
+        new Error("Not allowed by CORS")
+      );
+    },
     credentials: true,
   })
 );
