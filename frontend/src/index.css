@@ -109,3 +109,20 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+
+.dashboard-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.dashboard-card h3 {
+  margin-top: 0;
+  color: #6b7280;
+}
+
+.dashboard-card strong {
+  font-size: 32px;
+}

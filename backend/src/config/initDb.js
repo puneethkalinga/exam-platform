@@ -84,6 +84,15 @@ const createTables = async () => {
 
       CREATE INDEX IF NOT EXISTS idx_security_attempt
         ON security_events(attempt_id);
+
+            ALTER TABLE attempts
+      ADD COLUMN IF NOT EXISTS total_marks NUMERIC(10,2) DEFAULT 0;
+
+      ALTER TABLE attempts
+      ADD COLUMN IF NOT EXISTS obtained_marks NUMERIC(10,2) DEFAULT 0;
+
+      ALTER TABLE attempts
+      ADD COLUMN IF NOT EXISTS result_status VARCHAR(30);
     `);
 
     console.log("✅ Database tables created successfully");
