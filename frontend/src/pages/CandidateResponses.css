@@ -1,665 +1,1093 @@
-/* =====================================================
-   XEVOTECH — EXAM PROTOCOL
-   CANDIDATE RESPONSE REVIEW
-===================================================== */
+/* =========================================================
+   PROFESSIONAL ASSESSMENT CENTER
+   CANDIDATE RESPONSES
+   ========================================================= */
+
+:root {
+  --cr-bg: #f3f6fa;
+  --cr-surface: #ffffff;
+  --cr-soft: #f8fafc;
+
+  --cr-navy: #172554;
+  --cr-navy-dark: #0f172a;
+
+  --cr-primary: #2563eb;
+  --cr-primary-dark: #1d4ed8;
+  --cr-primary-light: #eff6ff;
+
+  --cr-green: #16a34a;
+  --cr-green-light: #f0fdf4;
+
+  --cr-red: #dc2626;
+  --cr-red-light: #fef2f2;
+
+  --cr-text: #172033;
+  --cr-muted: #64748b;
+  --cr-light: #94a3b8;
+
+  --cr-border: #e2e8f0;
+
+  --cr-radius: 15px;
+
+  --cr-shadow:
+    0 10px 35px rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
 
 .candidate-responses {
   min-height: 100vh;
-  background:
-    radial-gradient(
-      circle at 15% 0%,
-      rgba(124, 58, 237, 0.12),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at 90% 20%,
-      rgba(236, 72, 153, 0.06),
-      transparent 28%
-    ),
-    #09090f;
 
-  color: #f4f4f7;
+  background:
+    linear-gradient(
+      135deg,
+      #f8fafc 0%,
+      #f3f6fa 55%,
+      #eef3f9 100%
+    );
+
+  color: var(--cr-text);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 
-/* =====================================================
+/* =========================================================
    HEADER
-===================================================== */
+   ========================================================= */
 
 .responses-header {
   height: 76px;
-  padding: 0 38px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
-  background: rgba(13, 13, 21, 0.94);
+  padding: 0 34px;
 
-  border-bottom: 1px solid
-    rgba(255, 255, 255, 0.07);
+  background:
+    var(--cr-navy-dark);
 
-  backdrop-filter: blur(14px);
+  border-bottom:
+    1px solid #1e293b;
+
+  color: white;
+
+  box-shadow:
+    0 4px 18px
+    rgba(15, 23, 42, 0.10);
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 50;
 }
 
 
-/* BACK BUTTON */
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
 
 .responses-back {
-  padding: 9px 14px;
+  display: flex;
 
-  border: 1px solid
-    rgba(255, 255, 255, 0.08);
+  align-items: center;
 
-  border-radius: 7px;
+  gap: 8px;
 
-  background: rgba(255, 255, 255, 0.025);
+  padding: 10px 13px;
 
-  color: #9999a8;
+  color: #cbd5e1;
 
-  font-size: 11px;
-  font-weight: 800;
+  background: transparent;
+
+  border:
+    1px solid #334155;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
 
   cursor: pointer;
 
-  transition: 0.2s ease;
+  transition: .2s;
 }
 
 .responses-back:hover {
-  color: #ffffff;
-
-  border-color:
-    rgba(139, 92, 246, 0.5);
+  color: white;
 
   background:
-    rgba(139, 92, 246, 0.08);
+    rgba(255,255,255,.06);
+
+  border-color:
+    #475569;
 }
 
 
-/* BRAND */
+/* =========================================================
+   BRAND
+   ========================================================= */
 
 .responses-brand {
-  color: #ffffff;
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  color: white;
+
+  font-size: 17px;
+
+  font-weight: 850;
+
+  letter-spacing: 1.2px;
+}
+
+.responses-brand::before {
+  content: "A";
+
+  width: 39px;
+  height: 39px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 10px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--cr-primary),
+      #4f46e5
+    );
 
   font-size: 16px;
+
   font-weight: 900;
-
-  letter-spacing: 2px;
-
-  text-align: right;
 }
 
 .responses-brand span {
-  display: block;
+  padding-left: 12px;
 
-  margin-top: 3px;
+  border-left:
+    1px solid #334155;
 
-  color: #666675;
+  color: #94a3b8;
 
-  font-size: 8px;
+  font-size: 10px;
+
   font-weight: 700;
 
-  letter-spacing: 2.5px;
+  letter-spacing: 1.3px;
 }
 
 
-/* =====================================================
+/* =========================================================
    MAIN
-===================================================== */
+   ========================================================= */
 
 .responses-main {
-  max-width: 1250px;
+  width: 100%;
+
+  max-width: 1180px;
 
   margin: 0 auto;
 
-  padding: 42px 35px 70px;
+  padding:
+    42px 38px 70px;
 }
 
 
-/* =====================================================
+/* =========================================================
    TITLE
-===================================================== */
+   ========================================================= */
 
 .responses-title {
-  margin-bottom: 28px;
+  margin-bottom: 27px;
 }
 
-.responses-title span {
-  color: #8b5cf6;
+.responses-title > div > span {
+  color:
+    var(--cr-primary);
 
-  font-size: 9px;
-  font-weight: 900;
+  font-size:
+    11px;
 
-  letter-spacing: 2px;
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.8px;
 }
 
 .responses-title h1 {
-  margin: 8px 0 7px;
+  margin:
+    8px 0 7px;
 
-  color: #ffffff;
+  color:
+    var(--cr-navy-dark);
 
-  font-size: 32px;
-  font-weight: 800;
+  font-size:
+    34px;
 
-  letter-spacing: -0.8px;
+  line-height:
+    1.1;
+
+  letter-spacing:
+    -.7px;
 }
 
 .responses-title p {
   margin: 0;
 
-  color: #707080;
+  color:
+    var(--cr-muted);
 
-  font-size: 12px;
+  font-size:
+    13px;
 }
 
 
-/* =====================================================
-   RESPONSE PANEL
-===================================================== */
+/* =========================================================
+   RESPONSES PANEL
+   ========================================================= */
 
 .responses-panel {
-  overflow: hidden;
+  padding:
+    27px;
 
   background:
-    linear-gradient(
-      145deg,
-      #111119,
-      #0d0d14
-    );
+    var(--cr-surface);
 
-  border: 1px solid
-    rgba(255, 255, 255, 0.065);
+  border:
+    1px solid var(--cr-border);
 
-  border-radius: 14px;
+  border-radius:
+    var(--cr-radius);
 
   box-shadow:
-    0 18px 55px rgba(0, 0, 0, 0.28);
+    var(--cr-shadow);
 }
 
 
-/* PANEL HEADER */
+/* =========================================================
+   PANEL HEADER
+   ========================================================= */
 
 .responses-panel-header {
-  min-height: 64px;
+  display:
+    flex;
 
-  padding: 0 24px;
+  align-items:
+    center;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  justify-content:
+    space-between;
 
-  border-bottom: 1px solid
-    rgba(255, 255, 255, 0.055);
+  padding-bottom:
+    19px;
+
+  margin-bottom:
+    20px;
+
+  border-bottom:
+    1px solid #edf1f5;
 }
 
 .responses-panel-header span {
-  color: #696978;
+  color:
+    var(--cr-primary);
 
-  font-size: 8px;
-  font-weight: 900;
+  font-size:
+    11px;
 
-  letter-spacing: 1.8px;
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.6px;
 }
 
 .responses-panel-header strong {
-  color: #9b9baa;
+  padding:
+    7px 11px;
 
-  font-size: 10px;
-  font-weight: 700;
-}
-
-
-/* =====================================================
-   RESPONSE LIST
-===================================================== */
-
-.response-list {
-  padding: 18px;
-}
-
-
-/* =====================================================
-   RESPONSE CARD
-===================================================== */
-
-.response-card {
-  position: relative;
-
-  display: flex;
-
-  gap: 18px;
-
-  padding: 23px;
-
-  margin-bottom: 14px;
+  color:
+    var(--cr-muted);
 
   background:
-    rgba(255, 255, 255, 0.018);
+    var(--cr-soft);
 
-  border: 1px solid
-    rgba(255, 255, 255, 0.055);
+  border:
+    1px solid var(--cr-border);
 
-  border-radius: 11px;
+  border-radius:
+    999px;
 
-  transition: 0.2s ease;
+  font-size:
+    11px;
+
+  font-weight:
+    750;
 }
 
-.response-card:last-child {
-  margin-bottom: 0;
+
+/* =========================================================
+   RESPONSE LIST
+   ========================================================= */
+
+.response-list {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    15px;
+}
+
+
+/* =========================================================
+   RESPONSE CARD
+   ========================================================= */
+
+.response-card {
+  display:
+    grid;
+
+  grid-template-columns:
+    48px minmax(0, 1fr) 80px;
+
+  gap:
+    18px;
+
+  padding:
+    22px;
+
+  background:
+    var(--cr-soft);
+
+  border:
+    1px solid var(--cr-border);
+
+  border-radius:
+    13px;
+
+  transition:
+    .2s;
 }
 
 .response-card:hover {
-  border-color:
-    rgba(139, 92, 246, 0.2);
-
   background:
-    rgba(139, 92, 246, 0.025);
+    white;
+
+  border-color:
+    #cbd5e1;
+
+  box-shadow:
+    0 7px 20px
+    rgba(15, 23, 42, .05);
 }
 
 
-/* =====================================================
+/* =========================================================
    QUESTION NUMBER
-===================================================== */
+   ========================================================= */
 
 .response-number {
-  flex: 0 0 40px;
+  width:
+    41px;
 
-  width: 40px;
-  height: 40px;
+  height:
+    41px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display:
+    grid;
 
-  border-radius: 8px;
+  place-items:
+    center;
+
+  color:
+    var(--cr-primary);
 
   background:
-    rgba(139, 92, 246, 0.08);
+    var(--cr-primary-light);
 
-  border: 1px solid
-    rgba(139, 92, 246, 0.16);
+  border:
+    1px solid #dbeafe;
 
-  color: #a78bfa;
+  border-radius:
+    10px;
 
-  font-family: monospace;
+  font-size:
+    12px;
 
-  font-size: 11px;
-  font-weight: 900;
+  font-weight:
+    850;
 }
 
 
-/* =====================================================
-   CONTENT
-===================================================== */
+/* =========================================================
+   RESPONSE CONTENT
+   ========================================================= */
 
 .response-content {
-  flex: 1;
-
-  min-width: 0;
+  min-width:
+    0;
 }
 
 
-/* STATUS */
+/* =========================================================
+   STATUS
+   ========================================================= */
 
 .response-status {
-  display: inline-flex;
+  display:
+    inline-flex;
 
-  margin-bottom: 9px;
+  align-items:
+    center;
 
-  padding: 5px 9px;
+  margin-bottom:
+    12px;
 
-  border-radius: 5px;
+  padding:
+    6px 9px;
 
-  background:
-    rgba(255, 255, 255, 0.035);
+  border-radius:
+    999px;
 
-  color: #858594;
+  font-size:
+    9px;
 
-  font-size: 8px;
-  font-weight: 900;
+  font-weight:
+    850;
 
-  letter-spacing: 1px;
+  letter-spacing:
+    .6px;
 }
 
 
-/* QUESTION */
+/* Correct */
+
+.response-card:has(.correct-answer)
+.response-status {
+  color:
+    var(--cr-green);
+
+  background:
+    var(--cr-green-light);
+
+  border:
+    1px solid #bbf7d0;
+}
+
+
+/* Incorrect */
+
+.response-card:has(.wrong-answer)
+.response-status {
+  color:
+    var(--cr-red);
+
+  background:
+    var(--cr-red-light);
+
+  border:
+    1px solid #fecaca;
+}
+
+
+/* =========================================================
+   QUESTION
+   ========================================================= */
 
 .response-content h2 {
-  margin: 0 0 17px;
+  margin:
+    0 0 20px;
 
-  color: #e9e9ee;
+  color:
+    var(--cr-navy-dark);
 
-  font-size: 15px;
-  font-weight: 650;
+  font-size:
+    16px;
 
-  line-height: 1.55;
+  line-height:
+    1.55;
+
+  font-weight:
+    700;
 }
 
 
-/* =====================================================
+/* =========================================================
    OPTIONS
-===================================================== */
+   ========================================================= */
 
 .response-options {
-  display: grid;
+  display:
+    flex;
 
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+  flex-direction:
+    column;
 
-  gap: 9px;
+  gap:
+    9px;
 }
-
 
 .response-option {
-  min-height: 48px;
+  min-height:
+    48px;
 
-  padding: 9px 12px;
+  display:
+    flex;
 
-  display: flex;
-  align-items: center;
+  align-items:
+    center;
 
-  gap: 11px;
+  gap:
+    12px;
 
-  border: 1px solid
-    rgba(255, 255, 255, 0.055);
+  padding:
+    8px 11px;
 
-  border-radius: 7px;
+  color:
+    var(--cr-muted);
 
   background:
-    rgba(255, 255, 255, 0.018);
+    white;
 
-  box-sizing: border-box;
+  border:
+    1px solid #e5eaf0;
+
+  border-radius:
+    9px;
+
+  font-size:
+    12px;
+
+  line-height:
+    1.45;
+
+  transition:
+    .18s;
 }
 
 
-/* LETTER */
+/* =========================================================
+   OPTION LETTER
+   ========================================================= */
 
 .response-option-letter {
-  width: 27px;
-  height: 27px;
+  width:
+    31px;
 
-  flex: 0 0 27px;
+  height:
+    31px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex:
+    0 0 31px;
 
-  border-radius: 5px;
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  color:
+    var(--cr-muted);
 
   background:
-    rgba(255, 255, 255, 0.05);
+    #f8fafc;
 
-  color: #9999a8;
+  border:
+    1px solid #dbe2ea;
 
-  font-size: 10px;
-  font-weight: 900;
+  border-radius:
+    8px;
+
+  font-size:
+    11px;
+
+  font-weight:
+    850;
 }
 
 
-/* TEXT */
-
-.response-option-text {
-  flex: 1;
-
-  color: #92929f;
-
-  font-size: 11px;
-
-  line-height: 1.4;
-}
-
-
-/* =====================================================
-   CANDIDATE ANSWER
-===================================================== */
+/* =========================================================
+   SELECTED ANSWER
+   ========================================================= */
 
 .response-option.candidate-answer {
-  border-color:
-    rgba(139, 92, 246, 0.35);
+  color:
+    var(--cr-primary-dark);
 
   background:
-    rgba(139, 92, 246, 0.07);
+    var(--cr-primary-light);
+
+  border-color:
+    #93c5fd;
 }
 
 .response-option.candidate-answer
 .response-option-letter {
+  color:
+    white;
+
   background:
-    rgba(139, 92, 246, 0.18);
+    var(--cr-primary);
 
-  color: #c4b5fd;
-}
-
-.response-option.candidate-answer
-.response-option-text {
-  color: #c4c4ce;
+  border-color:
+    var(--cr-primary);
 }
 
 
-/* =====================================================
+/* =========================================================
    CORRECT ANSWER
-===================================================== */
+   ========================================================= */
 
 .response-option.correct-answer {
-  border-color:
-    rgba(52, 211, 153, 0.3);
+  color:
+    #166534;
 
   background:
-    rgba(52, 211, 153, 0.055);
+    var(--cr-green-light);
+
+  border:
+    1px solid #86efac;
 }
 
 .response-option.correct-answer
 .response-option-letter {
+  color:
+    white;
+
   background:
-    rgba(52, 211, 153, 0.13);
+    var(--cr-green);
 
-  color: #6ee7b7;
-}
-
-.response-option.correct-answer
-.response-option-text {
-  color: #b7d8cc;
+  border-color:
+    var(--cr-green);
 }
 
 
-/* =====================================================
+/* =========================================================
    WRONG ANSWER
-===================================================== */
+   ========================================================= */
 
 .response-option.wrong-answer {
-  border-color:
-    rgba(248, 113, 113, 0.28);
+  color:
+    #991b1b;
 
   background:
-    rgba(248, 113, 113, 0.045);
+    var(--cr-red-light);
+
+  border:
+    1px solid #fca5a5;
 }
 
 .response-option.wrong-answer
 .response-option-letter {
-  background:
-    rgba(248, 113, 113, 0.12);
+  color:
+    white;
 
-  color: #fca5a5;
+  background:
+    var(--cr-red);
+
+  border-color:
+    var(--cr-red);
 }
 
 
-/* =====================================================
-   LABEL
-===================================================== */
+/* =========================================================
+   ANSWER LABEL
+   ========================================================= */
 
 .answer-label {
-  padding: 4px 7px;
+  margin-left:
+    auto;
 
-  border-radius: 4px;
+  padding:
+    5px 8px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    8px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    .5px;
+
+  white-space:
+    nowrap;
+}
+
+.candidate-answer .answer-label {
+  color:
+    var(--cr-primary);
 
   background:
-    rgba(255, 255, 255, 0.045);
+    white;
 
-  color: #777786;
+  border:
+    1px solid #bfdbfe;
+}
 
-  font-size: 7px;
-  font-weight: 900;
+.correct-answer .answer-label {
+  color:
+    var(--cr-green);
 
-  letter-spacing: 0.8px;
+  background:
+    white;
 
-  white-space: nowrap;
+  border:
+    1px solid #bbf7d0;
 }
 
 
-/* =====================================================
+/* =========================================================
    MARKS
-===================================================== */
+   ========================================================= */
 
 .response-marks {
-  flex: 0 0 65px;
+  align-self:
+    start;
 
-  align-self: flex-start;
+  display:
+    flex;
 
-  text-align: right;
+  align-items:
+    baseline;
+
+  justify-content:
+    flex-end;
+
+  gap:
+    3px;
+
+  white-space:
+    nowrap;
 }
 
 .response-marks strong {
-  color: #eeeeF3;
+  color:
+    var(--cr-navy-dark);
 
-  font-size: 18px;
-  font-weight: 800;
+  font-size:
+    22px;
+
+  font-weight:
+    850;
 }
 
 .response-marks span {
-  color: #666675;
+  color:
+    var(--cr-muted);
 
-  font-size: 10px;
+  font-size:
+    11px;
+
+  font-weight:
+    650;
 }
 
 
-/* =====================================================
+/* =========================================================
    EMPTY
-===================================================== */
+   ========================================================= */
 
 .responses-empty {
-  padding: 70px 20px;
+  padding:
+    65px 25px;
 
-  text-align: center;
+  color:
+    var(--cr-muted);
 
-  color: #666675;
+  background:
+    #fafcff;
 
-  font-size: 12px;
+  border:
+    1px dashed #cbd5e1;
+
+  border-radius:
+    12px;
+
+  text-align:
+    center;
+
+  font-size:
+    13px;
 }
 
 
-/* =====================================================
+/* =========================================================
    LOADING
-===================================================== */
+   ========================================================= */
 
 .responses-loading {
-  min-height: 100vh;
+  min-height:
+    100vh;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display:
+    flex;
 
-  background: #09090f;
+  align-items:
+    center;
 
-  color: #777786;
+  justify-content:
+    center;
 
-  font-size: 13px;
+  background:
+    var(--cr-bg);
+
+  color:
+    var(--cr-muted);
+
+  font-size:
+    15px;
+
+  font-weight:
+    600;
 }
 
 
-/* =====================================================
+/* =========================================================
    ERROR
-===================================================== */
+   ========================================================= */
 
 .responses-error {
-  min-height: 100vh;
+  max-width:
+    600px;
 
-  display: flex;
-  flex-direction: column;
+  margin:
+    100px auto;
 
-  align-items: center;
-  justify-content: center;
+  padding:
+    25px;
 
-  background: #09090f;
+  text-align:
+    center;
 
-  text-align: center;
+  background:
+    var(--cr-red-light);
+
+  border:
+    1px solid #fecaca;
+
+  border-radius:
+    12px;
 }
 
 .responses-error h2 {
-  margin: 0 0 8px;
+  margin:
+    0 0 8px;
 
-  color: #eeeeF2;
+  color:
+    var(--cr-red);
 
-  font-size: 20px;
+  font-size:
+    20px;
 }
 
 .responses-error p {
-  margin: 0;
+  margin:
+    0 0 18px;
 
-  color: #777786;
+  color:
+    #7f1d1d;
 
-  font-size: 12px;
+  font-size:
+    13px;
 }
 
 .responses-error button {
-  margin-top: 18px;
+  padding:
+    9px 16px;
 
-  padding: 9px 16px;
-
-  border: 1px solid
-    rgba(139, 92, 246, 0.3);
-
-  border-radius: 7px;
+  color:
+    white;
 
   background:
-    rgba(139, 92, 246, 0.08);
+    var(--cr-primary);
 
-  color: #a78bfa;
+  border:
+    none;
 
-  cursor: pointer;
+  border-radius:
+    8px;
+
+  font-family:
+    inherit;
+
+  font-size:
+    12px;
+
+  font-weight:
+    750;
+
+  cursor:
+    pointer;
 }
 
 
-/* =====================================================
-   MOBILE
-===================================================== */
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
-@media (max-width: 700px) {
-
-  .responses-header {
-    height: 68px;
-    padding: 0 16px;
-  }
-
-  .responses-brand {
-    font-size: 13px;
-  }
+@media (max-width: 800px) {
 
   .responses-main {
-    padding: 28px 14px 45px;
-  }
-
-  .responses-title h1 {
-    font-size: 27px;
+    padding:
+      32px 22px 55px;
   }
 
   .response-card {
-    padding: 17px;
-
-    gap: 12px;
-  }
-
-  .response-number {
-    flex-basis: 34px;
-
-    width: 34px;
-    height: 34px;
-  }
-
-  .response-options {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      42px minmax(0, 1fr);
   }
 
   .response-marks {
-    flex-basis: 50px;
+    grid-column:
+      2;
+
+    justify-content:
+      flex-start;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .responses-header {
+    padding:
+      0 16px;
   }
 
+  .responses-brand span {
+    display:
+      none;
+  }
+
+  .responses-main {
+    padding:
+      27px 15px 50px;
+  }
+
+  .responses-title h1 {
+    font-size:
+      29px;
+  }
+
+  .responses-panel {
+    padding:
+      19px;
+  }
+
+  .responses-panel-header {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    gap:
+      10px;
+  }
+
+  .response-card {
+    padding:
+      17px;
+
+    gap:
+      12px;
+  }
+
+  .response-content h2 {
+    font-size:
+      14px;
+  }
+}
+
+
+@media (max-width: 450px) {
+
+  .responses-back {
+    padding:
+      9px 10px;
+
+    font-size:
+      11px;
+  }
+
+  .responses-brand {
+    font-size:
+      14px;
+  }
+
+  .responses-brand::before {
+    width:
+      35px;
+
+    height:
+      35px;
+  }
+
+  .responses-title h1 {
+    font-size:
+      26px;
+  }
+
+  .response-card {
+    grid-template-columns:
+      36px minmax(0, 1fr);
+  }
+
+  .response-number {
+    width:
+      35px;
+
+    height:
+      35px;
+  }
+
+  .response-option {
+    align-items:
+      flex-start;
+
+    min-height:
+      45px;
+
+    font-size:
+      11px;
+  }
+
+  .answer-label {
+    display:
+      none;
+  }
 }

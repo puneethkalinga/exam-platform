@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 const API_URL = "https://exam-platform-qhk8.onrender.com";
+import "./CreateExamModal.css";
 
 export default function CreateExamModal({ onClose, onCreated }) {
   const [title, setTitle] = useState("");
@@ -139,12 +140,12 @@ export default function CreateExamModal({ onClose, onCreated }) {
             </button>
 
             <button
-              type="submit"
-              className="new-exam-button"
-              disabled={loading}
-            >
-              {loading ? "Creating..." : "Create Exam"}
-            </button>
+  type="submit"
+  className="create-exam-submit"
+  disabled={loading}
+>
+  {loading ? "Creating..." : "Create Exam"}
+</button>
 
           </div>
 

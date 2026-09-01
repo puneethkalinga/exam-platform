@@ -1,783 +1,1156 @@
-/* =====================================================
-   XEVOTECH — EXAM PROTOCOL
-   ADMIN RESULTS THEME
-===================================================== */
+/* =========================================================
+   PROFESSIONAL ASSESSMENT CENTER
+   EXAM RESULTS
+   ========================================================= */
 
-.exam-results {
-  min-height: 100vh;
-  background:
-    radial-gradient(
-      circle at 15% 0%,
-      rgba(124, 58, 237, 0.12),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at 90% 20%,
-      rgba(236, 72, 153, 0.07),
-      transparent 28%
-    ),
-    #09090f;
+:root {
+  --er-bg: #f3f6fa;
+  --er-surface: #ffffff;
+  --er-soft: #f8fafc;
 
-  color: #f4f4f7;
+  --er-navy: #172554;
+  --er-navy-dark: #0f172a;
+
+  --er-primary: #2563eb;
+  --er-primary-dark: #1d4ed8;
+  --er-primary-light: #eff6ff;
+
+  --er-green: #16a34a;
+  --er-green-light: #f0fdf4;
+
+  --er-red: #dc2626;
+  --er-red-light: #fef2f2;
+
+  --er-orange: #d97706;
+  --er-orange-light: #fffbeb;
+
+  --er-text: #172033;
+  --er-muted: #64748b;
+  --er-light: #94a3b8;
+
+  --er-border: #e2e8f0;
+
+  --er-radius: 15px;
+
+  --er-shadow:
+    0 10px 35px rgba(15, 23, 42, 0.06);
 }
 
 
-/* =====================================================
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.exam-results {
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8fafc 0%,
+      #f3f6fa 55%,
+      #eef3f9 100%
+    );
+
+  color: var(--er-text);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+
+/* =========================================================
    HEADER
-===================================================== */
+   ========================================================= */
 
 .results-header {
   height: 76px;
 
-  padding: 0 38px;
-
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
-  background: rgba(13, 13, 21, 0.92);
+  padding:
+    0 34px;
 
-  border-bottom: 1px solid
-    rgba(255, 255, 255, 0.07);
+  background:
+    var(--er-navy-dark);
 
-  backdrop-filter: blur(14px);
+  border-bottom:
+    1px solid #1e293b;
 
-  box-sizing: border-box;
+  color: white;
+
+  box-shadow:
+    0 4px 18px
+    rgba(15, 23, 42, 0.10);
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 50;
 }
 
 
-/* BACK */
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
 
 .results-back {
-  display: inline-flex;
+  display: flex;
+
   align-items: center;
+
   gap: 8px;
 
-  padding: 9px 13px;
+  padding:
+    10px 13px;
 
-  border: 1px solid
-    rgba(255, 255, 255, 0.08);
+  color:
+    #cbd5e1;
 
-  border-radius: 8px;
+  background:
+    transparent;
 
-  background: rgba(255, 255, 255, 0.025);
+  border:
+    1px solid #334155;
 
-  color: #a5a5b3;
+  border-radius:
+    9px;
 
-  font-size: 12px;
-  font-weight: 700;
+  font-family:
+    inherit;
 
-  cursor: pointer;
+  font-size:
+    13px;
 
-  transition: 0.2s ease;
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+  transition:
+    .2s;
 }
 
 .results-back:hover {
-  color: #ffffff;
-
-  border-color:
-    rgba(139, 92, 246, 0.5);
+  color:
+    white;
 
   background:
-    rgba(139, 92, 246, 0.08);
+    rgba(255,255,255,.06);
 
-  transform: translateX(-2px);
+  border-color:
+    #475569;
 }
 
 
-/* BRAND */
+/* =========================================================
+   BRAND
+   ========================================================= */
 
 .results-brand {
-  color: #ffffff;
+  display:
+    flex;
 
-  font-size: 16px;
-  font-weight: 900;
+  align-items:
+    center;
 
-  letter-spacing: 2px;
+  gap:
+    12px;
 
-  text-align: right;
+  color:
+    white;
+
+  font-size:
+    17px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.2px;
+}
+
+.results-brand::before {
+  content:
+    "A";
+
+  width:
+    39px;
+
+  height:
+    39px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    10px;
+
+  color:
+    white;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--er-primary),
+      #4f46e5
+    );
+
+  font-size:
+    16px;
+
+  font-weight:
+    900;
 }
 
 .results-brand span {
-  display: block;
+  padding-left:
+    12px;
 
-  margin-top: 3px;
+  border-left:
+    1px solid #334155;
 
-  color: #666675;
+  color:
+    #94a3b8;
 
-  font-size: 8px;
-  font-weight: 700;
+  font-size:
+    10px;
 
-  letter-spacing: 2.5px;
+  font-weight:
+    700;
+
+  letter-spacing:
+    1.3px;
 }
 
 
-/* =====================================================
+/* =========================================================
    MAIN
-===================================================== */
+   ========================================================= */
 
 .results-main {
-  width: 100%;
-  max-width: 1450px;
+  width:
+    100%;
 
-  margin: 0 auto;
+  max-width:
+    1350px;
 
-  padding: 42px 38px 70px;
+  margin:
+    0 auto;
 
-  box-sizing: border-box;
+  padding:
+    42px 38px 70px;
 }
 
 
-/* =====================================================
+/* =========================================================
    TITLE
-===================================================== */
+   ========================================================= */
 
 .results-title {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  display:
+    flex;
 
-  gap: 30px;
+  align-items:
+    flex-end;
 
-  margin-bottom: 30px;
+  justify-content:
+    space-between;
+
+  gap:
+    25px;
+
+  margin-bottom:
+    27px;
 }
 
 .results-title > div > span {
-  color: #8b5cf6;
+  color:
+    var(--er-primary);
 
-  font-size: 9px;
-  font-weight: 900;
+  font-size:
+    11px;
 
-  letter-spacing: 2.2px;
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.8px;
 }
 
 .results-title h1 {
-  margin: 8px 0 8px;
+  margin:
+    8px 0 7px;
 
-  color: #ffffff;
+  color:
+    var(--er-navy-dark);
 
-  font-size: 34px;
-  font-weight: 800;
+  font-size:
+    34px;
 
-  letter-spacing: -1px;
+  line-height:
+    1.1;
+
+  letter-spacing:
+    -.7px;
 }
 
 .results-title p {
-  margin: 0;
+  margin:
+    0;
 
-  color: #777786;
+  color:
+    var(--er-muted);
 
-  font-size: 13px;
+  font-size:
+    14px;
 }
 
 
-/* REFRESH */
+/* =========================================================
+   REFRESH
+   ========================================================= */
 
 .refresh-results {
-  display: flex;
-  align-items: center;
-  gap: 7px;
+  min-width:
+    105px;
 
-  padding: 10px 15px;
+  padding:
+    11px 15px;
 
-  border: 1px solid
-    rgba(255, 255, 255, 0.09);
+  color:
+    var(--er-primary);
 
-  border-radius: 8px;
+  background:
+    white;
 
-  background: #111119;
+  border:
+    1px solid var(--er-border);
 
-  color: #a7a7b5;
+  border-radius:
+    9px;
 
-  font-size: 11px;
-  font-weight: 800;
+  font-family:
+    inherit;
 
-  cursor: pointer;
+  font-size:
+    12px;
 
-  transition: 0.2s ease;
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+
+  transition:
+    .2s;
 }
 
 .refresh-results:hover {
-  color: #ffffff;
-
-  border-color:
-    rgba(139, 92, 246, 0.55);
+  color:
+    var(--er-primary-dark);
 
   background:
-    rgba(139, 92, 246, 0.08);
+    var(--er-primary-light);
+
+  border-color:
+    #bfdbfe;
+
+  transform:
+    translateY(-1px);
 }
 
 
-/* =====================================================
+/* =========================================================
    STATS
-===================================================== */
+   ========================================================= */
 
 .results-stats {
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+    repeat(4, 1fr);
 
-  gap: 15px;
+  gap:
+    15px;
 
-  margin-bottom: 22px;
+  margin-bottom:
+    23px;
 }
 
 .result-stat {
-  position: relative;
+  min-height:
+    118px;
 
-  padding: 20px 21px;
-
-  overflow: hidden;
+  padding:
+    21px 22px;
 
   background:
-    linear-gradient(
-      145deg,
-      rgba(22, 22, 31, 0.98),
-      rgba(14, 14, 21, 0.98)
-    );
+    var(--er-surface);
 
-  border: 1px solid
-    rgba(255, 255, 255, 0.065);
+  border:
+    1px solid var(--er-border);
 
-  border-radius: 12px;
+  border-radius:
+    var(--er-radius);
 
   box-shadow:
-    0 12px 35px rgba(0, 0, 0, 0.22);
+    var(--er-shadow);
+
+  position:
+    relative;
+
+  overflow:
+    hidden;
 }
 
 .result-stat::after {
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
-  width: 80px;
-  height: 80px;
+  width:
+    90px;
 
-  right: -35px;
-  bottom: -45px;
+  height:
+    90px;
 
-  border-radius: 50%;
+  right:
+    -45px;
+
+  bottom:
+    -45px;
+
+  border-radius:
+    50%;
 
   background:
-    rgba(139, 92, 246, 0.08);
+    rgba(37,99,235,.045);
 }
 
 .result-stat span {
-  display: block;
+  display:
+    block;
 
-  margin-bottom: 9px;
+  color:
+    var(--er-muted);
 
-  color: #696978;
+  font-size:
+    11px;
 
-  font-size: 8px;
-  font-weight: 900;
+  font-weight:
+    850;
 
-  letter-spacing: 1.8px;
+  letter-spacing:
+    1.1px;
 }
 
 .result-stat strong {
-  color: #f5f5f8;
+  display:
+    block;
 
-  font-size: 28px;
-  font-weight: 800;
+  margin-top:
+    18px;
 
-  letter-spacing: -0.5px;
+  color:
+    var(--er-navy-dark);
+
+  font-size:
+    30px;
+
+  line-height:
+    1;
+
+  font-weight:
+    800;
 }
 
 
-/* =====================================================
+/* =========================================================
    RESULTS PANEL
-===================================================== */
+   ========================================================= */
 
 .results-panel {
-  overflow: hidden;
+  padding:
+    27px;
 
   background:
-    linear-gradient(
-      145deg,
-      #111119,
-      #0e0e15
-    );
+    var(--er-surface);
 
-  border: 1px solid
-    rgba(255, 255, 255, 0.065);
+  border:
+    1px solid var(--er-border);
 
-  border-radius: 14px;
+  border-radius:
+    var(--er-radius);
 
   box-shadow:
-    0 18px 55px rgba(0, 0, 0, 0.28);
+    var(--er-shadow);
 }
 
 
-/* PANEL HEADER */
+/* =========================================================
+   PANEL HEADER
+   ========================================================= */
 
 .results-panel-heading {
-  padding: 23px 25px;
+  padding-bottom:
+    19px;
 
-  border-bottom: 1px solid
-    rgba(255, 255, 255, 0.055);
+  margin-bottom:
+    20px;
+
+  border-bottom:
+    1px solid #edf1f5;
 }
 
 .results-panel-heading span {
-  color: #666676;
+  color:
+    var(--er-primary);
 
-  font-size: 8px;
-  font-weight: 900;
+  font-size:
+    11px;
 
-  letter-spacing: 1.8px;
+  font-weight:
+    850;
+
+  letter-spacing:
+    1.6px;
 }
 
 .results-panel-heading h2 {
-  margin: 6px 0 0;
+  margin:
+    7px 0 0;
 
-  color: #f4f4f7;
+  color:
+    var(--er-navy-dark);
 
-  font-size: 20px;
-  font-weight: 800;
+  font-size:
+    21px;
 }
 
 
-/* =====================================================
-   TABLE
-===================================================== */
+/* =========================================================
+   TABLE WRAPPER
+   ========================================================= */
 
 .results-table-wrapper {
-  width: 100%;
+  width:
+    100%;
 
-  overflow-x: auto;
+  overflow-x:
+    auto;
+
+  border:
+    1px solid var(--er-border);
+
+  border-radius:
+    11px;
 }
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
 
 .results-table {
-  width: 100%;
+  width:
+    100%;
 
-  min-width: 1100px;
+  min-width:
+    1050px;
 
-  border-collapse: collapse;
-}
-
-
-/* HEADER */
-
-.results-table th {
-  padding: 14px 17px;
+  border-collapse:
+    collapse;
 
   background:
-    rgba(255, 255, 255, 0.018);
-
-  border-bottom: 1px solid
-    rgba(255, 255, 255, 0.055);
-
-  color: #626270;
-
-  font-size: 8px;
-  font-weight: 900;
-
-  letter-spacing: 1.4px;
-
-  text-align: left;
-
-  white-space: nowrap;
+    white;
 }
 
 
-/* CELLS */
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
+
+.results-table thead {
+  background:
+    #f8fafc;
+}
+
+.results-table th {
+  padding:
+    13px 15px;
+
+  color:
+    #64748b;
+
+  border-bottom:
+    1px solid var(--er-border);
+
+  text-align:
+    left;
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+
+  letter-spacing:
+    1px;
+
+  white-space:
+    nowrap;
+}
+
+
+/* =========================================================
+   TABLE BODY
+   ========================================================= */
 
 .results-table td {
-  padding: 17px;
+  padding:
+    16px 15px;
 
-  border-bottom: 1px solid
-    rgba(255, 255, 255, 0.045);
+  color:
+    #475569;
 
-  color: #aaaab5;
+  border-bottom:
+    1px solid #edf1f5;
 
-  font-size: 12px;
+  font-size:
+    12px;
 
-  vertical-align: middle;
+  vertical-align:
+    middle;
 }
 
-
-/* ROW */
-
 .results-table tbody tr {
-  transition: 0.18s ease;
+  transition:
+    background .18s;
 }
 
 .results-table tbody tr:hover {
   background:
-    rgba(139, 92, 246, 0.035);
+    #f8fbff;
 }
 
 .results-table tbody tr:last-child td {
-  border-bottom: none;
+  border-bottom:
+    none;
 }
 
 
-/* =====================================================
+/* =========================================================
    RANK
-===================================================== */
+   ========================================================= */
 
 .rank {
-  display: inline-flex;
+  color:
+    var(--er-navy);
 
-  align-items: center;
-  justify-content: center;
+  font-weight:
+    850;
 
-  min-width: 36px;
-  height: 25px;
-
-  padding: 0 7px;
-
-  border-radius: 6px;
-
-  background:
-    rgba(139, 92, 246, 0.08);
-
-  border: 1px solid
-    rgba(139, 92, 246, 0.16);
-
-  color: #a78bfa;
-
-  font-size: 10px;
-  font-weight: 900;
+  font-size:
+    12px;
 }
 
 
-/* =====================================================
+/* =========================================================
    CANDIDATE
-===================================================== */
+   ========================================================= */
 
 .candidate-name {
-  color: #eeeeF2;
+  color:
+    var(--er-navy-dark);
 
-  font-size: 12px;
-  font-weight: 700;
+  font-size:
+    13px;
+
+  font-weight:
+    750;
 }
+
+
+/* =========================================================
+   ROLL NUMBER
+   ========================================================= */
 
 .roll-number {
-  color: #777786;
+  display:
+    inline-block;
 
-  font-family: monospace;
+  padding:
+    5px 8px;
 
-  font-size: 11px;
+  color:
+    var(--er-muted);
+
+  background:
+    #f8fafc;
+
+  border:
+    1px solid #edf1f5;
+
+  border-radius:
+    6px;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+
+  font-size:
+    11px;
 }
 
 
-/* =====================================================
-   PERCENTAGE
-===================================================== */
+/* =========================================================
+   MARKS
+   ========================================================= */
+
+.results-table td strong {
+  color:
+    var(--er-navy-dark);
+
+  font-weight:
+    800;
+}
 
 .percentage {
-  color: #dddde5;
-
-  font-size: 13px;
-  font-weight: 800;
+  color:
+    var(--er-primary) !important;
 }
 
 
-/* =====================================================
-   RESULT STATUS
-===================================================== */
+/* =========================================================
+   STATUS BADGES
+   ========================================================= */
 
 .result-badge {
-  display: inline-flex;
+  display:
+    inline-flex;
 
-  align-items: center;
-  justify-content: center;
+  align-items:
+    center;
 
-  min-width: 108px;
+  padding:
+    6px 9px;
 
-  padding: 6px 10px;
+  border-radius:
+    999px;
 
-  border-radius: 6px;
+  font-size:
+    9px;
 
-  font-size: 8px;
-  font-weight: 900;
+  font-weight:
+    850;
 
-  letter-spacing: 1px;
+  letter-spacing:
+    .5px;
+
+  white-space:
+    nowrap;
 }
-
-
-/* SHORTLISTED */
 
 .result-badge.shortlisted {
+  color:
+    var(--er-green);
+
   background:
-    rgba(52, 211, 153, 0.08);
+    var(--er-green-light);
 
-  border: 1px solid
-    rgba(52, 211, 153, 0.18);
-
-  color: #6ee7b7;
+  border:
+    1px solid #bbf7d0;
 }
-
-
-/* NOT SHORTLISTED */
 
 .result-badge.not-shortlisted {
+  color:
+    var(--er-red);
+
   background:
-    rgba(248, 113, 113, 0.07);
+    var(--er-red-light);
 
-  border: 1px solid
-    rgba(248, 113, 113, 0.16);
-
-  color: #fca5a5;
+  border:
+    1px solid #fecaca;
 }
 
 
-/* =====================================================
+/* =========================================================
    SUBMITTED DATE
-===================================================== */
+   ========================================================= */
 
 .submitted-date {
-  color: #70707f;
+  color:
+    var(--er-muted);
 
-  font-size: 10px;
+  font-size:
+    11px;
 
-  white-space: nowrap;
+  white-space:
+    nowrap;
 }
 
 
-/* =====================================================
+/* =========================================================
    VIEW BUTTON
-===================================================== */
+   ========================================================= */
 
 .view-response-button {
-  padding: 7px 13px;
+  padding:
+    8px 12px;
 
-  border: 1px solid
-    rgba(139, 92, 246, 0.25);
-
-  border-radius: 6px;
+  color:
+    var(--er-primary);
 
   background:
-    rgba(139, 92, 246, 0.06);
+    var(--er-primary-light);
 
-  color: #a78bfa;
+  border:
+    1px solid #bfdbfe;
 
-  font-size: 10px;
-  font-weight: 800;
+  border-radius:
+    7px;
 
-  cursor: pointer;
+  font-family:
+    inherit;
 
-  transition: 0.2s ease;
+  font-size:
+    11px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+
+  transition:
+    .18s;
 }
 
 .view-response-button:hover {
+  color:
+    white;
+
   background:
-    rgba(139, 92, 246, 0.15);
+    var(--er-primary);
 
   border-color:
-    rgba(139, 92, 246, 0.55);
+    var(--er-primary);
 
-  color: #c4b5fd;
+  transform:
+    translateY(-1px);
 }
 
 
-/* =====================================================
-   EMPTY
-===================================================== */
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
 
 .results-empty {
-  padding: 75px 25px;
+  padding:
+    65px 25px;
 
-  text-align: center;
+  text-align:
+    center;
+
+  border:
+    1px dashed #cbd5e1;
+
+  border-radius:
+    12px;
+
+  background:
+    #fafcff;
 }
 
 .results-empty-icon {
-  width: 54px;
-  height: 54px;
+  width:
+    55px;
 
-  margin: 0 auto 17px;
+  height:
+    55px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display:
+    grid;
 
-  border-radius: 12px;
+  place-items:
+    center;
+
+  margin:
+    0 auto 15px;
+
+  color:
+    var(--er-primary);
 
   background:
-    rgba(139, 92, 246, 0.07);
+    var(--er-primary-light);
 
-  border: 1px solid
-    rgba(139, 92, 246, 0.14);
+  border:
+    1px solid #dbeafe;
 
-  color: #8b5cf6;
+  border-radius:
+    14px;
 
-  font-size: 20px;
+  font-size:
+    23px;
 }
 
 .results-empty h3 {
-  margin: 0 0 7px;
+  margin:
+    0 0 7px;
 
-  color: #e8e8ed;
+  color:
+    var(--er-navy-dark);
 
-  font-size: 17px;
+  font-size:
+    17px;
 }
 
 .results-empty p {
-  max-width: 420px;
+  max-width:
+    480px;
 
-  margin: 0 auto;
+  margin:
+    0 auto;
 
-  color: #686876;
+  color:
+    var(--er-muted);
 
-  font-size: 12px;
+  font-size:
+    13px;
 
-  line-height: 1.6;
+  line-height:
+    1.6;
 }
 
 
-/* =====================================================
+/* =========================================================
    LOADING
-===================================================== */
+   ========================================================= */
 
 .results-loading {
-  min-height: 100vh;
+  min-height:
+    100vh;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display:
+    flex;
 
-  background: #09090f;
+  align-items:
+    center;
 
-  color: #777786;
+  justify-content:
+    center;
 
-  font-size: 13px;
+  background:
+    var(--er-bg);
+
+  color:
+    var(--er-muted);
+
+  font-size:
+    15px;
+
+  font-weight:
+    600;
 }
 
 
-/* =====================================================
+/* =========================================================
    ERROR
-===================================================== */
+   ========================================================= */
 
 .results-error {
-  min-height: 100vh;
+  max-width:
+    600px;
 
-  display: flex;
-  flex-direction: column;
+  margin:
+    100px auto;
 
-  align-items: center;
-  justify-content: center;
+  padding:
+    25px;
 
-  padding: 30px;
+  text-align:
+    center;
 
-  background: #09090f;
+  color:
+    var(--er-red);
 
-  text-align: center;
+  background:
+    var(--er-red-light);
+
+  border:
+    1px solid #fecaca;
+
+  border-radius:
+    12px;
 }
 
 .results-error h2 {
-  margin: 0 0 8px;
+  margin:
+    0 0 8px;
 
-  color: #f1f1f5;
-
-  font-size: 20px;
+  font-size:
+    20px;
 }
 
 .results-error p {
-  margin: 0;
+  margin:
+    0 0 17px;
 
-  color: #777786;
+  color:
+    #7f1d1d;
 
-  font-size: 12px;
+  font-size:
+    13px;
 }
 
 .results-error button {
-  margin-top: 18px;
+  padding:
+    9px 16px;
 
-  padding: 9px 17px;
-
-  border: 1px solid
-    rgba(139, 92, 246, 0.3);
-
-  border-radius: 7px;
+  color:
+    white;
 
   background:
-    rgba(139, 92, 246, 0.1);
+    var(--er-primary);
 
-  color: #a78bfa;
+  border:
+    none;
 
-  font-size: 11px;
-  font-weight: 800;
+  border-radius:
+    8px;
 
-  cursor: pointer;
+  font-family:
+    inherit;
+
+  font-size:
+    12px;
+
+  font-weight:
+    750;
+
+  cursor:
+    pointer;
 }
 
 
-/* =====================================================
-   SCROLLBAR
-===================================================== */
-
-.results-table-wrapper::-webkit-scrollbar {
-  height: 7px;
-}
-
-.results-table-wrapper::-webkit-scrollbar-track {
-  background: #0b0b11;
-}
-
-.results-table-wrapper::-webkit-scrollbar-thumb {
-  background: #292936;
-
-  border-radius: 10px;
-}
-
-.results-table-wrapper::-webkit-scrollbar-thumb:hover {
-  background: #3b3b4b;
-}
-
-
-/* =====================================================
+/* =========================================================
    RESPONSIVE
-===================================================== */
+   ========================================================= */
 
 @media (max-width: 900px) {
 
-  .results-header {
-    padding: 0 20px;
-  }
-
   .results-main {
-    padding: 30px 20px 50px;
+    padding:
+      32px 24px 55px;
   }
 
   .results-stats {
     grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+      repeat(2, 1fr);
   }
-
 }
 
 
-@media (max-width: 550px) {
+@media (max-width: 650px) {
 
   .results-header {
-    height: 68px;
+    padding:
+      0 16px;
   }
 
-  .results-brand {
-    font-size: 13px;
+  .results-brand span {
+    display:
+      none;
   }
 
   .results-main {
-    padding: 25px 14px 40px;
+    padding:
+      27px 15px 50px;
   }
 
   .results-title {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
   }
 
   .results-title h1 {
-    font-size: 28px;
+    font-size:
+      29px;
+  }
+
+  .refresh-results {
+    width:
+      100%;
   }
 
   .results-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
   }
 
-  .result-stat {
-    padding: 17px 18px;
+  .results-panel {
+    padding:
+      19px;
+  }
+}
+
+
+@media (max-width: 450px) {
+
+  .results-back {
+    padding:
+      9px 10px;
+
+    font-size:
+      11px;
   }
 
+  .results-brand {
+    font-size:
+      14px;
+  }
+
+  .results-brand::before {
+    width:
+      35px;
+
+    height:
+      35px;
+  }
+
+  .results-title h1 {
+    font-size:
+      26px;
+  }
+
+  .results-panel-heading h2 {
+    font-size:
+      19px;
+  }
 }

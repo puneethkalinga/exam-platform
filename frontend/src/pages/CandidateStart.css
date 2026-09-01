@@ -1,322 +1,574 @@
+/* =========================================================
+   PROFESSIONAL ASSESSMENT CENTER
+   CANDIDATE START PAGE
+   ========================================================= */
+
+:root {
+  --start-bg: #f3f6fa;
+  --start-surface: #ffffff;
+
+  --start-navy: #172554;
+  --start-navy-dark: #0f172a;
+
+  --start-primary: #2563eb;
+  --start-primary-dark: #1d4ed8;
+  --start-primary-light: #eff6ff;
+
+  --start-green: #16a34a;
+  --start-green-light: #f0fdf4;
+
+  --start-red: #dc2626;
+  --start-red-light: #fef2f2;
+
+  --start-text: #172033;
+  --start-muted: #64748b;
+  --start-light: #94a3b8;
+
+  --start-border: #e2e8f0;
+
+  --start-radius: 16px;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
 .candidate-start {
   min-height: 100vh;
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(139, 92, 246, 0.12),
-      transparent 35%
-    ),
-    #08080c;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  padding: 30px 20px;
+  padding: 35px 20px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 8% 10%,
+      rgba(37, 99, 235, 0.08),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 92% 90%,
+      rgba(79, 70, 229, 0.07),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #f8fafc 0%,
+      #f3f6fa 55%,
+      #eef3f9 100%
+    );
+
+  color: var(--start-text);
 
   font-family:
     Inter,
+    ui-sans-serif,
+    system-ui,
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-
-  color: #ffffff;
 }
 
-/* CARD */
 
-.candidate-start-card {
-  width: 100%;
-  max-width: 480px;
+/* =========================================================
+   SUBTLE BACKGROUND SHAPES
+   ========================================================= */
 
-  background: rgba(17, 17, 23, 0.96);
-
-  border: 1px solid rgba(255, 255, 255, 0.08);
-
-  border-radius: 20px;
-
-  padding: 42px;
-
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.55),
-    0 0 40px rgba(139, 92, 246, 0.05);
-
-  position: relative;
-  overflow: hidden;
-}
-
-/* TOP ACCENT */
-
-.candidate-start-card::before {
+.candidate-start::before {
   content: "";
 
   position: absolute;
 
-  top: 0;
-  left: 0;
+  width: 400px;
+  height: 400px;
 
-  width: 100%;
-  height: 2px;
+  top: -220px;
+  right: -180px;
 
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #8b5cf6,
-    transparent
-  );
+  border-radius: 50%;
+
+  border:
+    1px solid rgba(37, 99, 235, 0.07);
+
+  box-shadow:
+    0 0 0 45px rgba(37, 99, 235, 0.018),
+    0 0 0 90px rgba(37, 99, 235, 0.012);
+
+  pointer-events: none;
 }
 
-/* BRAND */
+.candidate-start::after {
+  content: "";
+
+  position: absolute;
+
+  width: 320px;
+  height: 320px;
+
+  left: -180px;
+  bottom: -170px;
+
+  border-radius: 50%;
+
+  border:
+    1px solid rgba(79, 70, 229, 0.06);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.candidate-start-card {
+  width: 100%;
+
+  max-width: 500px;
+
+  position: relative;
+
+  z-index: 2;
+
+  padding: 38px;
+
+  background:
+    rgba(255, 255, 255, 0.97);
+
+  border:
+    1px solid var(--start-border);
+
+  border-radius:
+    var(--start-radius);
+
+  box-shadow:
+    0 20px 55px
+    rgba(15, 23, 42, 0.09);
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
 
 .candidate-brand {
-  text-align: center;
-  margin-bottom: 38px;
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 11px;
+
+  padding-bottom: 27px;
+
+  margin-bottom: 29px;
+
+  border-bottom:
+    1px solid #edf1f5;
 }
 
 .candidate-brand h2 {
   margin: 0;
 
-  font-size: 22px;
-  font-weight: 800;
+  color: var(--start-navy-dark);
 
-  letter-spacing: 4px;
+  font-size: 18px;
 
-  color: #ffffff;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+.candidate-brand h2::before {
+  content: "A";
+
+  width: 38px;
+  height: 38px;
+
+  display: inline-grid;
+
+  place-items: center;
+
+  margin-right: 10px;
+
+  vertical-align: middle;
+
+  border-radius: 9px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--start-primary),
+      #4f46e5
+    );
+
+  font-size: 16px;
+
+  letter-spacing: 0;
+
+  box-shadow:
+    0 7px 16px
+    rgba(37, 99, 235, 0.18);
 }
 
 .candidate-brand span {
-  display: block;
+  padding-left: 12px;
 
-  margin-top: 7px;
+  border-left:
+    1px solid #cbd5e1;
 
-  font-size: 9px;
-  font-weight: 700;
+  color: var(--start-muted);
 
-  letter-spacing: 3px;
+  font-size: 10px;
 
-  color: #8b5cf6;
+  font-weight: 750;
+
+  letter-spacing: 1.3px;
 }
 
-/* HEADING */
+
+/* =========================================================
+   HEADING
+   ========================================================= */
 
 .candidate-heading {
-  margin-bottom: 30px;
+  margin-bottom: 29px;
 }
 
 .candidate-heading > span {
-  font-size: 10px;
-  font-weight: 700;
+  color: var(--start-primary);
 
-  letter-spacing: 2px;
+  font-size: 11px;
 
-  color: #8b5cf6;
+  font-weight: 850;
+
+  letter-spacing: 1.7px;
 }
 
 .candidate-heading h1 {
-  margin: 8px 0 10px;
+  margin:
+    9px 0 8px;
 
-  font-size: 30px;
-  line-height: 1.15;
+  color:
+    var(--start-navy-dark);
 
-  font-weight: 700;
+  font-size: 31px;
 
-  letter-spacing: -0.5px;
+  line-height: 1.1;
+
+  letter-spacing: -0.7px;
 }
 
 .candidate-heading p {
   margin: 0;
 
-  color: #858592;
+  color:
+    var(--start-muted);
 
   font-size: 14px;
+
   line-height: 1.6;
 }
 
-/* FORM */
 
-.candidate-start form {
-  display: flex;
-  flex-direction: column;
-
-  gap: 20px;
-}
-
-/* FIELD */
+/* =========================================================
+   FORM
+   ========================================================= */
 
 .candidate-field {
-  display: flex;
-  flex-direction: column;
-
-  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .candidate-field label {
-  font-size: 10px;
-  font-weight: 700;
+  display: block;
 
-  letter-spacing: 1.5px;
+  margin-bottom: 8px;
 
-  color: #a5a5b2;
+  color: #475569;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
 }
 
 .candidate-field input {
   width: 100%;
-  box-sizing: border-box;
 
-  padding: 14px 15px;
+  height: 50px;
 
-  border-radius: 10px;
+  padding:
+    0 14px;
 
-  border: 1px solid #292932;
+  color:
+    var(--start-text);
 
-  background: #0d0d12;
+  background:
+    white;
 
-  color: #ffffff;
+  border:
+    1px solid #dbe2ea;
 
-  font-size: 14px;
+  border-radius:
+    10px;
 
   outline: none;
 
+  font-family: inherit;
+
+  font-size: 14px;
+
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    border-color .2s,
+    box-shadow .2s,
+    background .2s;
 }
 
 .candidate-field input::placeholder {
-  color: #555560;
+  color:
+    #a0aabd;
+}
+
+.candidate-field input:hover {
+  border-color:
+    #cbd5e1;
 }
 
 .candidate-field input:focus {
-  border-color: #8b5cf6;
+  border-color:
+    #93c5fd;
 
-  background: #101017;
+  background:
+    white;
 
   box-shadow:
-    0 0 0 3px rgba(139, 92, 246, 0.10);
+    0 0 0 4px
+    rgba(37, 99, 235, 0.08);
 }
 
-/* ERROR */
+
+/* =========================================================
+   ERROR
+   ========================================================= */
 
 .candidate-error {
-  padding: 12px 14px;
+  margin:
+    3px 0 18px;
 
-  border-radius: 9px;
+  padding:
+    12px 13px;
 
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  color:
+    var(--start-red);
 
-  background: rgba(239, 68, 68, 0.08);
+  background:
+    var(--start-red-light);
 
-  color: #ff8c8c;
+  border:
+    1px solid #fecaca;
+
+  border-radius:
+    9px;
 
   font-size: 12px;
 
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
-/* START BUTTON */
+
+/* =========================================================
+   START EXAM BUTTON
+   ========================================================= */
 
 .start-exam-button {
   width: 100%;
 
-  margin-top: 6px;
+  height: 52px;
 
-  padding: 15px 20px;
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-top: 5px;
 
   border: none;
+
   border-radius: 10px;
 
-  background: #8b5cf6;
+  color: white;
 
-  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      var(--start-primary),
+      var(--start-primary-dark)
+    );
 
-  font-size: 12px;
-  font-weight: 800;
+  font-family: inherit;
 
-  letter-spacing: 1.5px;
+  font-size: 14px;
+
+  font-weight: 850;
+
+  letter-spacing: .4px;
 
   cursor: pointer;
 
+  box-shadow:
+    0 8px 18px
+    rgba(37, 99, 235, 0.18);
+
   transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
+    transform .2s,
+    box-shadow .2s,
+    opacity .2s;
 }
 
 .start-exam-button:hover:not(:disabled) {
-  background: #9b72f8;
-
-  transform: translateY(-1px);
+  transform:
+    translateY(-2px);
 
   box-shadow:
-    0 10px 25px rgba(139, 92, 246, 0.25);
+    0 12px 25px
+    rgba(37, 99, 235, 0.24);
 }
 
 .start-exam-button:active:not(:disabled) {
-  transform: translateY(0);
+  transform:
+    translateY(0);
 }
 
 .start-exam-button:disabled {
-  opacity: 0.55;
+  cursor:
+    not-allowed;
 
-  cursor: not-allowed;
+  opacity:
+    .65;
 }
 
-/* SECURITY MESSAGE */
+
+/* =========================================================
+   SECURITY MESSAGE
+   ========================================================= */
 
 .candidate-security {
-  margin-top: 24px;
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 23px;
 
   padding-top: 20px;
 
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top:
+    1px solid #edf1f5;
 
-  text-align: center;
+  color:
+    var(--start-muted);
 
-  color: #62626d;
+  font-size: 11px;
 
-  font-size: 10px;
-
-  letter-spacing: 0.3px;
+  font-weight: 600;
 }
 
 .candidate-security span {
-  color: #65d89a;
+  color:
+    var(--start-green);
 
-  margin-right: 6px;
+  font-size: 10px;
 }
 
-/* MOBILE */
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media (max-width: 600px) {
+
   .candidate-start {
-    padding: 20px 14px;
+    padding:
+      20px 15px;
   }
 
   .candidate-start-card {
-    padding: 30px 22px;
-
-    border-radius: 16px;
+    padding:
+      30px 22px;
   }
 
   .candidate-heading h1 {
-    font-size: 26px;
+    font-size:
+      28px;
   }
 
-  .candidate-brand {
-    margin-bottom: 30px;
+  .candidate-heading p {
+    font-size:
+      13px;
   }
 }
 
-/* SMALL MOBILE */
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
+
+  .candidate-brand {
+    flex-wrap:
+      wrap;
+  }
+
+  .candidate-brand h2 {
+    font-size:
+      16px;
+  }
+
+  .candidate-brand span {
+    display:
+      none;
+  }
+
   .candidate-start-card {
-    padding: 26px 18px;
+    padding:
+      26px 18px;
   }
 
   .candidate-heading h1 {
-    font-size: 24px;
+    font-size:
+      26px;
+  }
+
+  .candidate-field input {
+    height:
+      48px;
+
+    font-size:
+      13px;
+  }
+
+  .start-exam-button {
+    height:
+      50px;
+
+    font-size:
+      13px;
   }
 }

@@ -548,9 +548,7 @@ export default function AdminDashboard({ admin, onLogout }) {
 
                   {/* ICON */}
 
-                  <div className="exam-symbol">
-                    EP
-                  </div>
+                  
 
 
                   {/* DETAILS */}
