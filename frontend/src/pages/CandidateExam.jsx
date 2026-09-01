@@ -6,7 +6,7 @@ import {
 import { useParams } from "react-router-dom";
 import "./CandidateExam.css";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://exam-platform-qhk8.onrender.com";
 
 export default function CandidateExam() {
   const { attemptId } = useParams();

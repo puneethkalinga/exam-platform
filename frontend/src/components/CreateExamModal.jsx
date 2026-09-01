@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://exam-platform-qhk8.onrender.com";
 
 export default function CreateExamModal({ onClose, onCreated }) {
   const [title, setTitle] = useState("");

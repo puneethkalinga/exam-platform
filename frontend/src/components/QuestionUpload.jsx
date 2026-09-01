@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./QuestionUpload.css";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://exam-platform-qhk8.onrender.com";
 
 export default function QuestionUpload({ examId }) {
   const [file, setFile] = useState(null);

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./CandidateResponses.css";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://exam-platform-qhk8.onrender.com";
 
 export default function CandidateResponses() {
   const { attemptId } = useParams();

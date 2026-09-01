@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import AddQuestionModal from "../components/AddQuestionModal";
 import "./ExamManagement.css";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://exam-platform-qhk8.onrender.com";
 
 export default function ExamManagement() {
   const { examId } = useParams();

@@ -4,7 +4,7 @@ import QuestionUpload from "../components/QuestionUpload";
 import CreateExamModal from "../components/CreateExamModal";
 import "./AdminDashboard.css";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://exam-platform-qhk8.onrender.com";
 
 export default function AdminDashboard({ admin, onLogout }) {
   const navigate = useNavigate();
