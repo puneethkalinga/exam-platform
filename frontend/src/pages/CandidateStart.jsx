@@ -106,7 +106,10 @@ export default function CandidateStart() {
       <div className="candidate-start-card">
 
         <div className="candidate-brand">
-          <h2>XEVOTECH</h2>
+          <div className="admin-logo">
+  <img src="/xevotech.jpeg" alt="Company Logo" />
+</div>
+          <h3>XEVOTECH</h3>
           <span>EXAM PROTOCOL</span>
         </div>
 
