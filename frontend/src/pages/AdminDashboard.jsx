@@ -136,8 +136,8 @@ export default function AdminDashboard({ admin, onLogout }) {
         <div className="admin-brand">
 
           <div className="admin-logo">
-            X
-          </div>
+  <img src="/xevotech.jpeg" alt="Company Logo" />
+</div>
 
           <div>
 
