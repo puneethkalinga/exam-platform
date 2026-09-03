@@ -51,7 +51,7 @@ if (
 ) {
   return res.status(400).json({
     message:
-      "Invalid roll number. Roll number must be between XEVO/YEN/T/001 and XEVO/YEN/T/500",
+      "Invalid roll number. Roll number must be between XEVO/YEN/T/--- and XEVO/YEN/T/---",
   });
 }
 
