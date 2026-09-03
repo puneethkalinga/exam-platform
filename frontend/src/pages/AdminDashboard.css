@@ -1,6 +1,6 @@
 /* =========================================================
-   PROFESSIONAL ASSESSMENT CENTER
-   Modern Exam Administration UI
+   ADMIN DASHBOARD
+   Professional Assessment Center
    ========================================================= */
 
 :root {
@@ -36,8 +36,31 @@
   --radius: 14px;
 }
 
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
 * {
   box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 /* =========================================================
@@ -46,6 +69,7 @@
 
 .admin-page {
   min-height: 100vh;
+  width: 100%;
 
   background:
     linear-gradient(
@@ -67,19 +91,19 @@
     sans-serif;
 }
 
-
 /* =========================================================
-   TOP NAVBAR
+   TOP BAR
    ========================================================= */
 
 .admin-topbar {
+  width: 100%;
   height: 76px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 34px;
+  padding: 0 32px;
 
   background: var(--surface);
 
@@ -87,33 +111,53 @@
 
   position: sticky;
   top: 0;
-
   z-index: 100;
 
   box-shadow:
     0 2px 12px rgba(15, 23, 42, 0.03);
 }
 
-
-/* BRAND */
+/* =========================================================
+   BRAND
+   ========================================================= */
 
 .admin-brand {
   display: flex;
   align-items: center;
-
   gap: 13px;
+
+  min-width: 0;
 }
 
+.admin-logo {
+  width: 46px;
+  height: 46px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  overflow: hidden;
+}
+
+.admin-logo img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
 
 .admin-brand-name {
   color: var(--navy-dark);
 
   font-size: 18px;
-
   font-weight: 850;
 
   letter-spacing: 1px;
+
+  white-space: nowrap;
 }
 
 .admin-product-name {
@@ -122,20 +166,23 @@
   color: var(--text-light);
 
   font-size: 11px;
-
   font-weight: 700;
 
   letter-spacing: 1.5px;
+
+  white-space: nowrap;
 }
 
-
-/* PROFILE */
+/* =========================================================
+   PROFILE
+   ========================================================= */
 
 .admin-profile {
   display: flex;
   align-items: center;
-
   gap: 12px;
+
+  flex-shrink: 0;
 }
 
 .profile-avatar {
@@ -144,6 +191,8 @@
 
   display: grid;
   place-items: center;
+
+  flex-shrink: 0;
 
   border-radius: 50%;
 
@@ -154,22 +203,23 @@
   border: 1px solid #dbeafe;
 
   font-size: 14px;
-
   font-weight: 800;
 }
 
 .profile-info {
   display: flex;
-
   flex-direction: column;
-
   gap: 3px;
+
+  min-width: 0;
 }
 
 .profile-info strong {
   color: var(--navy-dark);
 
   font-size: 14px;
+
+  white-space: nowrap;
 }
 
 .profile-info span {
@@ -179,25 +229,24 @@
 }
 
 .logout-button {
-  margin-left: 10px;
+  margin-left: 8px;
 
   padding: 10px 15px;
 
   color: var(--text-secondary);
 
-  background: white;
+  background: #ffffff;
 
   border: 1px solid var(--border);
 
   border-radius: 9px;
 
   font-size: 12px;
-
   font-weight: 700;
 
   cursor: pointer;
 
-  transition: 0.2s;
+  transition: 0.2s ease;
 }
 
 .logout-button:hover {
@@ -208,18 +257,17 @@
   background: var(--red-light);
 }
 
-
 /* =========================================================
    MAIN LAYOUT
    ========================================================= */
 
 .admin-layout {
+  width: 100%;
+  min-height: calc(100vh - 76px);
+
   display: flex;
-
-  min-height:
-    calc(100vh - 76px);
+  align-items: stretch;
 }
-
 
 /* =========================================================
    SIDEBAR
@@ -227,6 +275,7 @@
 
 .admin-sidebar {
   width: 245px;
+  min-width: 245px;
 
   flex: 0 0 245px;
 
@@ -235,6 +284,8 @@
   background: var(--navy-dark);
 
   border-right: 1px solid #1e293b;
+
+  min-height: calc(100vh - 76px);
 }
 
 .sidebar-label {
@@ -243,7 +294,6 @@
   color: #64748b;
 
   font-size: 11px;
-
   font-weight: 800;
 
   letter-spacing: 1.5px;
@@ -253,8 +303,9 @@
   margin-top: 31px;
 }
 
-
-/* SIDEBAR ITEMS */
+/* =========================================================
+   SIDEBAR ITEMS
+   ========================================================= */
 
 .sidebar-item {
   width: 100%;
@@ -264,12 +315,11 @@
 
   gap: 13px;
 
-  padding: 14px 14px;
+  padding: 14px;
 
   margin: 4px 0;
 
   border: 1px solid transparent;
-
   border-radius: 10px;
 
   color: #94a3b8;
@@ -281,17 +331,18 @@
   cursor: pointer;
 
   font-size: 14px;
-
   font-weight: 550;
 
   transition:
-    background 0.2s,
-    color 0.2s,
-    transform 0.2s;
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .sidebar-item span {
   width: 21px;
+
+  flex-shrink: 0;
 
   text-align: center;
 
@@ -301,17 +352,15 @@
 }
 
 .sidebar-item:hover {
-  color: white;
+  color: #ffffff;
 
-  background:
-    rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.06);
 
-  transform:
-    translateX(2px);
+  transform: translateX(2px);
 }
 
 .sidebar-item.active {
-  color: white;
+  color: #ffffff;
 
   background:
     linear-gradient(
@@ -320,8 +369,7 @@
       rgba(37, 99, 235, 0.12)
     );
 
-  border-color:
-    rgba(96, 165, 250, 0.16);
+  border-color: rgba(96, 165, 250, 0.16);
 
   box-shadow:
     inset 3px 0 0 #3b82f6;
@@ -331,31 +379,30 @@
   color: #60a5fa;
 }
 
-
 /* =========================================================
    MAIN CONTENT
    ========================================================= */
 
 .admin-main {
-  width: 100%;
+  flex: 1 1 auto;
 
-  max-width: 1500px;
-
-  margin: 0 auto;
+  width: calc(100% - 245px);
+  min-width: 0;
 
   padding: 42px 45px 75px;
+
+  overflow-x: hidden;
 }
 
-
 /* =========================================================
-   PAGE HEADER
+   PAGE HEADING
    ========================================================= */
 
 .page-heading {
+  width: 100%;
+
   display: flex;
-
   align-items: flex-end;
-
   justify-content: space-between;
 
   gap: 25px;
@@ -367,20 +414,17 @@
   color: var(--primary);
 
   font-size: 11px;
-
   font-weight: 850;
 
   letter-spacing: 1.8px;
 }
 
 .page-heading h1 {
-  margin:
-    8px 0 7px;
+  margin: 8px 0 7px;
 
   color: var(--navy-dark);
 
   font-size: 35px;
-
   line-height: 1.05;
 
   letter-spacing: -0.8px;
@@ -394,21 +438,22 @@
   font-size: 14px;
 }
 
-
 /* =========================================================
-   CREATE EXAM BUTTON
+   NEW EXAM BUTTON
    ========================================================= */
 
 .new-exam-button {
   display: flex;
-
   align-items: center;
+  justify-content: center;
 
   gap: 9px;
 
+  flex-shrink: 0;
+
   padding: 13px 19px;
 
-  color: white;
+  color: #ffffff;
 
   background:
     linear-gradient(
@@ -418,11 +463,9 @@
     );
 
   border: none;
-
   border-radius: 10px;
 
   font-size: 13px;
-
   font-weight: 800;
 
   cursor: pointer;
@@ -430,12 +473,11 @@
   box-shadow:
     0 8px 18px rgba(37, 99, 235, 0.2);
 
-  transition: 0.2s;
+  transition: 0.2s ease;
 }
 
 .new-exam-button:hover {
-  transform:
-    translateY(-2px);
+  transform: translateY(-2px);
 
   box-shadow:
     0 11px 25px rgba(37, 99, 235, 0.25);
@@ -443,16 +485,16 @@
 
 .new-exam-button span {
   font-size: 21px;
-
   line-height: 1;
 }
-
 
 /* =========================================================
    STATISTICS
    ========================================================= */
 
 .stats-grid {
+  width: 100%;
+
   display: grid;
 
   grid-template-columns:
@@ -466,11 +508,12 @@
 .stat-card {
   position: relative;
 
-  overflow: hidden;
+  min-width: 0;
+  min-height: 150px;
 
   padding: 22px;
 
-  min-height: 150px;
+  overflow: hidden;
 
   background: var(--surface);
 
@@ -480,12 +523,11 @@
 
   box-shadow: var(--shadow);
 
-  transition: 0.2s;
+  transition: 0.2s ease;
 }
 
 .stat-card:hover {
-  transform:
-    translateY(-2px);
+  transform: translateY(-2px);
 
   box-shadow:
     0 12px 30px rgba(15, 23, 42, 0.09);
@@ -493,15 +535,14 @@
 
 .stat-top {
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
+
+  gap: 10px;
 
   color: var(--text-secondary);
 
   font-size: 11px;
-
   font-weight: 800;
 
   letter-spacing: 0.8px;
@@ -512,8 +553,9 @@
   height: 36px;
 
   display: grid;
-
   place-items: center;
+
+  flex-shrink: 0;
 
   border-radius: 10px;
 
@@ -522,30 +564,22 @@
 
 .stat-icon.green {
   color: var(--green);
-
-  background:
-    var(--green-light);
+  background: var(--green-light);
 }
 
 .stat-icon.blue {
   color: var(--primary);
-
-  background:
-    var(--primary-light);
+  background: var(--primary-light);
 }
 
 .stat-icon.purple {
   color: #7c3aed;
-
-  background:
-    #f5f3ff;
+  background: #f5f3ff;
 }
 
 .stat-icon.pink {
   color: #db2777;
-
-  background:
-    #fdf2f8;
+  background: #fdf2f8;
 }
 
 .stat-card > strong {
@@ -556,7 +590,6 @@
   color: var(--navy-dark);
 
   font-size: 33px;
-
   line-height: 1;
 
   letter-spacing: -1px;
@@ -572,12 +605,15 @@
   font-size: 12px;
 }
 
-
 /* =========================================================
-   CONTENT CARD
+   CONTENT CARDS
    ========================================================= */
 
 .content-card {
+  width: 100%;
+
+  min-width: 0;
+
   margin-top: 19px;
 
   padding: 27px;
@@ -593,9 +629,7 @@
 
 .card-heading {
   display: flex;
-
   align-items: flex-start;
-
   justify-content: space-between;
 
   margin-bottom: 22px;
@@ -605,15 +639,13 @@
   color: var(--primary);
 
   font-size: 11px;
-
   font-weight: 850;
 
   letter-spacing: 1.5px;
 }
 
 .card-heading h2 {
-  margin:
-    8px 0 5px;
+  margin: 8px 0 5px;
 
   color: var(--navy-dark);
 
@@ -626,19 +658,25 @@
   color: var(--text-secondary);
 
   font-size: 12px;
+
+  line-height: 1.5;
 }
 
-
 /* =========================================================
-   EXAMINATION CARDS
+   EXAMINATION CARD
    ========================================================= */
 
 .exam-row {
   position: relative;
 
+  width: 100%;
+  min-width: 0;
+
   display: grid;
 
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
 
   grid-template-areas:
     "details status"
@@ -653,7 +691,7 @@
 
   background: #ffffff;
 
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
 
   border-radius: 16px;
 
@@ -675,9 +713,8 @@
     0 10px 28px rgba(15, 23, 42, 0.08);
 }
 
-
 /* =========================================================
-   EXAM TITLE + DESCRIPTION
+   EXAM DETAILS
    ========================================================= */
 
 .exam-details {
@@ -694,12 +731,13 @@
   color: #0f172a;
 
   font-size: 19px;
-
   font-weight: 800;
 
   line-height: 1.3;
 
   letter-spacing: -0.3px;
+
+  overflow-wrap: anywhere;
 }
 
 .exam-details p {
@@ -710,36 +748,34 @@
   color: #64748b;
 
   font-size: 13px;
-
   font-weight: 500;
 
   line-height: 1.6;
+
+  overflow-wrap: anywhere;
 }
 
-
 /* =========================================================
-   STATUS
+   EXAM STATUS
    ========================================================= */
 
 .exam-status {
   grid-area: status;
 
   align-self: start;
-
   justify-self: end;
 
-  padding: 7px 12px;
+  padding: 7px 11px;
 
   border-radius: 999px;
 
-  color: #d97706;
+  color: var(--orange);
 
-  background: #fffbeb;
+  background: var(--orange-light);
 
   border: 1px solid #fde68a;
 
   font-size: 10px;
-
   font-weight: 850;
 
   letter-spacing: 0.8px;
@@ -748,40 +784,38 @@
 }
 
 .exam-status.published {
-  color: #16a34a;
+  color: var(--green);
 
-  background: #f0fdf4;
+  background: var(--green-light);
 
   border-color: #bbf7d0;
 }
 
-
 /* =========================================================
-   EXAM INFORMATION
-   Questions / Duration / Cutoff
+   EXAM META
    ========================================================= */
 
 .exam-meta {
   grid-area: meta;
 
+  width: 100%;
+
   display: grid;
 
   grid-template-columns:
-    repeat(3, minmax(130px, 1fr));
+    repeat(3, minmax(0, 1fr));
 
   gap: 12px;
 
   margin-top: 3px;
 }
 
-
-/* Hide the existing bullet separators */
+/* Hide bullet separators */
 
 .exam-meta span:nth-child(2),
 .exam-meta span:nth-child(4) {
   display: none;
 }
-
 
 /* Information boxes */
 
@@ -791,9 +825,7 @@
   min-height: 58px;
 
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 
   padding: 10px 15px;
@@ -807,12 +839,11 @@
   border-radius: 10px;
 
   font-size: 12px;
-
   font-weight: 650;
 
   text-align: center;
 
-  transition: 0.2s;
+  transition: 0.2s ease;
 }
 
 .exam-meta span:nth-child(1):hover,
@@ -823,37 +854,34 @@
   border-color: #e2e8f0;
 }
 
-
 /* =========================================================
-   ACTIONS
+   EXAM ACTIONS
    ========================================================= */
 
 .exam-actions {
   grid-area: actions;
 
   display: flex;
-
   justify-content: flex-end;
-
   align-items: center;
 
   gap: 9px;
 
-  padding-top: 2px;
+  padding-top: 16px;
 
   border-top: 1px solid #f1f5f9;
 }
 
 .exam-actions button {
-  min-width: 105px;
+  min-width: 95px;
 
-  padding: 10px 16px;
+  padding: 10px 15px;
 
-  color: #64748b;
+  color: var(--text-secondary);
 
   background: #ffffff;
 
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
 
   border-radius: 9px;
 
@@ -862,67 +890,346 @@
   font-family: inherit;
 
   font-size: 12px;
-
   font-weight: 750;
 
-  transition: 0.2s;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
+.exam-actions button:hover {
+  transform: translateY(-1px);
+}
 
 /* Manage */
 
 .exam-actions button:first-child {
   color: #ffffff;
 
-  background: #2563eb;
+  background: var(--primary);
 
-  border-color: #2563eb;
+  border-color: var(--primary);
 }
 
 .exam-actions button:first-child:hover {
-  background: #1d4ed8;
+  color: #ffffff;
 
-  border-color: #1d4ed8;
+  background: var(--primary-dark);
 
-  transform: translateY(-1px);
+  border-color: var(--primary-dark);
 }
-
 
 /* Results */
 
 .exam-actions .results-button {
-  color: #2563eb;
+  color: var(--primary);
 
-  background: #eff6ff;
+  background: var(--primary-light);
 
   border-color: #dbeafe;
 }
 
 .exam-actions .results-button:hover {
+  color: var(--primary-dark);
+
   background: #dbeafe;
 
   border-color: #bfdbfe;
 }
 
+/* Disabled results */
 
-/* Disabled Results */
-
-.exam-actions .results-button.disabled {
+.exam-actions .results-button.disabled,
+.exam-actions .results-button:disabled {
   color: #a1a8b3;
 
-  background: #f8fafc;
+  background: #f1f3f5;
 
   border-color: #e5e7eb;
 
   cursor: not-allowed;
+
+  transform: none;
 }
 
+/* =========================================================
+   DASHBOARD MESSAGES
+   ========================================================= */
+
+.dashboard-message,
+.dashboard-error {
+  padding: 30px 10px;
+
+  text-align: center;
+
+  font-size: 13px;
+}
+
+.dashboard-message {
+  color: var(--text-secondary);
+}
+
+.dashboard-error {
+  color: var(--red);
+
+  background: var(--red-light);
+
+  border-radius: 9px;
+}
 
 /* =========================================================
-   RESPONSIVE
+   UPLOAD CARD
+   ========================================================= */
+
+.upload-card {
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f8fbff
+    );
+}
+
+/* =========================================================
+   EXAM SELECTOR
+   ========================================================= */
+
+.exam-selector {
+  width: 100%;
+  max-width: 540px;
+
+  margin-bottom: 23px;
+}
+
+.exam-selector label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: var(--text-secondary);
+
+  font-size: 11px;
+  font-weight: 850;
+
+  letter-spacing: 1px;
+}
+
+.exam-selector select {
+  width: 100%;
+
+  padding: 13px 14px;
+
+  color: var(--text);
+
+  background: #ffffff;
+
+  border: 1px solid var(--border);
+
+  border-radius: 10px;
+
+  outline: none;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.exam-selector select:focus {
+  border-color: #93c5fd;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(37, 99, 235, 0.08);
+}
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1500px) {
+  .admin-main {
+    padding-left: 55px;
+    padding-right: 55px;
+  }
+}
+
+/* =========================================================
+   TABLET / SMALL LAPTOP
+   ========================================================= */
+
+@media (max-width: 1200px) {
+  .admin-sidebar {
+    width: 220px;
+    min-width: 220px;
+    flex-basis: 220px;
+  }
+
+  .admin-main {
+    width: calc(100% - 220px);
+
+    padding:
+      34px 28px 60px;
+  }
+
+  .stats-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .admin-topbar {
+    padding: 0 20px;
+  }
+
+  .profile-info {
+    display: none;
+  }
+
+  .admin-sidebar {
+    width: 190px;
+    min-width: 190px;
+    flex-basis: 190px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .admin-main {
+    width: calc(100% - 190px);
+
+    padding:
+      30px 20px 50px;
+  }
+
+  .sidebar-item {
+    font-size: 13px;
+  }
+
+  .stats-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .exam-row {
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto;
+  }
+}
+
+/* =========================================================
+   MOBILE
    ========================================================= */
 
 @media (max-width: 760px) {
+  .admin-topbar {
+    height: 68px;
+
+    padding:
+      0 16px;
+  }
+
+  .admin-layout {
+    display: block;
+
+    min-height: calc(100vh - 68px);
+  }
+
+  /* Horizontal navigation on mobile */
+
+  .admin-sidebar {
+    width: 100%;
+    min-width: 100%;
+
+    min-height: auto;
+
+    display: flex;
+    align-items: center;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 8px;
+
+    border-right: none;
+    border-bottom: 1px solid #1e293b;
+
+    scrollbar-width: none;
+  }
+
+  .admin-sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sidebar-label,
+  .security-label {
+    display: none;
+  }
+
+  .sidebar-item {
+    width: auto;
+
+    flex: 0 0 auto;
+
+    margin: 0 3px;
+
+    padding: 11px 13px;
+
+    white-space: nowrap;
+  }
+
+  .admin-main {
+    width: 100%;
+
+    padding:
+      27px 16px 50px;
+  }
+
+  .page-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 18px;
+  }
+
+  .page-heading h1 {
+    font-size: 31px;
+  }
+
+  .new-exam-button {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+  .stat-card {
+    min-height: 135px;
+
+    padding: 18px;
+  }
+
+  .stat-card > strong {
+    font-size: 29px;
+  }
+
+  .content-card {
+    padding: 21px;
+  }
+
+  /* Examination card */
 
   .exam-row {
     grid-template-columns: 1fr;
@@ -952,7 +1259,7 @@
 
   .exam-meta {
     grid-template-columns:
-      repeat(3, 1fr);
+      repeat(3, minmax(0, 1fr));
   }
 
   .exam-actions {
@@ -960,456 +1267,23 @@
   }
 }
 
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
 
 @media (max-width: 480px) {
-
-  .exam-row {
-    padding: 18px;
-  }
-
-  .exam-meta {
-    grid-template-columns: 1fr;
-  }
-
-  .exam-actions {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    width: 100%;
-  }
-
-  .exam-actions button {
-    width: 100%;
-  }
-}
-/* =========================================================
-   EXAM STATUS
-   ========================================================= */
-
-.exam-status {
-  grid-area: status;
-
-  align-self: start;
-
-  justify-self: end;
-
-  padding: 7px 11px;
-
-  border-radius: 999px;
-
-  color: var(--orange);
-
-  background:
-    var(--orange-light);
-
-  border: 1px solid #fde68a;
-
-  font-size: 10px;
-
-  font-weight: 850;
-
-  letter-spacing: 0.8px;
-
-  white-space: nowrap;
-}
-
-.exam-status.published {
-  color: var(--green);
-
-  background:
-    var(--green-light);
-
-  border-color:
-    #bbf7d0;
-}
-
-
-
-
-/* =========================================================
-   READY STATUS
-   ========================================================= */
-
-/*
-   Your current JSX does not have a "Ready to configure"
-   element. This class is included so the design is ready
-   if you add one later.
-*/
-
-.exam-ready {
-  grid-area: ready;
-
-  align-self: center;
-
-  color: var(--text-secondary);
-
-  font-size: 12px;
-
-  font-weight: 600;
-}
-
-.exam-ready::before {
-  content: "●";
-
-  margin-right: 7px;
-
-  color: var(--green);
-
-  font-size: 10px;
-}
-
-
-/* =========================================================
-   EXAM ACTIONS
-   ========================================================= */
-
-.exam-actions {
-  grid-area: actions;
-
-  display: flex;
-
-  justify-content: flex-end;
-
-  align-items: center;
-
-  gap: 9px;
-}
-
-.exam-actions button {
-  min-width: 95px;
-
-  padding:
-    10px 15px;
-
-  color: var(--text-secondary);
-
-  background:
-    #ffffff;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    9px;
-
-  cursor: pointer;
-
-  font-family: inherit;
-
-  font-size: 12px;
-
-  font-weight: 750;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.exam-actions button:hover {
-  color: var(--primary);
-
-  border-color:
-    #bfdbfe;
-
-  background:
-    var(--primary-light);
-
-  transform:
-    translateY(-1px);
-}
-
-
-/* MANAGE BUTTON */
-
-.exam-actions button:first-child {
-  color: white;
-
-  background:
-    var(--primary);
-
-  border-color:
-    var(--primary);
-}
-
-.exam-actions button:first-child:hover {
-  color: white;
-
-  background:
-    var(--primary-dark);
-
-  border-color:
-    var(--primary-dark);
-}
-
-
-/* RESULTS BUTTON */
-
-.exam-actions .results-button {
-  color: var(--primary);
-
-  background:
-    var(--primary-light);
-
-  border-color:
-    #dbeafe;
-}
-
-.exam-actions .results-button:hover {
-  color: var(--primary-dark);
-
-  background:
-    #dbeafe;
-}
-
-
-/* DISABLED RESULTS */
-
-.exam-actions .results-button.disabled {
-  color: #a1a8b3;
-
-  background:
-    #f1f3f5;
-
-  border-color:
-    #e5e7eb;
-
-  cursor:
-    not-allowed;
-
-  transform: none;
-}
-
-
-/* =========================================================
-   MESSAGES
-   ========================================================= */
-
-.dashboard-message,
-.dashboard-error {
-  padding:
-    30px 10px;
-
-  text-align: center;
-
-  font-size: 13px;
-}
-
-.dashboard-message {
-  color: var(--text-secondary);
-}
-
-.dashboard-error {
-  color: var(--red);
-
-  background:
-    var(--red-light);
-
-  border-radius: 9px;
-}
-
-
-/* =========================================================
-   UPLOAD CARD
-   ========================================================= */
-
-.upload-card {
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff,
-      #f8fbff
-    );
-}
-
-.exam-selector {
-  max-width: 540px;
-
-  margin-bottom: 23px;
-}
-
-.exam-selector label {
-  display: block;
-
-  margin-bottom: 9px;
-
-  color: var(--text-secondary);
-
-  font-size: 11px;
-
-  font-weight: 850;
-
-  letter-spacing: 1px;
-}
-
-.exam-selector select {
-  width: 100%;
-
-  padding:
-    13px 14px;
-
-  color: var(--text);
-
-  background:
-    white;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:
-    10px;
-
-  outline: none;
-
-  font-size: 13px;
-
-  cursor: pointer;
-}
-
-.exam-selector select:focus {
-  border-color:
-    #93c5fd;
-
-  box-shadow:
-    0 0 0 3px
-    rgba(37, 99, 235, 0.08);
-}
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 1100px) {
-
-  .stats-grid {
-    grid-template-columns:
-      repeat(2, 1fr);
-  }
-
-  .admin-sidebar {
-    width: 215px;
-
-    flex-basis: 215px;
-  }
-
-  .admin-main {
-    padding:
-      34px 28px 60px;
-  }
-
-  .exam-meta {
-    grid-template-columns:
-      repeat(3, 1fr);
-  }
-}
-
-
-@media (max-width: 760px) {
-
   .admin-topbar {
     padding:
-      0 16px;
+      0 12px;
   }
 
-  .profile-info {
-    display: none;
+  .admin-logo {
+    width: 40px;
+    height: 40px;
   }
 
-  .admin-layout {
-    display: block;
-  }
-
-  .admin-sidebar {
-    width: 100%;
-
-    display: flex;
-
-    overflow-x: auto;
-
-    padding: 9px;
-
-    border-right: none;
-
-    border-bottom:
-      1px solid #1e293b;
-  }
-
-  .sidebar-label,
-  .security-label {
-    display: none;
-  }
-
-  .sidebar-item {
-    width: auto;
-
-    white-space: nowrap;
-
-    font-size: 13px;
-  }
-
-  .admin-main {
-    padding:
-      27px 16px 50px;
-  }
-
-  .page-heading {
-    align-items: flex-start;
-
-    flex-direction: column;
-  }
-
-  .page-heading h1 {
-    font-size: 31px;
-  }
-
-  .stats-grid {
-    grid-template-columns:
-      1fr 1fr;
-  }
-
-  /* Examination card */
-
-  .exam-row {
-    grid-template-columns: 1fr;
-
-    grid-template-areas:
-      "status"
-      "details"
-      "meta"
-      "actions";
-
-    gap: 15px;
-
-    padding: 20px;
-  }
-
-  .exam-status {
-    justify-self: start;
-  }
-
-  .exam-details {
-    padding-right: 0;
-  }
-
-  .exam-meta {
-    grid-template-columns:
-      repeat(3, 1fr);
-  }
-
-  .exam-actions {
-    justify-content: flex-start;
-  }
-}
-
-
-@media (max-width: 480px) {
-
-  .stats-grid {
-    grid-template-columns:
-      1fr;
+  .admin-brand {
+    gap: 9px;
   }
 
   .admin-brand-name {
@@ -1420,8 +1294,16 @@
     display: none;
   }
 
+  .logout-button {
+    padding: 9px 11px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
   .content-card {
-    padding: 19px;
+    padding: 18px;
   }
 
   .page-heading h1 {
@@ -1432,17 +1314,12 @@
     font-size: 13px;
   }
 
-  .stat-card {
-    min-height: 135px;
-  }
-
   .exam-row {
     padding: 18px;
   }
 
   .exam-meta {
-    grid-template-columns:
-      1fr;
+    grid-template-columns: 1fr;
   }
 
   .exam-actions {
@@ -1456,17 +1333,10 @@
 
   .exam-actions button {
     width: 100%;
+    min-width: 0;
   }
-}
 
-.admin-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.admin-logo img {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
+  .card-heading h2 {
+    font-size: 18px;
+  }
 }

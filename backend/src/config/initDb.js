@@ -33,8 +33,9 @@ const createTables = async () => {
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         roll_number VARCHAR(100) NOT NULL,
-        year VARCHAR(50) NOT NULL,
-        section VARCHAR(50) NOT NULL,
+        year VARCHAR(50),
+        section VARCHAR(50),
+        course VARCHAR(100),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
@@ -70,6 +71,15 @@ const createTables = async () => {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
+      CREATE TABLE IF NOT EXISTS admins (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(100) UNIQUE NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  role VARCHAR(20) DEFAULT 'admin',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
       CREATE INDEX IF NOT EXISTS idx_questions_exam
         ON questions(exam_id);
 
@@ -90,6 +100,15 @@ const createTables = async () => {
 
       ALTER TABLE attempts
       ADD COLUMN IF NOT EXISTS obtained_marks NUMERIC(10,2) DEFAULT 0;
+
+ALTER TABLE candidates
+ADD COLUMN IF NOT EXISTS course VARCHAR(100);
+
+ALTER TABLE candidates
+ALTER COLUMN year DROP NOT NULL;
+
+ALTER TABLE candidates
+ALTER COLUMN section DROP NOT NULL;
 
       ALTER TABLE attempts
       ADD COLUMN IF NOT EXISTS result_status VARCHAR(30);

@@ -12,6 +12,7 @@ export default function CandidateStart() {
 
   const [name, setName] = useState("");
   const [rollNumber, setRollNumber] = useState("");
+  const [course, setCourse] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,8 +26,8 @@ export default function CandidateStart() {
       return;
     }
 
-    if (!name.trim() || !rollNumber.trim()) {
-      setError("Please enter your name and roll number.");
+    if (!name.trim() || !rollNumber.trim() || !course.trim()) {
+      setError("Please enter your name, roll number, and course.");
       return;
     }
 
@@ -37,6 +38,7 @@ export default function CandidateStart() {
         examId,
         name: name.trim(),
         rollNumber: rollNumber.trim(),
+        course: course.trim(),
       });
 
       const response = await fetch(
@@ -50,6 +52,7 @@ export default function CandidateStart() {
             examId,
             name: name.trim(),
             rollNumber: rollNumber.trim(),
+            course: course.trim(),
           }),
         }
       );
@@ -157,6 +160,18 @@ export default function CandidateStart() {
             />
 
           </div>
+
+          <div className="candidate-field">
+  <label>COURSE</label>
+
+  <input
+    type="text"
+    placeholder="Enter your course"
+    value={course}
+    onChange={(e) => setCourse(e.target.value)}
+    required
+  />
+</div>
 
           {error && (
             <div className="candidate-error">

@@ -10,6 +10,7 @@ const startAttempt = async (req, res) => {
       examId,
       name,
       rollNumber,
+      course,
     } = req.body;
 
     /* =====================================================
@@ -19,9 +20,10 @@ const startAttempt = async (req, res) => {
     if (!examId || !name || !rollNumber) {
       return res.status(400).json({
         message:
-          "Name, roll number and exam ID are required",
+          "Name, roll number, course, and exam ID are required",
       });
     }
+    const cleanCourse = String(course).trim();
 
     const cleanName = String(name).trim();
     const cleanRollNumber =
@@ -152,6 +154,7 @@ const startAttempt = async (req, res) => {
             (
               name,
               roll_number,
+              course,
               year,
               section
             )
@@ -159,6 +162,7 @@ const startAttempt = async (req, res) => {
             (
               $1,
               $2,
+              $3,
               NULL,
               NULL
             )
@@ -167,6 +171,7 @@ const startAttempt = async (req, res) => {
           [
             cleanName,
             cleanRollNumber,
+            cleanCourse,
           ]
         );
 
@@ -376,6 +381,7 @@ const startAttempt = async (req, res) => {
         name: candidate.name,
         rollNumber:
           candidate.roll_number,
+          course: candidate.course,
       },
 
       attempt: {
