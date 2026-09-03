@@ -262,6 +262,7 @@ export default function ExamResults() {
                     <th>RANK</th>
                     <th>CANDIDATE</th>
                     <th>ROLL NUMBER</th>
+                    <th>COURSE</th>
                     <th>MARKS</th>
                     <th>PERCENTAGE</th>
                     <th>STATUS</th>
@@ -303,6 +304,12 @@ export default function ExamResults() {
                         <td>
                           <span className="roll-number">
                             {result.roll_number}
+                          </span>
+                        </td>
+
+                        <td>
+                          <span className="roll-number">
+                            {result.course || "—"}
                           </span>
                         </td>
 

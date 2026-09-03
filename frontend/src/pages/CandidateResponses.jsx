@@ -7,7 +7,7 @@ const API_URL = "https://exam-platform-qhk8.onrender.com";
 export default function CandidateResponses() {
   const { attemptId } = useParams();
   const navigate = useNavigate();
-
+const [candidate, setCandidate] = useState(null);
   const [responses, setResponses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -40,6 +40,7 @@ export default function CandidateResponses() {
         );
       }
 
+      setCandidate(data.candidate);
       setResponses(data.responses || []);
     } catch (err) {
       console.error("FETCH RESPONSES ERROR:", err);
@@ -100,6 +101,25 @@ export default function CandidateResponses() {
             <p>
               Attempt ID: #{attemptId}
             </p>
+
+            {candidate && (
+  <div className="candidate-info">
+    <div>
+      <span>NAME</span>
+      <strong>{candidate.name}</strong>
+    </div>
+
+    <div>
+      <span>ROLL NUMBER</span>
+      <strong>{candidate.roll_number}</strong>
+    </div>
+
+    <div>
+      <span>COURSE</span>
+      <strong>{candidate.course || "—"}</strong>
+    </div>
+  </div>
+)}
           </div>
         </div>
 

@@ -1091,3 +1091,45 @@
       none;
   }
 }
+
+/* Candidate Information */
+
+.candidate-info {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.candidate-info > div {
+  padding: 16px 18px;
+  border: 1px solid rgba(120, 90, 255, 0.18);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+}
+
+.candidate-info span {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #8b8fa8;
+  margin-bottom: 7px;
+}
+
+.candidate-info strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .candidate-info {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}

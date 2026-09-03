@@ -10,6 +10,7 @@ const getExamResults = async (req, res) => {
         a.id AS attempt_id,
         c.name,
         c.roll_number,
+        c.course,
         a.total_marks,
         a.obtained_marks,
         a.percentage,
@@ -50,6 +51,31 @@ const getCandidateResponses = async (req, res) => {
   try {
     const { attemptId } = req.params;
 
+    // Get candidate details
+    const candidateResult = await pool.query(
+      `
+      SELECT
+        c.id,
+        c.name,
+        c.roll_number,
+        c.course
+      FROM attempts at
+      JOIN candidates c
+        ON c.id = at.candidate_id
+      WHERE at.id = $1
+      `,
+      [attemptId]
+    );
+
+    if (candidateResult.rows.length === 0) {
+      return res.status(404).json({
+        message: "Attempt not found",
+      });
+    }
+
+    const candidate = candidateResult.rows[0];
+
+    // Get responses
     const result = await pool.query(
       `
       SELECT
@@ -79,8 +105,10 @@ const getCandidateResponses = async (req, res) => {
 
     res.json({
       attemptId,
+      candidate,
       responses: result.rows,
     });
+
   } catch (error) {
     console.error(
       "Get candidate responses error:",
