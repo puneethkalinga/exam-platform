@@ -37,7 +37,7 @@ const rollNumberMatch = cleanRollNumber.match(
 if (!rollNumberMatch) {
   return res.status(400).json({
     message:
-      "Invalid roll number. Use format XEVO/YEN/T/001 to XEVO/YEN/T/500",
+      "Invalid roll number. Use format XEVO/YEN/T/--- to XEVO/YEN/T/---",
   });
 }
 
