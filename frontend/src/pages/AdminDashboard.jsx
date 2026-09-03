@@ -42,65 +42,129 @@ export default function AdminDashboard({ admin, onLogout }) {
   ========================= */
 
   const fetchExams = async () => {
-    try {
-      setLoading(true);
-      setError("");
+  try {
+    setLoading(true);
+    setError("");
 
-      const token =
-        localStorage.getItem("adminToken");
+    const token =
+      localStorage.getItem("adminToken");
 
-      if (!token) {
-        throw new Error(
-          "Admin session expired. Please login again."
-        );
-      }
-
-      const response = await fetch(
-        `${API_URL}/api/exams`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+    if (!token) {
+      throw new Error(
+        "Admin session expired. Please login again."
       );
-
-      const data = await response.json();
-
-      console.log("EXAMS RESPONSE:", data);
-
-      if (!response.ok) {
-        throw new Error(
-          data.message ||
-            "Failed to fetch examinations"
-        );
-      }
-
-      setExams(data.exams || []);
-
-    } catch (err) {
-      console.error(
-        "FETCH EXAMS ERROR:",
-        err
-      );
-
-      setError(err.message);
-
-    } finally {
-      setLoading(false);
     }
-  };
+
+    // Get exams
+    const response = await fetch(
+      `${API_URL}/api/exams`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    console.log("EXAMS RESPONSE:", data);
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+          "Failed to fetch examinations"
+      );
+    }
+
+    const examsData = data.exams || [];
+
+    // Get exact question count for every exam
+    const examsWithQuestionCount =
+      await Promise.all(
+        examsData.map(async (exam) => {
+          try {
+            const questionResponse =
+              await fetch(
+                `${API_URL}/api/questions/exam/${exam.id}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                }
+              );
+
+            const questionData =
+              await questionResponse.json();
+
+            if (!questionResponse.ok) {
+              return {
+                ...exam,
+                question_count: 0,
+              };
+            }
+
+            const questions =
+              questionData.questions ||
+              questionData ||
+              [];
+
+            return {
+              ...exam,
+              question_count: Array.isArray(
+                questions
+              )
+                ? questions.length
+                : 0,
+            };
+          } catch (error) {
+            console.error(
+              `Failed to get questions for exam ${exam.id}:`,
+              error
+            );
+
+            return {
+              ...exam,
+              question_count: 0,
+            };
+          }
+        })
+      );
+
+    console.log(
+      "EXAMS WITH QUESTION COUNTS:",
+      examsWithQuestionCount
+    );
+
+    setExams(examsWithQuestionCount);
+
+  } catch (err) {
+    console.error(
+      "FETCH EXAMS ERROR:",
+      err
+    );
+
+    setError(err.message);
+
+  } finally {
+    setLoading(false);
+  }
+};
 
   /* =========================
      TOTAL QUESTIONS
   ========================= */
 
   const totalQuestions = exams.reduce(
-    (total, exam) =>
-      total +
-      Number(exam.question_count || 0),
-    0
-  );
+  (total, exam) =>
+    total +
+    Number(
+      exam.question_count ??
+      exam.questionCount ??
+      0
+    ),
+  0
+);
 
   /* =========================
      PUBLISHED EXAMS
@@ -617,10 +681,14 @@ export default function AdminDashboard({ admin, onLogout }) {
                     <div className="exam-meta">
 
                       <span>
-                        {exam.question_count ||
-                          0}{" "}
-                        Questions
-                      </span>
+  {Number(
+    exam.question_count ??
+    exam.questionCount ??
+    0
+  )}{" "}
+  Questions
+</span>
+            
 
                       <span>
                         •

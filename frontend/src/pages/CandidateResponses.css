@@ -1197,6 +1197,11 @@
    XEVOTECH LOGO
 ========================================= */
 
+.responses-logo-container {
+  display: flex;
+  align-items: center;
+}
+
 .responses-logo {
   width: 150px;
   height: auto;

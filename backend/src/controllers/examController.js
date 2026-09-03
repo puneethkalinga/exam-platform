@@ -47,9 +47,14 @@ const createExam = async (req, res) => {
 const getExams = async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT *
-      FROM exams
-      ORDER BY created_at DESC
+      SELECT
+        e.*,
+        COUNT(q.id)::int AS question_count
+      FROM exams e
+      LEFT JOIN questions q
+        ON q.exam_id = e.id
+      GROUP BY e.id
+      ORDER BY e.created_at DESC
     `);
 
     res.json({

@@ -83,9 +83,9 @@ const [candidate, setCandidate] = useState(null);
           ← Back to Results
         </button>
 
-        <div className="responses-brand">
+        <div className="responses-logo-container">
           <img src="/xevotech.jpeg" alt="XEVOTECH" className="responses-logo" />
-          <h1>XEVOTECH</h1>
+          
         </div>
 
       </header>
@@ -118,7 +118,12 @@ const [candidate, setCandidate] = useState(null);
       <span>COURSE</span>
       <strong>{candidate.course || "—"}</strong>
     </div>
+    
+
+    
   </div>
+
+  
 )}
           </div>
         </div>
@@ -243,17 +248,7 @@ const [candidate, setCandidate] = useState(null);
 
                     </div>
 
-                    <div className="response-marks">
-
-                      <strong>
-                        {response.marks_obtained ?? 0}
-                      </strong>
-
-                      <span>
-                        / {response.marks ?? 1}
-                      </span>
-
-                    </div>
+                    
 
                   </article>
                 );
