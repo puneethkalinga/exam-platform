@@ -1094,42 +1094,101 @@
 
 /* Candidate Information */
 
+/* =========================================
+   CANDIDATE INFORMATION
+========================================= */
+
 .candidate-info {
+  width: 100%;
   margin-top: 24px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .candidate-info > div {
-  padding: 16px 18px;
-  border: 1px solid rgba(120, 90, 255, 0.18);
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 10px;
+  min-width: 0;
+  padding: 20px 22px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(150, 120, 255, 0.22);
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.candidate-info > div:hover {
+  border-color: rgba(150, 120, 255, 0.45);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .candidate-info span {
-  display: block;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 1.5px;
-  color: #8b8fa8;
-  margin-bottom: 7px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+
+  color: #9296aa;
 }
 
 .candidate-info strong {
-  display: block;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
+  line-height: 1.4;
+
   color: #ffffff;
-  word-break: break-word;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Mobile */
+/* Roll number and course should remain readable */
+.candidate-info > div:nth-child(2) strong,
+.candidate-info > div:nth-child(3) strong {
+  font-family: monospace;
+  letter-spacing: 0.4px;
+}
 
-@media (max-width: 768px) {
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+  .candidate-info {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .candidate-info > div:last-child {
+    grid-column: span 2;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
   .candidate-info {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 12px;
+  }
+
+  .candidate-info > div:last-child {
+    grid-column: span 1;
+  }
+
+  .candidate-info > div {
+    padding: 16px 18px;
+  }
+
+  .candidate-info strong {
+    font-size: 15px;
   }
 }
