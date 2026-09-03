@@ -84,8 +84,8 @@ const [candidate, setCandidate] = useState(null);
         </button>
 
         <div className="responses-brand">
-          <img src="/xevotech.jpeg" alt="Exam Protocol" />
-          <span>EXAM PROTOCOL</span>
+          <img src="/xevotech.jpeg" alt="XEVOTECH" className="responses-logo" />
+          <h1>XEVOTECH</h1>
         </div>
 
       </header>

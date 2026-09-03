@@ -1192,3 +1192,24 @@
     font-size: 15px;
   }
 }
+
+/* =========================================
+   XEVOTECH LOGO
+========================================= */
+
+.responses-logo {
+  width: 150px;
+  height: auto;
+  max-height: 52px;
+  object-fit: contain;
+  object-position: left center;
+  display: block;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .responses-logo {
+    width: 125px;
+    max-height: 44px;
+  }
+}
