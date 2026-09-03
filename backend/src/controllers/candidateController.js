@@ -273,8 +273,8 @@ const startAttempt = async (req, res) => {
           candidate: {
             id: candidate.id,
             name: candidate.name,
-            rollNumber:
-              candidate.roll_number,
+            rollNumber: candidate.roll_number,
+            course: candidate.course,
           },
 
           attempt: {
