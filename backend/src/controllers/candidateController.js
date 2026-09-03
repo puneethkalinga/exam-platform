@@ -17,7 +17,7 @@ const startAttempt = async (req, res) => {
        VALIDATION
     ===================================================== */
 
-    if (!examId || !name || !rollNumber) {
+    if (!examId || !name || !rollNumber || !course) {
       return res.status(400).json({
         message:
           "Name, roll number, course, and exam ID are required",
@@ -29,10 +29,10 @@ const startAttempt = async (req, res) => {
     const cleanRollNumber =
       String(rollNumber).trim();
 
-    if (!cleanName || !cleanRollNumber) {
+    if (!cleanName || !cleanRollNumber || !cleanCourse) {
       return res.status(400).json({
         message:
-          "Name and roll number cannot be empty",
+          "Name, roll number, and course cannot be empty",
       });
     }
 
@@ -119,19 +119,22 @@ const startAttempt = async (req, res) => {
        * a different name with the same roll number.
        */
       if (
-        cleanName &&
-        candidate.name !== cleanName
+       
+        candidate.name !== cleanName ||
+        candidate.course !== cleanCourse
       ) {
         const updatedCandidate =
           await pool.query(
             `
             UPDATE candidates
-            SET name = $1
-            WHERE id = $2
+            SET name = $1,
+            course = $2
+            WHERE id = $3
             RETURNING *
             `,
             [
               cleanName,
+              cleanCourse,
               candidate.id,
             ]
           );
