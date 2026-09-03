@@ -124,6 +124,54 @@ export default function AdminDashboard({ admin, onLogout }) {
     }
   };
 
+  const handleDeleteExam = async (examId, examTitle) => {
+  const confirmed = window.confirm(
+    `Are you sure you want to delete "${examTitle}"?\n\nThis will permanently delete the exam, questions, attempts and answers.`
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("adminToken");
+
+    const response = await fetch(
+      `${API_URL}/api/exams/${examId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message || "Failed to delete exam"
+      );
+    }
+
+    // Remove deleted exam from the current list
+    setExams((prevExams) =>
+      prevExams.filter(
+        (exam) => exam.id !== examId
+      )
+    );
+
+    alert("Exam deleted successfully.");
+
+  } catch (error) {
+    console.error("Delete exam error:", error);
+
+    alert(
+      error.message || "Failed to delete exam"
+    );
+  }
+};
+
   return (
     <div className="admin-page">
 
@@ -648,6 +696,12 @@ export default function AdminDashboard({ admin, onLogout }) {
     ? "Results"
     : "Results unavailable"}
 </button>
+<button
+      className="delete-exam-btn"
+      onClick={() => handleDeleteExam(exam.id, exam.title)}
+    >
+      Delete
+    </button>
 
                   </div>
 

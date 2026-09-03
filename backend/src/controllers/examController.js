@@ -129,9 +129,62 @@ const publishExam = async (req, res) => {
   }
 };
 
+const deletePublishedExam = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const examResult = await pool.query(
+      `
+      SELECT id, title, status
+      FROM exams
+      WHERE id = $1
+      `,
+      [id]
+    );
+
+    if (examResult.rows.length === 0) {
+      return res.status(404).json({
+        message: "Exam not found",
+      });
+    }
+
+    const exam = examResult.rows[0];
+
+    if (exam.status !== "published") {
+      return res.status(400).json({
+        message: "Only published exams can be deleted",
+      });
+    }
+
+    await pool.query(
+      `
+      DELETE FROM exams
+      WHERE id = $1
+      `,
+      [id]
+    );
+
+    return res.json({
+      message: "Published exam deleted successfully",
+      exam: {
+        id: exam.id,
+        title: exam.title,
+      },
+    });
+  } catch (error) {
+    console.error("Delete exam error:", error);
+
+    return res.status(500).json({
+      message: "Failed to delete exam",
+    });
+  }
+};
+
 module.exports = {
   createExam,
   getExams,
   getExamById,
-    publishExam,
+  publishExam,
+  deletePublishedExam,
 };
+   
