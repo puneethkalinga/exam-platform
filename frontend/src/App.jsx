@@ -13,7 +13,7 @@ import CandidateStart from "./pages/CandidateStart";
 import CandidateExam from "./pages/CandidateExam";
 import ExamResults from "./pages/ExamResults";
 import CandidateResponses from "./pages/CandidateResponses";
-
+import CodingQuestionManagement from "./pages/CodingQuestionManagement";
 
 function App() {
   const [admin, setAdmin] = useState(() => {
@@ -130,6 +130,11 @@ function App() {
             )
           }
         />
+
+        <Route
+  path="/admin/coding-exams/:examId"
+  element={<CodingQuestionManagement />}
+/>
 
 
         {/* =========================

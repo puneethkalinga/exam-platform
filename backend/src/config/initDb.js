@@ -80,6 +80,172 @@ const createTables = async () => {
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- ============================================
+-- CODING EXAMS
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS coding_exams (
+    id SERIAL PRIMARY KEY,
+
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+
+    duration_minutes INTEGER NOT NULL DEFAULT 60,
+    total_marks NUMERIC(10,2) NOT NULL DEFAULT 100,
+
+    allowed_languages JSONB NOT NULL DEFAULT '["c","cpp","java","python"]',
+
+    instructions TEXT,
+
+    status VARCHAR(30) NOT NULL DEFAULT 'draft',
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- ============================================
+-- CODING QUESTIONS
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS coding_questions (
+    id SERIAL PRIMARY KEY,
+
+    coding_exam_id INTEGER NOT NULL
+        REFERENCES coding_exams(id)
+        ON DELETE CASCADE,
+
+    title VARCHAR(255) NOT NULL,
+
+    description TEXT NOT NULL,
+
+    input_format TEXT,
+    output_format TEXT,
+    constraints TEXT,
+
+    sample_input TEXT,
+    sample_output TEXT,
+    explanation TEXT,
+
+    marks NUMERIC(10,2) NOT NULL DEFAULT 10,
+
+    time_limit_ms INTEGER DEFAULT 2000,
+    memory_limit_mb INTEGER DEFAULT 128,
+
+    display_order INTEGER NOT NULL DEFAULT 1,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- ============================================
+-- TEST CASES
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS coding_test_cases (
+    id SERIAL PRIMARY KEY,
+
+    question_id INTEGER NOT NULL
+        REFERENCES coding_questions(id)
+        ON DELETE CASCADE,
+
+    input TEXT NOT NULL,
+    expected_output TEXT NOT NULL,
+
+    is_hidden BOOLEAN NOT NULL DEFAULT TRUE,
+
+    marks NUMERIC(10,2),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- ============================================
+-- CODING ATTEMPTS
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS coding_attempts (
+    id SERIAL PRIMARY KEY,
+
+    coding_exam_id INTEGER NOT NULL
+        REFERENCES coding_exams(id)
+        ON DELETE CASCADE,
+
+    candidate_id INTEGER NOT NULL
+        REFERENCES candidates(id)
+        ON DELETE CASCADE,
+
+    started_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ends_at TIMESTAMP NOT NULL,
+
+    submitted_at TIMESTAMP,
+
+    status VARCHAR(30) NOT NULL DEFAULT 'in_progress',
+
+    total_score NUMERIC(10,2) DEFAULT 0,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- ============================================
+-- CODING DRAFTS
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS coding_drafts (
+    id SERIAL PRIMARY KEY,
+
+    attempt_id INTEGER NOT NULL
+        REFERENCES coding_attempts(id)
+        ON DELETE CASCADE,
+
+    question_id INTEGER NOT NULL
+        REFERENCES coding_questions(id)
+        ON DELETE CASCADE,
+
+    language VARCHAR(30) NOT NULL,
+
+    source_code TEXT NOT NULL DEFAULT '',
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE(attempt_id, question_id)
+);
+
+
+-- ============================================
+-- CODING SUBMISSIONS
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS coding_submissions (
+    id SERIAL PRIMARY KEY,
+
+    attempt_id INTEGER NOT NULL
+        REFERENCES coding_attempts(id)
+        ON DELETE CASCADE,
+
+    question_id INTEGER NOT NULL
+        REFERENCES coding_questions(id)
+        ON DELETE CASCADE,
+
+    language VARCHAR(30) NOT NULL,
+
+    source_code TEXT NOT NULL,
+
+    status VARCHAR(50),
+
+    passed_tests INTEGER DEFAULT 0,
+    total_tests INTEGER DEFAULT 0,
+
+    marks_obtained NUMERIC(10,2) DEFAULT 0,
+
+    execution_time_ms INTEGER,
+    memory_used_kb INTEGER,
+
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
       CREATE INDEX IF NOT EXISTS idx_questions_exam
         ON questions(exam_id);
 

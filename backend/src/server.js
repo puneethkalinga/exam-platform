@@ -13,6 +13,8 @@ const resultRoutes = require("./routes/resulrRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const authRoutes = require("./routes/authRoutes");
 const authMiddleware = require("./middleware/authMiddleware");
+const codingExamRoutes = require("./routes/codingExamRoutes");
+const codingQuestionRoutes = require("./routes/codingQuestionRoutes");
 
 app.use(helmet());
 
@@ -77,8 +79,8 @@ app.use("/api/attempts",  attemptRoutes);
 app.use("/api/results", authMiddleware, resultRoutes);
 app.use("/api/upload", authMiddleware, uploadRoutes);
 app.use("/api/auth", authRoutes);
-
-
+app.use("/api/coding-exams", codingExamRoutes);
+app.use("/api/coding-questions", codingQuestionRoutes);
 
 
 app.listen(PORT, () => {
