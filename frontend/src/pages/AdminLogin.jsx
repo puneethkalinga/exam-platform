@@ -49,7 +49,7 @@ export default function AdminLogin({ onLogin }) {
       <div className="login-container">
 
         <div className="brand-section">
-          <div className="brand-mark">X</div>
+          <img src="/xevotech.jpeg" alt="Xevotech Logo" className="brand-logo" />
 
           <div className="brand-name">
             XEVOTECH
