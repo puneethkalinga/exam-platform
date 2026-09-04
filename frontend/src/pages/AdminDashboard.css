@@ -1340,3 +1340,30 @@ textarea {
     font-size: 18px;
   }
 }
+
+.coding-admin-card {
+  margin-top: 24px;
+}
+
+.coding-admin-card .card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.coding-admin-card .card-heading p {
+  max-width: 620px;
+}
+
+@media (max-width: 700px) {
+  .coding-admin-card .card-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .coding-admin-card .new-exam-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

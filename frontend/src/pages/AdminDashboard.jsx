@@ -336,6 +336,16 @@ export default function AdminDashboard({ admin, onLogout }) {
             Exams
           </button>
 
+          <button
+  className="sidebar-item"
+  onClick={() => {
+    window.location.href = "/admin/coding-exams";
+  }}
+>
+  <span>&lt;/&gt;</span>
+  Coding Exams
+</button>
+
 
           <button
             className="sidebar-item"
@@ -405,6 +415,8 @@ export default function AdminDashboard({ admin, onLogout }) {
             <span>▤</span>
             Results
           </button>
+
+          
 
 
           <div className="sidebar-label security-label">
@@ -779,6 +791,35 @@ export default function AdminDashboard({ admin, onLogout }) {
 
           </section>
 
+<section className="content-card coding-admin-card">
+  <div className="card-heading">
+    <div>
+      <span className="card-eyebrow">
+        PROGRAMMING ASSESSMENT
+      </span>
+
+      <h2>
+        Coding Exams
+      </h2>
+
+      <p>
+        Create coding assessments, manage problems,
+        test cases, and candidate submissions.
+      </p>
+    </div>
+
+    <button
+      className="new-exam-button"
+      onClick={() => {
+        window.location.href =
+          "/admin/coding-exams";
+      }}
+    >
+      <span>+</span>
+      Manage Coding Exams
+    </button>
+  </div>
+</section>
 
           {/* =========================
               QUESTION UPLOAD
