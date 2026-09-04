@@ -112,10 +112,7 @@ export default function ExamResults() {
           ← Exam Management
         </button>
 
-        <div className="results-brand">
-          XEVOTECH
-          <span>EXAM PROTOCOL</span>
-        </div>
+        <img src="/xevotech.jpeg" alt="Xevotech Logo" className="brand-logo" />
 
       </header>
 
