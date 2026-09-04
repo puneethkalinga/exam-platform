@@ -1,0 +1,325 @@
+.coding-result-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  color: #111827;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.coding-result-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 24px 40px;
+}
+
+.coding-result-header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.coding-result-header p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.coding-result-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+/* =====================================================
+   COMPLETION
+===================================================== */
+
+.coding-result-complete {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.result-check {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ecfdf5;
+  color: #059669;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.coding-result-complete h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.coding-result-complete p {
+  margin: 5px 0 0;
+  color: #6b7280;
+}
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.coding-result-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.coding-result-card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.coding-result-card-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.coding-result-card-header p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* =====================================================
+   CANDIDATE INFO
+===================================================== */
+
+.candidate-result-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding: 24px;
+}
+
+.candidate-result-grid span,
+.coding-score-item span,
+.coding-score-main span {
+  display: block;
+  color: #6b7280;
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+
+.candidate-result-grid strong {
+  display: block;
+  color: #111827;
+  font-size: 14px;
+}
+
+/* =====================================================
+   SCORE
+===================================================== */
+
+.coding-score-card {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.coding-score-main,
+.coding-score-item {
+  padding: 24px;
+  border-right: 1px solid #e5e7eb;
+}
+
+.coding-score-item:last-child {
+  border-right: none;
+}
+
+.coding-score-main strong {
+  font-size: 34px;
+  color: #111827;
+}
+
+.coding-score-main small {
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.coding-score-item strong {
+  font-size: 24px;
+  color: #111827;
+}
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.coding-result-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.coding-result-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.coding-result-table th {
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.coding-result-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #374151;
+  font-size: 14px;
+}
+
+.coding-result-table tr:last-child td {
+  border-bottom: none;
+}
+
+.coding-result-table td strong {
+  color: #111827;
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.coding-result-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.coding-result-success {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.coding-result-danger {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.coding-result-neutral {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+/* =====================================================
+   NOTE
+===================================================== */
+
+.coding-result-note {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+
+.coding-result-note strong {
+  color: #111827;
+}
+
+.coding-result-note p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* =====================================================
+   EMPTY / LOADING
+===================================================== */
+
+.coding-result-loading,
+.coding-result-empty {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+.coding-result-empty {
+  min-height: auto;
+  padding: 40px;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+  .candidate-result-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .coding-score-card {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .coding-score-main {
+    grid-column: 1 / -1;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+}
+
+@media (max-width: 600px) {
+  .coding-result-header {
+    padding: 20px;
+  }
+
+  .coding-result-container {
+    padding: 20px 14px 40px;
+  }
+
+  .candidate-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .coding-score-card {
+    grid-template-columns: 1fr;
+  }
+
+  .coding-score-main,
+  .coding-score-item {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .coding-score-item:last-child {
+    border-bottom: none;
+  }
+}

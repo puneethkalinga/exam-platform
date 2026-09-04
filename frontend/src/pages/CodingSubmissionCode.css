@@ -1,0 +1,169 @@
+.submission-code-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  color: #111827;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.submission-code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 24px 32px;
+}
+
+.submission-back-button {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #374151;
+  padding: 8px 13px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.submission-code-header h1 {
+  margin: 14px 0 5px;
+  font-size: 25px;
+}
+
+.submission-code-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.submission-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.submission-meta span {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.submission-meta strong {
+  font-size: 15px;
+}
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.submission-code-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px 24px 50px;
+}
+
+/* =====================================================
+   INFO
+===================================================== */
+
+.submission-info {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.submission-info > div {
+  padding: 18px 20px;
+  border-right: 1px solid #e5e7eb;
+}
+
+.submission-info > div:last-child {
+  border-right: none;
+}
+
+.submission-info span {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.submission-info strong {
+  font-size: 14px;
+}
+
+/* =====================================================
+   CODE
+===================================================== */
+
+.submitted-code-panel {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.submitted-code-panel-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.submission-code-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f7fa;
+  color: #6b7280;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 800px) {
+  .submission-code-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .submission-meta {
+    align-items: flex-start;
+  }
+
+  .submission-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .submission-info > div {
+    border-bottom: 1px solid #e5e7eb;
+  }
+}
+
+@media (max-width: 500px) {
+  .submission-code-header {
+    padding: 20px;
+  }
+
+  .submission-code-container {
+    padding: 20px 14px;
+  }
+
+  .submission-info {
+    grid-template-columns: 1fr;
+  }
+
+  .submission-info > div {
+    border-right: none;
+  }
+}

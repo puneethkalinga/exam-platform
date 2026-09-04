@@ -57,7 +57,7 @@ const getExams = async (req, res) => {
       ORDER BY e.created_at DESC
     `);
 
-    res.json({
+    res.status(200).json({
       exams: result.rows,
     });
   } catch (error) {

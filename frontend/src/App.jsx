@@ -14,6 +14,16 @@ import CandidateExam from "./pages/CandidateExam";
 import ExamResults from "./pages/ExamResults";
 import CandidateResponses from "./pages/CandidateResponses";
 import CodingQuestionManagement from "./pages/CodingQuestionManagement";
+import CodingTestCaseManagement from "./pages/CodingTestCaseManagement";
+import CodingExam from "./pages/CodingExam";
+import CodingResult from "./pages/CodingResult";
+import CodingResultDetails from "./pages/CodingResultDetails";
+import CodingExamManagement from "./pages/CodingExamManagement";
+import CodingStart from "./pages/CodingStart";
+import CodingResultDetails from "./pages/CodingResultDetails";
+import CodingSubmissionCode from "./pages/CodingSubmissionCode";
+
+
 
 function App() {
   const [admin, setAdmin] = useState(() => {
@@ -59,6 +69,30 @@ function App() {
   element={<CandidateResponses />}
 />
 
+<Route
+  path="/coding-exam/:examId"
+  element={<CodingStart />}
+/>
+
+<Route
+  path="/admin/coding-exams"
+  element={<CodingExamManagement />}
+/>
+
+<Route
+  path="/admin/coding-results/:attemptId"
+  element={<CodingResultDetails />}
+/>
+
+<Route
+  path="/admin/coding-results/:attemptId"
+  element={<CodingResultDetails />}
+/>
+
+<Route
+  path="/admin/coding-results/:attemptId/question/:questionId/code"
+  element={<CodingSubmissionCode />}
+/>
        
 
 
@@ -112,6 +146,16 @@ function App() {
           }
         />
 
+        <Route
+  path="/coding-exam/:examId/attempt/:attemptId"
+  element={<CodingExam />}
+/>
+
+<Route
+  path="/coding-exam/:examId/result/:attemptId"
+  element={<CodingResult />}
+/>
+
 
         {/* =========================
             EXAM MANAGEMENT
@@ -130,6 +174,11 @@ function App() {
             )
           }
         />
+
+        <Route
+  path="/admin/coding-exams/:examId/questions/:questionId"
+  element={<CodingTestCaseManagement />}
+/>
 
         <Route
   path="/admin/coding-exams/:examId"

@@ -1,0 +1,331 @@
+.test-case-page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #f7f8fc;
+  color: #1f2937;
+}
+
+.test-case-header {
+  margin-bottom: 25px;
+}
+
+.test-case-back {
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  padding: 0;
+  margin-bottom: 13px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.test-case-header h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+}
+
+.test-case-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+/* Form */
+
+.test-case-form-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+  padding: 24px;
+  margin-bottom: 25px;
+}
+
+.test-case-form-header {
+  margin-bottom: 20px;
+}
+
+.test-case-form-header h2 {
+  margin: 0 0 5px;
+  font-size: 18px;
+}
+
+.test-case-form-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.test-case-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.test-case-group {
+  margin-bottom: 18px;
+}
+
+.test-case-group label,
+.test-case-marks label {
+  display: block;
+  margin-bottom: 7px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.test-case-group textarea,
+.test-case-marks input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 11px;
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+  resize: vertical;
+  outline: none;
+}
+
+.test-case-group textarea:focus,
+.test-case-marks input:focus {
+  border-color: #2563eb;
+}
+
+.test-case-options {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.hidden-toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  color: #374151;
+  cursor: pointer;
+}
+
+.hidden-toggle input {
+  width: 16px;
+  height: 16px;
+}
+
+.test-case-marks {
+  width: 150px;
+}
+
+.test-case-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.test-case-save,
+.test-case-cancel {
+  padding: 10px 16px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.test-case-save {
+  background: #2563eb;
+  color: #fff;
+  border: 1px solid #2563eb;
+}
+
+.test-case-cancel {
+  background: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+/* Existing cases */
+
+.existing-test-cases {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+}
+
+.existing-test-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 22px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.existing-test-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.existing-test-header span {
+  background: #f3f4f6;
+  color: #6b7280;
+  padding: 5px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.test-case-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.test-case-item {
+  display: flex;
+  gap: 15px;
+  padding: 20px 22px;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.test-case-item:last-child {
+  border-bottom: none;
+}
+
+.test-case-number {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.test-case-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.test-case-item-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.case-badge {
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.case-badge.hidden {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.case-badge.visible {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.case-marks {
+  color: #6b7280;
+  font-size: 11px;
+}
+
+.test-case-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.test-case-preview label {
+  display: block;
+  margin-bottom: 5px;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.test-case-preview pre {
+  margin: 0;
+  min-height: 55px;
+  max-height: 150px;
+  overflow: auto;
+  padding: 11px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  color: #374151;
+}
+
+.test-case-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.test-case-actions button {
+  min-width: 65px;
+  padding: 7px 9px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  border-radius: 6px;
+  color: #374151;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.test-case-actions .delete-case {
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.test-case-empty,
+.test-case-loading {
+  padding: 55px 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+@media (max-width: 750px) {
+  .test-case-page {
+    padding: 18px;
+  }
+
+  .test-case-two-column,
+  .test-case-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .test-case-item {
+    flex-wrap: wrap;
+  }
+
+  .test-case-actions {
+    flex-direction: row;
+    width: 100%;
+    margin-left: 47px;
+  }
+
+  .test-case-options {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .test-case-marks {
+    width: 100%;
+  }
+}

@@ -1,28 +1,14 @@
 const express = require("express");
 
-const {
-  createCodingExam,
-  getCodingExams,
-  getCodingExamById,
-  updateCodingExam,
-  deleteCodingExam,
-} = require("../controllers/codingExamController");
-
-const authMiddleware = require("../middleware/authMiddleware");
-
 const router = express.Router();
 
+const {
+  runCode,
+  submitCode,
+} = require("../controllers/codingExecutionController");
 
-// Admin only
-router.post("/", authMiddleware, createCodingExam);
+router.post("/run", runCode);
 
-router.get("/", authMiddleware, getCodingExams);
-
-router.get("/:id", authMiddleware, getCodingExamById);
-
-router.put("/:id", authMiddleware, updateCodingExam);
-
-router.delete("/:id", authMiddleware, deleteCodingExam);
-
+router.post("/submit", submitCode);
 
 module.exports = router;

@@ -15,6 +15,12 @@ const authRoutes = require("./routes/authRoutes");
 const authMiddleware = require("./middleware/authMiddleware");
 const codingExamRoutes = require("./routes/codingExamRoutes");
 const codingQuestionRoutes = require("./routes/codingQuestionRoutes");
+const codingTestCaseRoutes = require("./routes/codingTestCaseRoutes");
+const codingAttemptRoutes = require("./routes/codingAttemptRoutes");
+const codingWorkspaceRoutes = require("./routes/codingWorkspaceRoutes");
+const codingExecutionRoutes = require("./routes/codingExecutionRoutes");
+const codingResultRoutes = require("./routes/codingResultRoutes");
+const codingSecurityRoutes = require("./routes/codingSecurityRoutes");
 
 app.use(helmet());
 
@@ -81,6 +87,13 @@ app.use("/api/upload", authMiddleware, uploadRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/coding-exams", codingExamRoutes);
 app.use("/api/coding-questions", codingQuestionRoutes);
+app.use("/api/coding-test-cases", codingTestCaseRoutes);
+app.use("/api/coding-attempts", codingAttemptRoutes);
+app.use("/api/coding-workspace", codingWorkspaceRoutes);
+app.use("/api/coding-execution", codingExecutionRoutes);
+app.use("/api/coding-results", codingResultRoutes);
+app.use("/api/coding-security", codingSecurityRoutes);
+
 
 
 app.listen(PORT, () => {

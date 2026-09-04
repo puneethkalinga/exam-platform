@@ -246,6 +246,56 @@ CREATE TABLE IF NOT EXISTS coding_submissions (
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS coding_security_events (
+    id SERIAL PRIMARY KEY,
+    attempt_id INTEGER NOT NULL
+        REFERENCES coding_attempts(id)
+        ON DELETE CASCADE,
+
+    event_type VARCHAR(50) NOT NULL,
+
+    event_data JSONB DEFAULT '{}'::jsonb,
+
+    occurred_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS coding_invitations (
+    id SERIAL PRIMARY KEY,
+
+    coding_exam_id INTEGER NOT NULL
+        REFERENCES coding_exams(id)
+        ON DELETE CASCADE,
+
+    candidate_id INTEGER NOT NULL
+        REFERENCES candidates(id)
+        ON DELETE CASCADE,
+
+    invitation_token VARCHAR(128) NOT NULL UNIQUE,
+
+    status VARCHAR(30) NOT NULL DEFAULT 'active',
+
+    expires_at TIMESTAMP,
+
+    used_at TIMESTAMP,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_coding_invitations_candidate
+ON coding_invitations(candidate_id);
+
+CREATE INDEX IF NOT EXISTS idx_coding_invitations_exam
+ON coding_invitations(coding_exam_id);
+
+CREATE INDEX IF NOT EXISTS idx_coding_invitations_token
+ON coding_invitations(invitation_token);
+
+CREATE INDEX IF NOT EXISTS idx_coding_security_events_attempt
+ON coding_security_events(attempt_id);
+
+CREATE INDEX IF NOT EXISTS idx_coding_security_events_type
+ON coding_security_events(event_type);
+
       CREATE INDEX IF NOT EXISTS idx_questions_exam
         ON questions(exam_id);
 
@@ -261,11 +311,17 @@ CREATE TABLE IF NOT EXISTS coding_submissions (
       CREATE INDEX IF NOT EXISTS idx_security_attempt
         ON security_events(attempt_id);
 
+      CREATE INDEX IF NOT EXISTS idx_coding_submissions_attempt_question
+ON coding_submissions(attempt_id, question_id);
+
             ALTER TABLE attempts
       ADD COLUMN IF NOT EXISTS total_marks NUMERIC(10,2) DEFAULT 0;
 
       ALTER TABLE attempts
       ADD COLUMN IF NOT EXISTS obtained_marks NUMERIC(10,2) DEFAULT 0;
+
+ALTER TABLE coding_attempts
+ADD COLUMN IF NOT EXISTS access_token VARCHAR(128) UNIQUE;
 
 ALTER TABLE candidates
 ADD COLUMN IF NOT EXISTS course VARCHAR(100);
