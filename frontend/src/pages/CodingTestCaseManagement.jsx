@@ -31,19 +31,39 @@ const CodingTestCaseManagement = () => {
   try {
     setLoading(true);
 
+    const token = localStorage.getItem("adminToken");
+
+    if (!token) {
+      throw new Error("Admin authentication token not found");
+    }
+
+    // Load question
     const questionResponse = await fetch(
       `${API_URL}/api/coding-questions/${questionId}`,
       {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
 
-    const questionData = await questionResponse.json();
+    const questionText = await questionResponse.text();
 
-    console.log("QUESTION STATUS:", questionResponse.status);
-    console.log("QUESTION RESPONSE:", questionData);
+    let questionData;
+
+    try {
+      questionData = JSON.parse(questionText);
+    } catch {
+      console.error(
+        "Question API returned non-JSON:",
+        questionText
+      );
+
+      throw new Error(
+        `Question API returned HTML instead of JSON. Status: ${questionResponse.status}`
+      );
+    }
 
     if (!questionResponse.ok) {
       throw new Error(
@@ -53,19 +73,43 @@ const CodingTestCaseManagement = () => {
 
     setQuestion(questionData.question);
 
+    // Load test cases
     const testCaseResponse = await fetch(
       `${API_URL}/api/coding-test-cases/question/${questionId}`,
       {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
 
-    const testCaseData = await testCaseResponse.json();
+    const testCaseText = await testCaseResponse.text();
 
-    console.log("TEST CASE STATUS:", testCaseResponse.status);
-    console.log("TEST CASE RESPONSE:", testCaseData);
+    console.log(
+      "TEST CASE API STATUS:",
+      testCaseResponse.status
+    );
+
+    console.log(
+      "TEST CASE API RESPONSE:",
+      testCaseText
+    );
+
+    let testCaseData;
+
+    try {
+      testCaseData = JSON.parse(testCaseText);
+    } catch {
+      console.error(
+        "Test case API returned non-JSON:",
+        testCaseText
+      );
+
+      throw new Error(
+        `Test case API returned HTML instead of JSON. Status: ${testCaseResponse.status}`
+      );
+    }
 
     if (!testCaseResponse.ok) {
       throw new Error(
@@ -76,6 +120,7 @@ const CodingTestCaseManagement = () => {
     setTestCases(testCaseData.testCases || []);
   } catch (error) {
     console.error("LOAD TEST CASES ERROR:", error);
+
     alert(error.message || "Unable to load test cases");
   } finally {
     setLoading(false);
