@@ -219,11 +219,9 @@ export default function ExamManagement() {
         >
           ← Dashboard
         </button>
-
-        <div className="management-brand">
-          XEVOTECH
-          <span>EXAM PROTOCOL</span>
-        </div>
+        <div>
+          <img src="/xevotech.jpeg" alt="Xevotech Logo" className="brand-logo" />
+            </div>
 
       </header>
 
