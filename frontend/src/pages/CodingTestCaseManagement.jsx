@@ -28,48 +28,59 @@ const CodingTestCaseManagement = () => {
   }, [questionId]);
 
   const loadData = async () => {
-    try {
-      const [questionResponse, testCaseResponse] =
-        await Promise.all([
-          fetch(
-            `${API_URL}/api/coding-questions/${questionId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          ),
+  try {
+    setLoading(true);
 
-          fetch(
-            `${API_URL}/api/coding-test-cases/question/${questionId}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          ),
-        ]);
-
-      const questionData =
-        await questionResponse.json();
-
-      const testCaseData =
-        await testCaseResponse.json();
-
-      if (questionResponse.ok) {
-        setQuestion(questionData.question);
+    const questionResponse = await fetch(
+      `${API_URL}/api/coding-questions/${questionId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
 
-      if (testCaseResponse.ok) {
-        setTestCases(testCaseData.testCases || []);
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Unable to load test cases");
-    } finally {
-      setLoading(false);
+    const questionData = await questionResponse.json();
+
+    console.log("QUESTION STATUS:", questionResponse.status);
+    console.log("QUESTION RESPONSE:", questionData);
+
+    if (!questionResponse.ok) {
+      throw new Error(
+        questionData.message || "Failed to load question"
+      );
     }
-  };
+
+    setQuestion(questionData.question);
+
+    const testCaseResponse = await fetch(
+      `${API_URL}/api/coding-test-cases/question/${questionId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const testCaseData = await testCaseResponse.json();
+
+    console.log("TEST CASE STATUS:", testCaseResponse.status);
+    console.log("TEST CASE RESPONSE:", testCaseData);
+
+    if (!testCaseResponse.ok) {
+      throw new Error(
+        testCaseData.message || "Failed to load test cases"
+      );
+    }
+
+    setTestCases(testCaseData.testCases || []);
+  } catch (error) {
+    console.error("LOAD TEST CASES ERROR:", error);
+    alert(error.message || "Unable to load test cases");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
