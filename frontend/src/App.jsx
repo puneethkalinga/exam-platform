@@ -13,6 +13,7 @@ import CandidateStart from "./pages/CandidateStart";
 import CandidateExam from "./pages/CandidateExam";
 import ExamResults from "./pages/ExamResults";
 import CandidateResponses from "./pages/CandidateResponses";
+
 import CodingQuestionManagement from "./pages/CodingQuestionManagement";
 import CodingTestCaseManagement from "./pages/CodingTestCaseManagement";
 import CodingExam from "./pages/CodingExam";
@@ -20,10 +21,7 @@ import CodingResult from "./pages/CodingResult";
 import CodingResultDetails from "./pages/CodingResultDetails";
 import CodingExamManagement from "./pages/CodingExamManagement";
 import CodingStart from "./pages/CodingStart";
-import CodingResultDetails from "./pages/CodingResultDetails";
 import CodingSubmissionCode from "./pages/CodingSubmissionCode";
-
-
 
 function App() {
   const [admin, setAdmin] = useState(() => {
@@ -50,9 +48,9 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* =========================
+        {/* =========================================
             CANDIDATE ROUTES
-           ========================= */}
+           ========================================= */}
 
         <Route
           path="/candidate/start"
@@ -65,40 +63,41 @@ function App() {
         />
 
         <Route
-  path="/admin/exams/:examId/results/:attemptId"
-  element={<CandidateResponses />}
-/>
+          path="/admin/exams/:examId/results/:attemptId"
+          element={
+            admin ? (
+              <CandidateResponses />
+            ) : (
+              <Navigate to="/admin/login" replace />
+            )
+          }
+        />
 
-<Route
-  path="/coding-exam/:examId"
-  element={<CodingStart />}
-/>
+        {/* =========================================
+            CODING CANDIDATE ROUTES
+           ========================================= */}
 
-<Route
-  path="/admin/coding-exams"
-  element={<CodingExamManagement />}
-/>
+        {/* Coding exam start page */}
+        <Route
+          path="/coding-exam/:examId"
+          element={<CodingStart />}
+        />
 
-<Route
-  path="/admin/coding-results/:attemptId"
-  element={<CodingResultDetails />}
-/>
+        {/* Coding exam workspace */}
+        <Route
+          path="/coding-exam/:examId/attempt/:attemptId"
+          element={<CodingExam />}
+        />
 
-<Route
-  path="/admin/coding-results/:attemptId"
-  element={<CodingResultDetails />}
-/>
+        {/* Coding candidate result */}
+        <Route
+          path="/coding-exam/:examId/result/:attemptId"
+          element={<CodingResult />}
+        />
 
-<Route
-  path="/admin/coding-results/:attemptId/question/:questionId/code"
-  element={<CodingSubmissionCode />}
-/>
-       
-
-
-        {/* =========================
+        {/* =========================================
             ADMIN LOGIN
-           ========================= */}
+           ========================================= */}
 
         <Route
           path="/admin/login"
@@ -110,24 +109,10 @@ function App() {
             )
           }
         />
-<Route
-  path="/admin/exams/:examId/results"
-  element={
-    admin ? (
-      <ExamResults />
-    ) : (
-      <Navigate
-        to="/admin/login"
-        replace
-      />
-    )
-  }
-/>
 
-
-        {/* =========================
+        {/* =========================================
             ADMIN DASHBOARD
-           ========================= */}
+           ========================================= */}
 
         <Route
           path="/admin"
@@ -138,28 +123,14 @@ function App() {
                 onLogout={handleLogout}
               />
             ) : (
-              <Navigate
-                to="/admin/login"
-                replace
-              />
+              <Navigate to="/admin/login" replace />
             )
           }
         />
 
-        <Route
-  path="/coding-exam/:examId/attempt/:attemptId"
-  element={<CodingExam />}
-/>
-
-<Route
-  path="/coding-exam/:examId/result/:attemptId"
-  element={<CodingResult />}
-/>
-
-
-        {/* =========================
-            EXAM MANAGEMENT
-           ========================= */}
+        {/* =========================================
+            NORMAL EXAM MANAGEMENT
+           ========================================= */}
 
         <Route
           path="/admin/exams/:examId"
@@ -167,28 +138,89 @@ function App() {
             admin ? (
               <ExamManagement />
             ) : (
-              <Navigate
-                to="/admin/login"
-                replace
-              />
+              <Navigate to="/admin/login" replace />
             )
           }
         />
 
         <Route
-  path="/admin/coding-exams/:examId/questions/:questionId"
-  element={<CodingTestCaseManagement />}
-/>
+          path="/admin/exams/:examId/results"
+          element={
+            admin ? (
+              <ExamResults />
+            ) : (
+              <Navigate to="/admin/login" replace />
+            )
+          }
+        />
 
+        {/* =========================================
+            CODING EXAM ADMIN MANAGEMENT
+           ========================================= */}
+
+        {/* Coding exam list/create/publish */}
         <Route
-  path="/admin/coding-exams/:examId"
-  element={<CodingQuestionManagement />}
-/>
+          path="/admin/coding-exams"
+          element={
+            admin ? (
+              <CodingExamManagement />
+            ) : (
+              <Navigate to="/admin/login" replace />
+            )
+          }
+        />
 
+        {/* Coding questions */}
+        <Route
+          path="/admin/coding-exams/:examId"
+          element={
+            admin ? (
+              <CodingQuestionManagement />
+            ) : (
+              <Navigate to="/admin/login" replace />
+            )
+          }
+        />
 
-        {/* =========================
-            DEFAULT
-           ========================= */}
+        {/* Coding test cases */}
+        <Route
+          path="/admin/coding-exams/:examId/questions/:questionId"
+          element={
+            admin ? (
+              <CodingTestCaseManagement />
+            ) : (
+              <Navigate to="/admin/login" replace />
+            )
+          }
+        />
+
+        {/* Coding candidate result details */}
+        <Route
+          path="/admin/coding-results/:attemptId"
+          element={
+            admin ? (
+              <CodingResultDetails />
+            ) : (
+              <Navigate to="/admin/login" replace />
+            )
+          }
+        />
+
+        {/* Submitted source code */}
+        <Route
+          path="/admin/coding-results/:attemptId/question/:questionId/code"
+          element={
+            admin ? (
+              <CodingSubmissionCode />
+            ) : (
+              <Navigate to="/admin/login" replace />
+            )
+          }
+        />
+
+        {/* =========================================
+            DEFAULT ROUTE
+           ========================================= */}
 
         <Route
           path="*"
