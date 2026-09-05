@@ -91,6 +91,12 @@ app.use("/api/coding-test-cases", codingTestCaseRoutes);
 app.use("/api/coding-attempts", codingAttemptRoutes);
 app.use("/api/coding-workspace", codingWorkspaceRoutes);
 app.use("/api/coding-execution", codingExecutionRoutes);
+app.put("/api/test-publish-route", (req, res) => {
+  res.json({
+    ok: true,
+    message: "NEW BACKEND CODE IS LIVE"
+  });
+});
 app.use("/api/coding-results", codingResultRoutes);
 app.use("/api/coding-security", codingSecurityRoutes);
 
