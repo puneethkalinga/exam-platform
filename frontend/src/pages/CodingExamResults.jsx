@@ -362,7 +362,7 @@ const CodingExamResults = () => {
                           className="view-result-button"
                           onClick={() =>
                             navigate(
-                              `/admin/coding-results/${result.attempt_id}`
+                              `/admin/coding-results/${result.id}`
                             )
                           }
                         >
