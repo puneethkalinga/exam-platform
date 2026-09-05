@@ -61,7 +61,7 @@ exports.runCode = async (req, res) => {
     // IMPORTANT:
     // attempt ID comes from authenticated middleware.
     // Do NOT trust attempt_id from request body.
-    const attempt_id = req.codingAttempt.id;
+    const attempt_id = req.params.attemptId;
 
     const {
       question_id,
@@ -261,7 +261,7 @@ exports.submitCode = async (req, res) => {
 
     // IMPORTANT:
     // Attempt ID comes from authenticated middleware.
-    const attempt_id = req.codingAttempt.id;
+    const attempt_id = req.params.attemptId;
 
     const {
       question_id,
@@ -726,8 +726,7 @@ exports.submitCodingExam = async (
 
     // IMPORTANT:
     // Attempt ID comes from authenticated middleware.
-    const attempt_id =
-      req.codingAttempt.id;
+    const attempt_id = req.params.attemptId;
 
     // -----------------------------------------
     // 1. Get attempt
