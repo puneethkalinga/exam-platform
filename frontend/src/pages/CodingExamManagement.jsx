@@ -307,7 +307,7 @@ export default function CodingExamManagement() {
       {/* HEADER */}
       <header className="coding-admin-header">
         <div className="coding-admin-brand">
-          <div className="coding-admin-logo">X</div>
+          <img src="/xevotech.jpeg" alt="Logo" className="brand-logo" />
 
           <div>
             <div className="coding-admin-brand-name">

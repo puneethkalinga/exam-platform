@@ -17,7 +17,6 @@
     sans-serif;
 }
 
-
 /* =========================================================
    HEADER
    ========================================================= */
@@ -77,7 +76,6 @@
   color: #64748b;
 }
 
-
 /* Back button */
 
 .coding-back-button {
@@ -108,7 +106,6 @@
   color: #1e40af;
 }
 
-
 /* =========================================================
    MAIN
    ========================================================= */
@@ -120,7 +117,6 @@
 
   padding: 32px 0 50px;
 }
-
 
 /* =========================================================
    PAGE HEADING
@@ -166,7 +162,6 @@
 
   color: #64748b;
 }
-
 
 /* =========================================================
    PRIMARY BUTTON
@@ -225,7 +220,6 @@
   opacity: 0.55;
   cursor: not-allowed;
 }
-
 
 /* =========================================================
    STATISTICS
@@ -288,7 +282,6 @@
   color: #94a3b8;
 }
 
-
 /* =========================================================
    CONTENT CARD
    ========================================================= */
@@ -305,7 +298,6 @@
     0 1px 3px rgba(15, 23, 42, 0.04),
     0 4px 12px rgba(15, 23, 42, 0.025);
 }
-
 
 /* Card heading */
 
@@ -345,7 +337,6 @@
   color: #1f2937;
 }
 
-
 /* Refresh */
 
 .coding-refresh-button {
@@ -378,7 +369,6 @@
   opacity: 0.55;
   cursor: not-allowed;
 }
-
 
 /* =========================================================
    MESSAGES
@@ -433,7 +423,6 @@
 .coding-error button:hover {
   background: #fff1f2;
 }
-
 
 /* =========================================================
    EMPTY STATE
@@ -491,7 +480,6 @@
   color: #64748b;
 }
 
-
 /* =========================================================
    EXAM LIST
    ========================================================= */
@@ -500,7 +488,6 @@
   display: flex;
   flex-direction: column;
 }
-
 
 /* Exam row */
 
@@ -525,7 +512,6 @@
 .coding-exam-row:hover {
   background: #fafbfc;
 }
-
 
 /* Exam icon */
 
@@ -554,7 +540,6 @@
   font-size: 13px;
   font-weight: 700;
 }
-
 
 /* Exam details */
 
@@ -592,7 +577,6 @@
   text-overflow: ellipsis;
 }
 
-
 /* Status */
 
 .coding-status {
@@ -616,7 +600,6 @@
   color: #64748b;
 }
 
-
 /* Meta */
 
 .coding-exam-meta {
@@ -630,7 +613,6 @@
 
   color: #64748b;
 }
-
 
 /* Languages */
 
@@ -657,7 +639,6 @@
   font-size: 10px;
   font-weight: 600;
 }
-
 
 /* =========================================================
    EXAM ACTIONS
@@ -705,7 +686,6 @@
   color: #1d4ed8;
 }
 
-
 /* Publish */
 
 .coding-exam-actions button.success {
@@ -718,7 +698,6 @@
   background: #dcfce7;
   border-color: #86efac;
 }
-
 
 /* Unpublish */
 
@@ -733,7 +712,6 @@
   border-color: #fcd34d;
 }
 
-
 /* Delete */
 
 .coding-exam-actions button.danger {
@@ -746,7 +724,6 @@
   background: #fee2e2;
   border-color: #fca5a5;
 }
-
 
 /* =========================================================
    MODAL OVERLAY
@@ -768,7 +745,6 @@
 
   backdrop-filter: blur(3px);
 }
-
 
 /* Modal */
 
@@ -802,7 +778,6 @@
     transform: translateY(0);
   }
 }
-
 
 /* =========================================================
    MODAL HEADER
@@ -841,7 +816,6 @@
 
   color: #111827;
 }
-
 
 /* Close */
 
@@ -883,7 +857,6 @@
   cursor: not-allowed;
 }
 
-
 /* =========================================================
    FORM
    ========================================================= */
@@ -912,7 +885,6 @@
 
   color: #475569;
 }
-
 
 /* Inputs */
 
@@ -974,7 +946,6 @@
     0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-
 /* Number input */
 
 .coding-form-group input[type="number"] {
@@ -986,7 +957,6 @@
   opacity: 1;
 }
 
-
 /* Form grid */
 
 .coding-form-grid {
@@ -997,33 +967,37 @@
   gap: 15px;
 }
 
-
 /* =========================================================
-   LANGUAGE SELECTION
+   ALLOWED LANGUAGES
    ========================================================= */
 
 .language-checkbox-grid {
   display: grid;
 
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 
-  gap: 9px;
+  gap: 10px;
+
+  width: 100%;
+
+  margin-top: 8px;
 }
 
 .language-option {
-  min-height: 42px;
+  width: 100%;
+  min-height: 46px;
+
+  box-sizing: border-box;
 
   display: flex;
   align-items: center;
 
-  gap: 8px;
-
-  padding: 0 11px;
-
-  border: 1px solid #dbe1e8;
-  border-radius: 6px;
+  padding: 0 13px;
 
   background: #ffffff;
+
+  border: 1px solid #dbe1e8;
+  border-radius: 7px;
 
   color: #475569;
 
@@ -1032,41 +1006,127 @@
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
-    color 0.2s ease;
+    box-shadow 0.2s ease;
 }
 
 .language-option:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: #f8fbff;
+
+  border-color: #93c5fd;
 }
-
-.language-option input {
-  width: 15px !important;
-  height: 15px !important;
-
-  margin: 0;
-
-  accent-color: #2563eb;
-
-  cursor: pointer;
-}
-
-.language-option span {
-  font-size: 12px;
-  font-weight: 600;
-}
-
-
-/* Selected language */
 
 .language-option.selected {
   background: #eff6ff;
 
-  border-color: #93c5fd;
+  border-color: #3b82f6;
 
+  box-shadow:
+    0 0 0 1px rgba(59, 130, 246, 0.04);
+}
+
+/* Checkbox */
+
+.language-option input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 17px !important;
+  height: 17px !important;
+
+  min-width: 17px;
+  min-height: 17px;
+
+  flex: 0 0 17px;
+
+  margin: 0 10px 0 0 !important;
+
+  border: 1.5px solid #cbd5e1;
+
+  border-radius: 4px;
+
+  background: #ffffff;
+
+  position: relative;
+
+  cursor: pointer;
+}
+
+.language-option input[type="checkbox"]:checked {
+  background: #2563eb;
+
+  border-color: #2563eb;
+}
+
+.language-option input[type="checkbox"]:checked::after {
+  content: "";
+
+  position: absolute;
+
+  left: 5px;
+  top: 2px;
+
+  width: 5px;
+  height: 9px;
+
+  border: solid #ffffff;
+
+  border-width: 0 2px 2px 0;
+
+  transform: rotate(45deg);
+}
+
+/* Language name */
+
+.language-option span {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  color: #334155;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  line-height: 1;
+}
+
+.language-option.selected span {
   color: #1d4ed8;
 }
 
+/* Selected indicator */
+
+.language-option::after {
+  content: "";
+
+  width: 6px;
+  height: 6px;
+
+  flex: 0 0 6px;
+
+  margin-left: 10px;
+
+  border-radius: 50%;
+
+  background: transparent;
+}
+
+.language-option.selected::after {
+  background: #2563eb;
+}
+
+/* Focus */
+
+.language-option:has(
+    input[type="checkbox"]:focus-visible
+  ) {
+  outline: 2px solid rgba(37, 99, 235, 0.2);
+
+  outline-offset: 2px;
+}
 
 /* =========================================================
    MODAL FOOTER
@@ -1081,7 +1141,6 @@
 
   padding-top: 4px;
 }
-
 
 /* Cancel */
 
@@ -1108,18 +1167,19 @@
 
 .coding-cancel-button:hover:not(:disabled) {
   background: #f8fafc;
+
   border-color: #cbd5e1;
 }
 
 .coding-cancel-button:disabled {
   opacity: 0.55;
+
   cursor: not-allowed;
 }
 
 .coding-modal-footer .coding-primary-button {
   height: 40px;
 }
-
 
 /* =========================================================
    MODAL SCROLLBAR
@@ -1135,9 +1195,9 @@
 
 .coding-modal::-webkit-scrollbar-thumb {
   background: #cbd5e1;
+
   border-radius: 10px;
 }
-
 
 /* =========================================================
    TABLET
@@ -1154,11 +1214,12 @@
 
   .coding-exam-actions {
     grid-column: 2;
+
     justify-content: flex-start;
+
     max-width: none;
   }
 }
-
 
 /* =========================================================
    MOBILE
@@ -1250,7 +1311,13 @@
   }
 
   .language-checkbox-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 9px;
+  }
+
+  .language-option {
+    min-height: 46px;
   }
 
   .coding-modal-overlay {
@@ -1278,7 +1345,6 @@
   }
 }
 
-
 /* =========================================================
    SMALL MOBILE
    ========================================================= */
@@ -1299,4 +1365,38 @@
   .coding-page-heading h1 {
     font-size: 21px;
   }
+
+  .language-option {
+    min-height: 44px;
+
+    padding: 0 11px;
+  }
+
+  .language-option span {
+    font-size: 11px;
+  }
+}
+
+/* =========================================================
+   BRAND LOGO
+   ========================================================= */
+
+.brand-logo {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  overflow: hidden;
+}
+
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
 }
