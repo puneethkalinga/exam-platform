@@ -1,432 +1,222 @@
-.coding-result-details-page {
+/* =========================================================
+   CODING EXAM RESULTS
+========================================================= */
+
+.coding-results-page {
   min-height: 100vh;
-  background: #f5f7fa;
-  color: #111827;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-/* =====================================================
-   HEADER
-===================================================== */
-
-.coding-details-header {
+.coding-results-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 22px 32px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 24px 32px;
+  align-items: center;
+  gap: 20px;
 }
 
-.coding-details-back,
-.coding-details-refresh {
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  color: #374151;
-  padding: 9px 14px;
-  border-radius: 7px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.coding-details-back:hover,
-.coding-details-refresh:hover {
-  background: #f9fafb;
-}
-
-.coding-details-header h1 {
-  margin: 14px 0 5px;
-  font-size: 26px;
-  font-weight: 700;
-}
-
-.coding-details-header p {
+.coding-results-header h1 {
   margin: 0;
-  color: #6b7280;
-  font-size: 14px;
-}
-
-/* =====================================================
-   CONTAINER
-===================================================== */
-
-.coding-details-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 30px 24px 60px;
-}
-
-/* =====================================================
-   CARD
-===================================================== */
-
-.details-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  margin-bottom: 24px;
-  overflow: hidden;
-}
-
-.details-card-header {
-  padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.details-card-header h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.details-card-header p {
-  margin: 6px 0 0;
-  color: #6b7280;
-  font-size: 13px;
-}
-
-/* =====================================================
-   CANDIDATE INFORMATION
-===================================================== */
-
-.candidate-details-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  padding: 24px;
-}
-
-.candidate-details-grid span {
-  display: block;
-  margin-bottom: 7px;
-  color: #6b7280;
-  font-size: 12px;
-}
-
-.candidate-details-grid strong {
-  display: block;
-  color: #111827;
-  font-size: 14px;
-}
-
-/* =====================================================
-   SCORE CARDS
-===================================================== */
-
-.details-score-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-bottom: 24px;
-}
-
-.details-score-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 22px;
-}
-
-.details-score-card span {
-  display: block;
-  color: #6b7280;
-  font-size: 12px;
-  margin-bottom: 8px;
-}
-
-.details-score-card strong {
-  display: block;
-  color: #111827;
   font-size: 24px;
 }
 
-.details-score-card strong small {
-  color: #6b7280;
-  font-size: 15px;
-  font-weight: 500;
+.coding-results-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 12px;
 }
 
-.details-score-card .details-status {
-  text-transform: capitalize;
+.coding-results-back {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  border-radius: 7px;
+  padding: 9px 13px;
+  cursor: pointer;
 }
 
-.details-score-card .details-date {
-  font-size: 14px;
+.coding-results-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 30px 32px;
 }
 
-/* =====================================================
-   PROBLEM TABLE
-===================================================== */
+/* Summary */
 
-.details-table-wrapper {
-  width: 100%;
+.coding-results-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.coding-results-summary-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  padding: 18px;
+}
+
+.coding-results-summary-card span {
+  display: block;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.coding-results-summary-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 24px;
+}
+
+/* Table */
+
+.coding-results-table-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.coding-results-table-wrapper {
   overflow-x: auto;
 }
 
-.details-table {
+.coding-results-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 900px;
 }
 
-.details-table th {
-  background: #f9fafb;
-  color: #6b7280;
-  font-size: 12px;
-  font-weight: 600;
+.coding-results-table th {
+  background: #f8fafc;
+  color: #64748b;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
   text-align: left;
-  padding: 14px 18px;
-  border-bottom: 1px solid #e5e7eb;
   white-space: nowrap;
 }
 
-.details-table td {
-  padding: 16px 18px;
+.coding-results-table td {
+  padding: 15px 16px;
   border-bottom: 1px solid #f1f5f9;
-  color: #374151;
-  font-size: 14px;
-  vertical-align: middle;
+  color: #334155;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
-.details-table tr:last-child td {
+.coding-results-table tr:last-child td {
   border-bottom: none;
 }
 
-.details-table td strong {
-  color: #111827;
+.coding-results-table tbody tr:hover {
+  background: #f8fafc;
 }
 
-/* =====================================================
-   RESULT STATUS
-===================================================== */
+.candidate-name {
+  color: #0f172a;
+  font-weight: 650;
+}
 
-.result-pill {
+.candidate-roll {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.result-score {
+  font-weight: 750;
+  color: #0f172a;
+}
+
+.result-percentage {
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.result-status {
   display: inline-flex;
-  align-items: center;
-  padding: 5px 10px;
+  padding: 5px 9px;
   border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 9px;
+  font-weight: 750;
+  text-transform: uppercase;
 }
 
-.result-pill.accepted {
-  background: #ecfdf5;
-  color: #047857;
+.result-status.submitted,
+.result-status.completed {
+  background: #dcfce7;
+  color: #166534;
 }
 
-.result-pill.failed {
-  background: #fef2f2;
-  color: #b91c1c;
+.result-status.expired,
+.result-status.timeout {
+  background: #fef3c7;
+  color: #92400e;
 }
 
-/* =====================================================
-   VIEW CODE
-===================================================== */
+.result-status.in-progress,
+.result-status.active {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
 
-.view-code-button {
-  border: none;
-  background: #111827;
-  color: #ffffff;
-  padding: 8px 12px;
+.view-result-button {
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 7px 11px;
   border-radius: 6px;
+  font-size: 11px;
+  font-weight: 650;
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
 }
 
-.view-code-button:hover {
-  background: #374151;
+.view-result-button:hover {
+  background: #dbeafe;
 }
 
-/* =====================================================
-   SECURITY PANEL
-===================================================== */
+/* Empty */
 
-.security-panel {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  margin-top: 24px;
-  overflow: hidden;
-}
-
-.security-panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.security-panel-header h2 {
-  margin: 0;
-  color: #111827;
-  font-size: 18px;
-}
-
-.security-panel-header p {
-  margin: 6px 0 0;
-  color: #6b7280;
-  font-size: 13px;
-}
-
-.security-total {
-  color: #374151;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-/* =====================================================
-   SECURITY SUMMARY
-===================================================== */
-
-.security-summary {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1px;
-  background: #e5e7eb;
-}
-
-.security-stat {
-  background: #ffffff;
-  padding: 20px 12px;
+.coding-results-empty {
+  padding: 60px 20px;
   text-align: center;
+  color: #64748b;
 }
 
-.security-stat strong {
-  display: block;
-  color: #111827;
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.security-stat span {
-  display: block;
-  margin-top: 5px;
-  color: #6b7280;
-  font-size: 12px;
-}
-
-/* =====================================================
-   SECURITY EVENT LIST
-===================================================== */
-
-.security-events-list {
-  max-height: 380px;
-  overflow-y: auto;
-}
-
-.security-event-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 15px 24px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.security-event-row:last-child {
-  border-bottom: none;
-}
-
-.security-event-icon {
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-  border-radius: 50%;
+.coding-results-loading {
+  min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f3f4f6;
-  color: #374151;
-  font-size: 12px;
-  font-weight: 700;
+  color: #64748b;
 }
 
-.security-event-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.security-event-info strong {
-  color: #1f2937;
-  font-size: 14px;
-}
-
-.security-event-info small {
-  color: #6b7280;
-  font-size: 12px;
-}
-
-/* =====================================================
-   EMPTY / LOADING
-===================================================== */
-
-.security-empty {
-  padding: 32px;
-  text-align: center;
-  color: #6b7280;
-  font-size: 14px;
-}
-
-.coding-result-details-loading {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f7fa;
-  color: #6b7280;
-  font-size: 15px;
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media (max-width: 1050px) {
-  .candidate-details-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .details-score-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .security-summary {
-    grid-template-columns: repeat(3, 1fr);
+@media (max-width: 900px) {
+  .coding-results-summary {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
-@media (max-width: 650px) {
-  .coding-details-header {
-    padding: 20px;
-    flex-direction: column;
-    gap: 16px;
+@media (max-width: 600px) {
+  .coding-results-header,
+  .coding-results-container {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
-  .coding-details-container {
-    padding: 20px 14px 40px;
-  }
-
-  .candidate-details-grid {
+  .coding-results-summary {
     grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .details-score-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .security-summary {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .security-panel-header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .security-event-row {
-    padding: 14px 18px;
   }
 }

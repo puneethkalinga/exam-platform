@@ -1,169 +1,134 @@
-.submission-code-page {
+/* =========================================================
+   CODING SUBMISSION CODE
+========================================================= */
+
+.coding-submission-code-page {
   min-height: 100vh;
-  background: #f5f7fa;
-  color: #111827;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-/* =====================================================
-   HEADER
-===================================================== */
-
-.submission-code-header {
+.coding-submission-code-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 20px 32px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 24px 32px;
+  align-items: center;
 }
 
-.submission-back-button {
-  border: 1px solid #d1d5db;
+.coding-submission-code-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.coding-submission-code-header p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.coding-submission-code-back {
+  border: 1px solid #cbd5e1;
   background: #ffffff;
-  color: #374151;
-  padding: 8px 13px;
+  color: #334155;
   border-radius: 7px;
+  padding: 8px 13px;
   cursor: pointer;
 }
 
-.submission-code-header h1 {
-  margin: 14px 0 5px;
-  font-size: 25px;
+.coding-submission-code-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 32px 50px;
 }
 
-.submission-code-header p {
+.coding-code-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.coding-code-card-header {
+  padding: 15px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.coding-code-card-header h2 {
   margin: 0;
-  color: #6b7280;
   font-size: 14px;
 }
 
-.submission-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 5px;
+.coding-code-language {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 9px;
+  font-weight: 750;
 }
 
-.submission-meta span {
+.coding-source-code {
+  margin: 0;
+  padding: 22px;
+  background: #0f172a;
+  color: #e2e8f0;
+  overflow: auto;
+  min-height: 450px;
+  font-family:
+    "JetBrains Mono",
+    "Fira Code",
+    Consolas,
+    monospace;
   font-size: 12px;
-  color: #6b7280;
+  line-height: 1.65;
+  white-space: pre;
 }
 
-.submission-meta strong {
-  font-size: 15px;
-}
-
-/* =====================================================
-   CONTAINER
-===================================================== */
-
-.submission-code-container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 30px 24px 50px;
-}
-
-/* =====================================================
-   INFO
-===================================================== */
-
-.submission-info {
+.coding-submission-meta {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.coding-submission-meta-item {
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  margin-bottom: 24px;
-  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px;
 }
 
-.submission-info > div {
-  padding: 18px 20px;
-  border-right: 1px solid #e5e7eb;
-}
-
-.submission-info > div:last-child {
-  border-right: none;
-}
-
-.submission-info span {
+.coding-submission-meta-item span {
   display: block;
-  font-size: 12px;
-  color: #6b7280;
-  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 9px;
 }
 
-.submission-info strong {
+.coding-submission-meta-item strong {
+  display: block;
+  margin-top: 5px;
   font-size: 14px;
 }
 
-/* =====================================================
-   CODE
-===================================================== */
-
-.submitted-code-panel {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.submitted-code-panel-header {
-  padding: 15px 20px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-/* =====================================================
-   LOADING
-===================================================== */
-
-.submission-code-loading {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f7fa;
-  color: #6b7280;
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-
-@media (max-width: 800px) {
-  .submission-code-header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 18px;
+@media (max-width: 750px) {
+  .coding-submission-code-header,
+  .coding-submission-code-container {
+    padding-left: 15px;
+    padding-right: 15px;
   }
 
-  .submission-meta {
-    align-items: flex-start;
-  }
-
-  .submission-info {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .submission-info > div {
-    border-bottom: 1px solid #e5e7eb;
-  }
-}
-
-@media (max-width: 500px) {
-  .submission-code-header {
-    padding: 20px;
-  }
-
-  .submission-code-container {
-    padding: 20px 14px;
-  }
-
-  .submission-info {
-    grid-template-columns: 1fr;
-  }
-
-  .submission-info > div {
-    border-right: none;
+  .coding-submission-meta {
+    grid-template-columns: 1fr 1fr;
   }
 }
