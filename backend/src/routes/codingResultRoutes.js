@@ -11,57 +11,34 @@ const {
 
 const authenticateAdmin = require("../middleware/authMiddleware");
 
-/*
-====================================================
-CANDIDATE RESULT
-NO AUTHORIZATION
-
-Same as MCQ result flow.
-====================================================
-*/
+// ==================================================
+// CANDIDATE
+// No coding access token required
+// ==================================================
 router.get(
   "/attempt/:attemptId",
   getCodingResult
 );
 
-
-/*
-====================================================
-ADMIN
-ALL RESULTS FOR ONE CODING EXAM
-====================================================
-*/
+// ==================================================
+// ADMIN
+// ==================================================
 router.get(
   "/exam/:examId",
   authenticateAdmin,
   getCodingExamResults
 );
 
-
-/*
-====================================================
-ADMIN
-ONE CANDIDATE'S COMPLETE CODING RESULT
-====================================================
-*/
 router.get(
   "/admin/attempt/:attemptId",
   authenticateAdmin,
   getAdminCodingResultDetails
 );
 
-
-/*
-====================================================
-ADMIN
-VIEW SUBMITTED CODE
-====================================================
-*/
 router.get(
   "/admin/attempt/:attemptId/question/:questionId/code",
   authenticateAdmin,
   getAdminSubmissionCode
 );
-
 
 module.exports = router;

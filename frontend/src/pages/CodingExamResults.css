@@ -1,263 +1,381 @@
-.coding-admin-results-page {
+/* =========================================================
+   CODING EXAM RESULTS
+========================================================= */
+
+.coding-result-page {
   min-height: 100vh;
-  background: #f5f7fa;
-  padding: 30px;
-  color: #111827;
+  background: #f6f8fb;
+  padding: 32px;
+  color: #172033;
+  box-sizing: border-box;
 }
 
-/* =====================================================
+/* =========================================================
    HEADER
-===================================================== */
+========================================================= */
 
-.coding-admin-results-header {
+.coding-result-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
   margin-bottom: 28px;
 }
 
-.coding-admin-results-header h1 {
-  margin: 12px 0 5px;
-  font-size: 26px;
+.coding-result-header h1 {
+  margin: 12px 0 6px;
+  font-size: 28px;
   font-weight: 700;
+  letter-spacing: -0.4px;
 }
 
-.coding-admin-results-header p {
+.coding-result-header p {
   margin: 0;
   color: #6b7280;
   font-size: 14px;
 }
 
-.back-button,
-.refresh-button {
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  color: #374151;
-  padding: 9px 14px;
-  border-radius: 7px;
-  cursor: pointer;
+.coding-back-button {
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  padding: 0;
   font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.back-button:hover,
-.refresh-button:hover {
-  background: #f9fafb;
-}
-
-/* =====================================================
-   STATS
-===================================================== */
-
-.coding-result-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-bottom: 24px;
-}
-
-.coding-result-stat-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 20px;
-}
-
-.coding-result-stat-card span {
-  display: block;
-  color: #6b7280;
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.coding-result-stat-card strong {
-  font-size: 26px;
+.coding-back-button:hover {
   color: #111827;
 }
 
-/* =====================================================
-   CARD
-===================================================== */
-
-.coding-admin-results-card {
+.coding-refresh-button {
+  border: 1px solid #d8dee8;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  color: #374151;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.coding-refresh-button:hover {
+  background: #f3f4f6;
+  border-color: #c8ced8;
+}
+
+.coding-refresh-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.coding-results-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.coding-summary-card {
+  background: #ffffff;
+  border: 1px solid #e4e8ef;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.coding-summary-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: #7b8494;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.coding-summary-card strong {
+  display: block;
+  color: #172033;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   RESULTS CARD
+========================================================= */
+
+.coding-results-card {
+  background: #ffffff;
+  border: 1px solid #e4e8ef;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
-.coding-admin-results-card-header {
+.coding-results-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
+  justify-content: space-between;
+  padding: 22px 24px;
+  border-bottom: 1px solid #e8ebf0;
 }
 
-.coding-admin-results-card-header h2 {
+.coding-results-card-header span {
+  display: block;
+  margin-bottom: 5px;
+  color: #7b8494;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.coding-results-card-header h2 {
   margin: 0;
-  font-size: 18px;
+  color: #172033;
+  font-size: 19px;
+  font-weight: 700;
 }
 
-.coding-admin-results-card-header p {
-  margin: 5px 0 0;
-  color: #6b7280;
-  font-size: 13px;
-}
-
-.coding-admin-results-card-header > span {
-  color: #6b7280;
-  font-size: 13px;
-}
-
-/* =====================================================
+/* =========================================================
    TABLE
-===================================================== */
+========================================================= */
 
-.coding-admin-table-wrapper {
+.coding-results-table-wrapper {
   width: 100%;
   overflow-x: auto;
 }
 
-.coding-admin-table {
+.coding-results-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1100px;
+  min-width: 1050px;
 }
 
-.coding-admin-table th {
-  background: #f9fafb;
+.coding-results-table th {
+  background: #f8fafc;
   color: #6b7280;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 13px 16px;
   text-align: left;
-  padding: 14px 18px;
   border-bottom: 1px solid #e5e7eb;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
-.coding-admin-table td {
-  padding: 16px 18px;
-  border-bottom: 1px solid #f1f5f9;
-  font-size: 14px;
+.coding-results-table td {
+  padding: 16px;
+  border-bottom: 1px solid #eef1f5;
   color: #374151;
-  vertical-align: middle;
+  font-size: 13px;
+  white-space: nowrap;
 }
 
-.coding-admin-table tr:last-child td {
+.coding-results-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.coding-results-table tbody tr:hover {
+  background: #fafbfc;
+}
+
+.coding-results-table tbody tr:last-child td {
   border-bottom: none;
 }
 
 .candidate-name {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.candidate-name strong {
-  color: #111827;
-}
-
-.candidate-name small {
-  color: #9ca3af;
-  font-size: 11px;
-}
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-.coding-admin-status {
-  display: inline-flex;
-  padding: 5px 10px;
-  border-radius: 999px;
-  font-size: 12px;
+  color: #172033;
   font-weight: 600;
 }
 
-.coding-admin-status.submitted {
-  background: #ecfdf5;
-  color: #047857;
+/* =========================================================
+   SCORE
+========================================================= */
+
+.coding-results-table td strong {
+  color: #172033;
+  font-weight: 700;
 }
 
-.coding-admin-status.expired {
+/* =========================================================
+   STATUS
+========================================================= */
+
+.coding-result-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+.coding-result-status.submitted {
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.coding-result-status.in_progress {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.coding-result-status.expired {
   background: #fef2f2;
   color: #b91c1c;
 }
 
-.coding-admin-status.in-progress {
-  background: #fffbeb;
-  color: #b45309;
-}
+/* =========================================================
+   VIEW RESULT BUTTON
+========================================================= */
 
-/* =====================================================
-   VIEW RESULT
-===================================================== */
-
-.view-result-button {
-  border: none;
-  background: #111827;
-  color: #ffffff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
+.coding-view-result-button {
+  border: 1px solid #d8dee8;
+  background: #ffffff;
+  color: #374151;
+  border-radius: 7px;
+  padding: 8px 13px;
   font-size: 12px;
   font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.view-result-button:hover {
-  background: #374151;
+.coding-view-result-button:hover {
+  background: #172033;
+  border-color: #172033;
+  color: #ffffff;
 }
 
-/* =====================================================
-   EMPTY
-===================================================== */
+/* =========================================================
+   EMPTY STATE
+========================================================= */
 
-.coding-admin-empty {
-  padding: 60px 20px;
+.coding-results-empty {
   text-align: center;
-  color: #6b7280;
+  padding: 70px 20px;
 }
 
-/* =====================================================
-   LOADING
-===================================================== */
+.coding-results-empty-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 20px;
+  font-weight: 700;
+}
 
-.coding-admin-loading {
+.coding-results-empty h3 {
+  margin: 0 0 8px;
+  color: #172033;
+  font-size: 18px;
+}
+
+.coding-results-empty p {
+  margin: 0;
+  color: #7b8494;
+  font-size: 14px;
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.coding-result-error {
+  background: #ffffff;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #991b1b;
+}
+
+.coding-result-error button {
+  border: none;
+  background: #991b1b;
+  color: #ffffff;
+  border-radius: 7px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.coding-result-error button:hover {
+  background: #7f1d1d;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.coding-result-loading {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f5f7fa;
+  background: #f6f8fb;
   color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-/* =====================================================
+/* =========================================================
    RESPONSIVE
-===================================================== */
+========================================================= */
 
 @media (max-width: 1000px) {
-  .coding-result-stats {
+  .coding-results-summary {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 600px) {
-  .coding-admin-results-page {
-    padding: 18px;
+@media (max-width: 700px) {
+  .coding-result-page {
+    padding: 20px 14px;
   }
 
-  .coding-admin-results-header {
+  .coding-result-header {
     flex-direction: column;
-    gap: 16px;
   }
 
-  .coding-result-stats {
+  .coding-refresh-button {
+    width: 100%;
+  }
+
+  .coding-results-summary {
     grid-template-columns: 1fr;
   }
 
-  .coding-admin-results-card-header {
-    align-items: flex-start;
-    gap: 10px;
+  .coding-results-card-header {
+    padding: 18px;
+  }
+
+  .coding-results-table th,
+  .coding-results-table td {
+    padding: 12px;
+  }
+
+  .coding-result-error {
     flex-direction: column;
+    align-items: flex-start;
   }
 }
