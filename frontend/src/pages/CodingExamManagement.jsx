@@ -212,9 +212,9 @@ export default function CodingExamManagement() {
     }
   };
 
+  // PUBLISH / UNPUBLISH CODING EXAM
   const togglePublish = async (exam) => {
     const isPublished = exam.status === "published";
-
     const action = isPublished ? "unpublish" : "publish";
 
     if (
@@ -229,9 +229,11 @@ export default function CodingExamManagement() {
       const response = await fetch(
         `${API_URL}/api/coding-exams/${exam.id}/publish`,
         {
-          method: "PATCH",
+          // IMPORTANT: Backend route uses PUT
+          method: "PUT",
           headers: {
             Authorization: `Bearer ${getToken()}`,
+            "Content-Type": "application/json",
           },
         }
       );
@@ -482,15 +484,13 @@ export default function CodingExamManagement() {
 
                         <div className="coding-exam-meta">
                           <span>
-                            {exam.question_count || 0}{" "}
-                            Problems
+                            {exam.question_count || 0} Problems
                           </span>
 
                           <span>•</span>
 
                           <span>
-                            {exam.duration_minutes || 0}{" "}
-                            Minutes
+                            {exam.duration_minutes || 0} Minutes
                           </span>
 
                           <span>•</span>
@@ -669,9 +669,7 @@ export default function CodingExamManagement() {
                   {DEFAULT_LANGUAGES.map((language) => (
                     <label
                       className={`language-option ${
-                        form.allowed_languages.includes(
-                          language
-                        )
+                        form.allowed_languages.includes(language)
                           ? "selected"
                           : ""
                       }`}
