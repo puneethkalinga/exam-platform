@@ -24,6 +24,7 @@ const CodingStart = () => {
   const fetchExam = async () => {
     try {
       setLoading(true);
+      setError("");
 
       const response = await fetch(
         `${API_URL}/api/coding-exams/${examId}`
@@ -100,14 +101,38 @@ const CodingStart = () => {
         );
       }
 
-      const attemptId = data.attempt.id;
-      const accessToken = data.attempt.accessToken;
+      // =====================================================
+      // CODING ATTEMPT + ACCESS TOKEN
+      // =====================================================
 
+      const attemptId = data.attempt?.id;
+      const accessToken = data.accessToken;
+
+      if (!attemptId) {
+        throw new Error(
+          "Coding attempt was not created by the server."
+        );
+      }
+
+      if (!accessToken) {
+        throw new Error(
+          "Coding access token was not returned by the server."
+        );
+      }
+
+      // Store the token specifically for this attempt.
       localStorage.setItem(
         `codingAccessToken_${attemptId}`,
         accessToken
       );
 
+      // Store attempt ID as well.
+      localStorage.setItem(
+        "codingAttemptId",
+        String(attemptId)
+      );
+
+      // Navigate to coding examination.
       navigate(
         `/coding-exam/${examId}/attempt/${attemptId}`,
         {
@@ -115,6 +140,8 @@ const CodingStart = () => {
         }
       );
     } catch (err) {
+      console.error("START CODING EXAM ERROR:", err);
+
       setError(
         err.message || "Failed to start coding examination"
       );
@@ -128,6 +155,7 @@ const CodingStart = () => {
       <div className="coding-start-page">
         <div className="coding-start-card loading-card">
           <div className="coding-spinner"></div>
+
           <p>Loading coding examination...</p>
         </div>
       </div>
@@ -139,7 +167,11 @@ const CodingStart = () => {
       <div className="coding-start-page">
         <div className="coding-start-card error-card">
           <h1>Exam Unavailable</h1>
-          <p>{error || "Coding exam could not be loaded."}</p>
+
+          <p>
+            {error ||
+              "Coding exam could not be loaded."}
+          </p>
         </div>
       </div>
     );
@@ -149,6 +181,7 @@ const CodingStart = () => {
     <div className="coding-start-page">
       <div className="coding-start-card">
 
+        {/* HEADER */}
         <div className="coding-start-header">
           <div className="coding-label">
             CODING ASSESSMENT
@@ -161,10 +194,12 @@ const CodingStart = () => {
           )}
         </div>
 
+        {/* EXAM INFORMATION */}
         <div className="coding-exam-info">
 
           <div className="coding-info-item">
             <span>Duration</span>
+
             <strong>
               {exam.duration_minutes} Minutes
             </strong>
@@ -172,6 +207,7 @@ const CodingStart = () => {
 
           <div className="coding-info-item">
             <span>Total Marks</span>
+
             <strong>
               {exam.total_marks}
             </strong>
@@ -179,6 +215,7 @@ const CodingStart = () => {
 
           <div className="coding-info-item">
             <span>Questions</span>
+
             <strong>
               {exam.question_count || 0}
             </strong>
@@ -186,6 +223,7 @@ const CodingStart = () => {
 
         </div>
 
+        {/* INSTRUCTIONS */}
         {exam.instructions && (
           <div className="coding-instructions">
             <h2>Instructions</h2>
@@ -196,6 +234,7 @@ const CodingStart = () => {
           </div>
         )}
 
+        {/* CANDIDATE FORM */}
         <form
           className="coding-candidate-form"
           onSubmit={handleStart}
@@ -228,7 +267,9 @@ const CodingStart = () => {
               type="text"
               value={rollNumber}
               onChange={(e) =>
-                setRollNumber(e.target.value.toUpperCase())
+                setRollNumber(
+                  e.target.value.toUpperCase()
+                )
               }
               placeholder="XEVO/YEN/T/001"
               autoComplete="off"
