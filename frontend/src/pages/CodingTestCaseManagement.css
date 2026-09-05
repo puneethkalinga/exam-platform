@@ -1,584 +1,892 @@
 /* =========================================================
    CODING TEST CASE MANAGEMENT
-   Professional light admin UI
+   Professional MCQ / Admin Theme
    ========================================================= */
 
-.coding-testcase-page {
+.test-case-page {
   min-height: 100vh;
-  background: #f4f7fb;
-  color: #172033;
+  box-sizing: border-box;
+  padding: 30px 28px 50px;
+
+  background: #f5f7fb;
+  color: #1f2937;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
 }
+
 
 /* =========================================================
    HEADER
    ========================================================= */
 
-.coding-testcase-header {
-  min-height: 72px;
-  padding: 0 32px;
-  background: #ffffff;
-  border-bottom: 1px solid #e5eaf1;
+.test-case-header {
+  width: min(1180px, 100%);
+  margin: 0 auto 22px;
+
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 
-.coding-testcase-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.test-case-header h1 {
+  margin: 14px 0 5px;
 
-.coding-testcase-logo {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: #635bff;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 19px;
-  font-weight: 800;
-}
-
-.coding-testcase-brand-name {
-  color: #172033;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-}
-
-.coding-testcase-product {
-  margin-top: 3px;
-  color: #8a94a6;
-  font-size: 10px;
+  color: #111827;
+  font-size: 26px;
+  line-height: 1.3;
   font-weight: 700;
-  letter-spacing: 0.1em;
 }
 
-.coding-testcase-back {
-  padding: 9px 14px;
-  border: 1px solid #dfe5ee;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #596579;
-  font-size: 12px;
-  font-weight: 650;
-  cursor: pointer;
-}
-
-.coding-testcase-back:hover {
-  background: #f7f8fb;
-  color: #172033;
-}
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-.coding-testcase-main {
-  width: min(1250px, calc(100% - 48px));
-  margin: 0 auto;
-  padding: 32px 0 60px;
-}
-
-.coding-testcase-heading {
-  margin-bottom: 24px;
-}
-
-.coding-testcase-heading h1 {
+.test-case-header p {
   margin: 0;
-  color: #172033;
-  font-size: 27px;
-  font-weight: 750;
-}
 
-.coding-testcase-heading p {
-  margin: 7px 0 0;
-  color: #738096;
+  color: #64748b;
   font-size: 13px;
-  line-height: 1.5;
 }
+
 
 /* =========================================================
-   QUESTION INFO
+   BACK BUTTON
    ========================================================= */
 
-.coding-testcase-question-card {
-  margin-bottom: 18px;
-  padding: 20px;
-  background: #ffffff;
-  border: 1px solid #e5eaf1;
-  border-radius: 13px;
-  box-shadow: 0 3px 12px rgba(23, 32, 51, 0.04);
-}
-
-.coding-testcase-question-label {
-  margin-bottom: 7px;
-  color: #635bff;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.coding-testcase-question-title {
-  margin: 0;
-  color: #202a3d;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.45;
-}
-
-.coding-testcase-question-description {
-  margin: 8px 0 0;
-  color: #788498;
-  font-size: 12px;
-  line-height: 1.55;
-}
-
-/* =========================================================
-   CONTENT CARD
-   ========================================================= */
-
-.coding-testcase-card {
-  background: #ffffff;
-  border: 1px solid #e5eaf1;
-  border-radius: 13px;
-  box-shadow: 0 3px 12px rgba(23, 32, 51, 0.04);
-  overflow: hidden;
-}
-
-.coding-testcase-card-header {
-  min-height: 67px;
-  padding: 15px 20px;
-  border-bottom: 1px solid #e8edf3;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.coding-testcase-card-header h2 {
-  margin: 0;
-  color: #172033;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.coding-testcase-card-header p {
-  margin: 4px 0 0;
-  color: #8490a2;
-  font-size: 11px;
-}
-
-.coding-testcase-add-button {
+.test-case-back {
   height: 36px;
   padding: 0 14px;
-  border: 0;
-  border-radius: 8px;
-  background: #635bff;
-  color: #ffffff;
+
+  border: 1px solid #dbe1e8;
+  border-radius: 6px;
+
+  background: #ffffff;
+  color: #475569;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.test-case-back:hover {
+  background: #f8fafc;
+  border-color: #bfdbfe;
+  color: #2563eb;
+}
+
+.test-case-back:active {
+  transform: translateY(1px);
+}
+
+
+/* =========================================================
+   FORM CARD
+   ========================================================= */
+
+.test-case-form-card {
+  width: min(1180px, 100%);
+  box-sizing: border-box;
+
+  margin: 0 auto 20px;
+  padding: 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+
+  box-shadow:
+    0 2px 5px rgba(15, 23, 42, 0.04),
+    0 6px 18px rgba(15, 23, 42, 0.035);
+}
+
+
+/* =========================================================
+   FORM HEADER
+   ========================================================= */
+
+.test-case-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 17px;
+  margin-bottom: 20px;
+
+  border-bottom: 1px solid #eef2f7;
+}
+
+.test-case-form-header h2 {
+  margin: 0 0 4px;
+
+  color: #1f2937;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.test-case-form-header p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   TWO COLUMN INPUT AREA
+   ========================================================= */
+
+.test-case-two-column {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.test-case-group {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+}
+
+.test-case-group label,
+.test-case-marks label {
+  margin-bottom: 7px;
+
+  color: #334155;
+
   font-size: 12px;
   font-weight: 700;
+}
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.test-case-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+
+  min-height: 175px;
+
+  padding: 12px 13px;
+
+  resize: vertical;
+
+  border: 1px solid #d8dee8;
+  border-radius: 7px;
+
+  outline: none;
+
+  background: #fbfcfe;
+  color: #1f2937;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    Menlo,
+    monospace;
+
+  font-size: 13px;
+  line-height: 1.6;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.test-case-group textarea::placeholder {
+  color: #94a3b8;
+}
+
+.test-case-group textarea:hover {
+  border-color: #cbd5e1;
+}
+
+.test-case-group textarea:focus {
+  background: #ffffff;
+
+  border-color: #3b82f6;
+
+  box-shadow:
+    0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+
+/* =========================================================
+   OPTIONS
+   ========================================================= */
+
+.test-case-options {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-top: 20px;
+  padding-top: 18px;
+
+  border-top: 1px solid #eef2f7;
+}
+
+
+/* =========================================================
+   HIDDEN TOGGLE
+   ========================================================= */
+
+.hidden-toggle {
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 9px;
+
+  color: #475569;
+
+  font-size: 12px;
+  font-weight: 600;
+
   cursor: pointer;
 }
 
-.coding-testcase-add-button:hover {
-  background: #554de6;
+.hidden-toggle input {
+  width: 16px;
+  height: 16px;
+
+  margin: 0;
+
+  accent-color: #2563eb;
+
+  cursor: pointer;
 }
+
+.hidden-toggle span {
+  user-select: none;
+}
+
+
+/* =========================================================
+   MARKS
+   ========================================================= */
+
+.test-case-marks {
+  width: 150px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.test-case-marks input {
+  width: 100%;
+  height: 40px;
+
+  box-sizing: border-box;
+
+  padding: 0 11px;
+
+  border: 1px solid #d8dee8;
+  border-radius: 7px;
+
+  outline: none;
+
+  background: #fbfcfe;
+  color: #1f2937;
+
+  font-size: 13px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.test-case-marks input::placeholder {
+  color: #94a3b8;
+}
+
+.test-case-marks input:focus {
+  background: #ffffff;
+
+  border-color: #3b82f6;
+
+  box-shadow:
+    0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.test-case-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+
+/* =========================================================
+   CANCEL
+   ========================================================= */
+
+.test-case-cancel {
+  height: 39px;
+
+  padding: 0 16px;
+
+  border: 1px solid #d8dee8;
+  border-radius: 7px;
+
+  background: #ffffff;
+  color: #475569;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.test-case-cancel:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+
+/* =========================================================
+   SAVE BUTTON
+   ========================================================= */
+
+.test-case-save {
+  height: 39px;
+
+  padding: 0 18px;
+
+  border: 1px solid #2563eb;
+  border-radius: 7px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 2px 4px rgba(37, 99, 235, 0.16);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.test-case-save:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+
+  box-shadow:
+    0 4px 9px rgba(37, 99, 235, 0.2);
+}
+
+.test-case-save:active {
+  transform: translateY(1px);
+}
+
+
+/* =========================================================
+   EXISTING TEST CASES
+   ========================================================= */
+
+.existing-test-cases {
+  width: min(1180px, 100%);
+  box-sizing: border-box;
+
+  margin: 0 auto;
+
+  padding: 21px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+
+  box-shadow:
+    0 2px 5px rgba(15, 23, 42, 0.04),
+    0 6px 18px rgba(15, 23, 42, 0.035);
+}
+
+
+/* =========================================================
+   EXISTING HEADER
+   ========================================================= */
+
+.existing-test-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+
+  border-bottom: 1px solid #eef2f7;
+}
+
+.existing-test-header h2 {
+  margin: 0;
+
+  color: #1f2937;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.existing-test-header > span {
+  padding: 5px 9px;
+
+  border-radius: 5px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
 
 /* =========================================================
    TEST CASE LIST
    ========================================================= */
 
-.coding-testcase-list {
+.test-case-list {
   display: flex;
   flex-direction: column;
+
+  gap: 11px;
 }
 
-.coding-testcase-row {
-  padding: 18px 20px;
-  border-bottom: 1px solid #edf0f4;
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
+
+/* =========================================================
+   TEST CASE ITEM
+   ========================================================= */
+
+.test-case-item {
+  display: grid;
+
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+
+  gap: 14px;
+
+  padding: 15px;
+
+  background: #fbfcfe;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
-.coding-testcase-row:last-child {
-  border-bottom: 0;
+.test-case-item:hover {
+  background: #ffffff;
+
+  border-color: #cbd5e1;
+
+  box-shadow:
+    0 3px 9px rgba(15, 23, 42, 0.05);
 }
 
-.coding-testcase-number {
-  flex: 0 0 38px;
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
-  background: #f0efff;
-  color: #635bff;
+
+/* =========================================================
+   TEST CASE NUMBER
+   ========================================================= */
+
+.test-case-number {
+  width: 32px;
+  height: 32px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border-radius: 6px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
   font-size: 12px;
   font-weight: 800;
 }
 
-.coding-testcase-details {
-  flex: 1;
+
+/* =========================================================
+   TEST CASE DETAILS
+   ========================================================= */
+
+.test-case-details {
   min-width: 0;
 }
 
-.coding-testcase-title {
-  margin: 0;
-  color: #202a3d;
-  font-size: 13px;
+.test-case-item-header {
+  min-height: 30px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   CASE BADGES
+   ========================================================= */
+
+.case-badge {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 22px;
+
+  padding: 0 8px;
+
+  border-radius: 5px;
+
+  font-size: 10px;
   font-weight: 700;
 }
 
-.coding-testcase-meta {
-  margin-top: 7px;
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
+.case-badge.hidden {
+  background: #fff7ed;
+  color: #c2410c;
 }
 
-.coding-testcase-badge {
-  padding: 4px 8px;
-  border: 1px solid #e0e5ed;
+.case-badge.visible {
+  background: #ecfdf5;
+  color: #15803d;
+}
+
+
+/* =========================================================
+   CASE MARKS
+   ========================================================= */
+
+.case-marks {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 22px;
+
+  padding: 0 8px;
+
   border-radius: 5px;
-  background: #f8f9fb;
-  color: #69758a;
+
+  background: #f1f5f9;
+  color: #64748b;
+
   font-size: 10px;
-  font-weight: 650;
+  font-weight: 600;
 }
 
-.coding-testcase-badge.hidden {
-  border-color: #ead5a9;
-  background: #fff9ed;
-  color: #9a680d;
-}
 
-.coding-testcase-badge.visible {
-  border-color: #bfe3d2;
-  background: #f0faf5;
-  color: #167653;
-}
+/* =========================================================
+   INPUT / OUTPUT PREVIEW
+   ========================================================= */
 
-/* Input / output preview */
-
-.coding-testcase-preview {
-  margin-top: 11px;
+.test-case-preview {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
 }
 
-.coding-testcase-preview-block {
+.test-case-preview > div {
   min-width: 0;
 }
 
-.coding-testcase-preview-label {
-  margin-bottom: 5px;
-  color: #8a94a5;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.test-case-preview label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #64748b;
+
+  font-size: 10px;
+  font-weight: 700;
 }
 
-.coding-testcase-preview pre {
-  margin: 0;
-  min-height: 48px;
-  max-height: 120px;
-  padding: 9px 10px;
-  overflow: auto;
+.test-case-preview pre {
+  min-height: 70px;
+  max-height: 170px;
+
   box-sizing: border-box;
-  border: 1px solid #e3e7ee;
-  border-radius: 7px;
-  background: #f7f8fa;
-  color: #3d4759;
-  font-family: "Consolas", "Monaco", monospace;
+
+  margin: 0;
+  padding: 10px 11px;
+
+  overflow: auto;
+
+  background: #f1f5f9;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+
+  color: #334155;
+
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    Menlo,
+    monospace;
+
   font-size: 11px;
-  line-height: 1.5;
+  line-height: 1.55;
+
   white-space: pre-wrap;
   word-break: break-word;
 }
+
 
 /* =========================================================
    ACTIONS
    ========================================================= */
 
-.coding-testcase-actions {
-  flex: 0 0 auto;
+.test-case-actions {
   display: flex;
+  align-items: flex-start;
+
   gap: 7px;
 }
 
-.coding-testcase-actions button {
-  height: 33px;
+.test-case-actions button {
+  height: 32px;
+
   padding: 0 11px;
-  border: 1px solid #dce2eb;
-  border-radius: 7px;
+
+  border: 1px solid #d8dee8;
+  border-radius: 6px;
+
   background: #ffffff;
-  color: #596579;
+  color: #475569;
+
   font-size: 11px;
-  font-weight: 650;
+  font-weight: 600;
+
   cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
-.coding-testcase-actions button:hover {
-  background: #f7f8fb;
-  border-color: #cbd3df;
-  color: #202a3d;
+.test-case-actions button:hover {
+  background: #f8fafc;
+  border-color: #bfdbfe;
+  color: #2563eb;
 }
 
-.coding-testcase-actions .danger {
-  color: #b43a51;
-  border-color: #f0ccd3;
-  background: #fff7f8;
-}
-
-.coding-testcase-actions .danger:hover {
-  background: #fff0f2;
-  border-color: #e8b6c0;
-}
 
 /* =========================================================
-   FORM
+   DELETE BUTTON
    ========================================================= */
 
-.coding-testcase-form {
-  padding: 20px;
-}
+.test-case-actions .delete-case {
+  border-color: #fecaca;
 
-.coding-testcase-form-group {
-  margin-bottom: 18px;
-}
-
-.coding-testcase-form-group label {
-  display: block;
-  margin-bottom: 7px;
-  color: #364156;
-  font-size: 11px;
-  font-weight: 750;
-}
-
-.coding-testcase-form-group input,
-.coding-testcase-form-group textarea,
-.coding-testcase-form-group select {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #dce2eb;
-  border-radius: 8px;
   background: #ffffff;
-  color: #202a3d;
-  outline: none;
-  padding: 10px 11px;
-  font-family: inherit;
-  font-size: 13px;
-  transition: 0.18s ease;
+
+  color: #dc2626;
 }
 
-.coding-testcase-form-group input {
-  height: 40px;
+.test-case-actions .delete-case:hover {
+  border-color: #fca5a5;
+
+  background: #fef2f2;
+
+  color: #b91c1c;
 }
 
-.coding-testcase-form-group textarea {
-  min-height: 115px;
-  resize: vertical;
-  line-height: 1.5;
-}
-
-.coding-testcase-form-group input::placeholder,
-.coding-testcase-form-group textarea::placeholder {
-  color: #a1a9b6;
-}
-
-.coding-testcase-form-group input:focus,
-.coding-testcase-form-group textarea:focus,
-.coding-testcase-form-group select:focus {
-  border-color: #635bff;
-  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.09);
-}
 
 /* =========================================================
-   FORM GRID
+   EMPTY STATE
    ========================================================= */
 
-.coding-testcase-form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
+.test-case-empty {
+  min-height: 150px;
 
-/* =========================================================
-   CHECKBOX / HIDDEN TEST CASE
-   ========================================================= */
-
-.coding-testcase-checkbox {
-  min-height: 42px;
-  padding: 0 11px;
-  border: 1px solid #dfe5ed;
-  border-radius: 8px;
-  background: #ffffff;
   display: flex;
   align-items: center;
-  gap: 9px;
-  cursor: pointer;
-  color: #596579;
-  font-size: 12px;
-  font-weight: 650;
-}
+  justify-content: center;
 
-.coding-testcase-checkbox:hover {
-  background: #fafbfc;
-  border-color: #cbd3df;
-}
+  padding: 20px;
 
-.coding-testcase-checkbox input {
-  width: 15px;
-  height: 15px;
-  margin: 0;
-  accent-color: #635bff;
-}
+  box-sizing: border-box;
 
-/* =========================================================
-   SUBMIT / CANCEL
-   ========================================================= */
+  color: #64748b;
 
-.coding-testcase-form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-.coding-testcase-cancel {
-  height: 38px;
-  padding: 0 15px;
-  border: 1px solid #dce2eb;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #596579;
-  font-size: 12px;
-  font-weight: 650;
-  cursor: pointer;
-}
-
-.coding-testcase-cancel:hover {
-  background: #f7f8fb;
-}
-
-.coding-testcase-submit {
-  height: 38px;
-  padding: 0 17px;
-  border: 0;
-  border-radius: 8px;
-  background: #635bff;
-  color: #ffffff;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.coding-testcase-submit:hover {
-  background: #554de6;
-}
-
-/* =========================================================
-   EMPTY / ERROR
-   ========================================================= */
-
-.coding-testcase-empty {
-  padding: 55px 20px;
-  text-align: center;
-  color: #8490a2;
   font-size: 13px;
+  font-weight: 500;
+
+  text-align: center;
 }
 
-.coding-testcase-error {
-  margin: 18px 20px;
-  padding: 11px 13px;
-  border: 1px solid #f0ccd3;
-  border-radius: 8px;
-  background: #fff3f5;
-  color: #b42e47;
-  font-size: 12px;
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.test-case-loading {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #64748b;
+
+  font-size: 14px;
+  font-weight: 500;
 }
+
 
 /* =========================================================
    RESPONSIVE
    ========================================================= */
 
-@media (max-width: 800px) {
-  .coding-testcase-main {
-    width: calc(100% - 32px);
+@media (max-width: 900px) {
+  .test-case-page {
+    padding: 25px 20px 40px;
   }
 
-  .coding-testcase-row {
-    flex-wrap: wrap;
+  .test-case-item {
+    grid-template-columns: 34px minmax(0, 1fr);
   }
 
-  .coding-testcase-details {
-    flex-basis: calc(100% - 55px);
-  }
-
-  .coding-testcase-actions {
-    width: 100%;
-    margin-left: 53px;
+  .test-case-actions {
+    grid-column: 2;
   }
 }
 
-@media (max-width: 650px) {
-  .coding-testcase-header {
-    padding: 0 16px;
+
+@media (max-width: 700px) {
+  .test-case-page {
+    padding: 20px 14px 35px;
   }
 
-  .coding-testcase-main {
-    width: calc(100% - 24px);
-    padding-top: 24px;
+  .test-case-two-column {
+    grid-template-columns: 1fr;
   }
 
-  .coding-testcase-heading h1 {
-    font-size: 23px;
-  }
-
-  .coding-testcase-card-header {
+  .test-case-options {
     align-items: flex-start;
     flex-direction: column;
   }
 
-  .coding-testcase-add-button {
+  .test-case-marks {
     width: 100%;
+    max-width: 180px;
   }
 
-  .coding-testcase-form-grid,
-  .coding-testcase-preview {
+  .test-case-preview {
     grid-template-columns: 1fr;
-  }
-
-  .coding-testcase-actions {
-    margin-left: 0;
   }
 }
 
-@media (max-width: 450px) {
-  .coding-testcase-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+
+@media (max-width: 500px) {
+  .test-case-page {
+    padding: 15px 10px 25px;
   }
 
-  .coding-testcase-actions button {
+  .test-case-form-card,
+  .existing-test-cases {
+    padding: 15px;
+    border-radius: 7px;
+  }
+
+  .test-case-header h1 {
+    font-size: 21px;
+  }
+
+  .test-case-form-header h2,
+  .existing-test-header h2 {
+    font-size: 15px;
+  }
+
+  .test-case-item {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+
+    padding: 12px;
+  }
+
+  .test-case-number {
+    width: 30px;
+    height: 30px;
+  }
+
+  .test-case-actions {
+    grid-column: auto;
+
     width: 100%;
   }
 
-  .coding-testcase-form-actions {
-    flex-direction: column;
+  .test-case-actions button {
+    flex: 1;
   }
 
-  .coding-testcase-cancel,
-  .coding-testcase-submit {
+  .test-case-form-actions {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+  .test-case-cancel,
+  .test-case-save {
     width: 100%;
+  }
+
+  .existing-test-header {
+    align-items: flex-start;
   }
 }

@@ -1,337 +1,296 @@
 /* =========================================================
-   CODING EXAM START PAGE
-   Professional light candidate UI
+   CODING START PAGE
+   Professional MCQ / Admin Theme
    ========================================================= */
 
 .coding-start-page {
   min-height: 100vh;
-  padding: 40px 20px;
   box-sizing: border-box;
-  background: #f4f7fb;
-  color: #172033;
+
   display: flex;
+  align-items: center;
   justify-content: center;
+
+  padding: 40px 20px;
+
+  background: #f5f7fb;
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+  color: #1f2937;
 }
 
-.coding-start-container {
-  width: min(900px, 100%);
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.coding-start-card {
+  width: min(760px, 100%);
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  box-shadow:
+    0 2px 5px rgba(15, 23, 42, 0.04),
+    0 10px 25px rgba(15, 23, 42, 0.06);
+
+  overflow: hidden;
 }
+
 
 /* =========================================================
    HEADER
    ========================================================= */
 
 .coding-start-header {
-  margin-bottom: 22px;
-  text-align: center;
+  padding: 30px 32px 25px;
+
+  border-bottom: 1px solid #eef1f5;
 }
 
-.coding-start-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
+.coding-label {
+  display: inline-block;
 
-.coding-start-logo {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background: #635bff;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
+  margin-bottom: 9px;
+
+  color: #2563eb;
+
+  font-size: 10px;
+  line-height: 1;
+
   font-weight: 800;
-}
 
-.coding-start-brand-name {
-  color: #172033;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-align: left;
-}
-
-.coding-start-product {
-  margin-top: 3px;
-  color: #8a94a6;
-  font-size: 9px;
-  font-weight: 700;
   letter-spacing: 0.12em;
-  text-align: left;
 }
 
 .coding-start-header h1 {
   margin: 0;
-  color: #172033;
-  font-size: 30px;
-  line-height: 1.2;
-  font-weight: 750;
+
+  color: #111827;
+
+  font-size: 27px;
+  line-height: 1.3;
+
+  font-weight: 700;
 }
 
 .coding-start-header p {
-  max-width: 620px;
-  margin: 9px auto 0;
-  color: #738096;
-  font-size: 14px;
-  line-height: 1.6;
-}
+  margin: 9px 0 0;
 
-/* =========================================================
-   EXAM CARD
-   ========================================================= */
+  color: #64748b;
 
-.coding-start-card {
-  overflow: hidden;
-  background: #ffffff;
-  border: 1px solid #e3e8ef;
-  border-radius: 15px;
-  box-shadow: 0 5px 18px rgba(23, 32, 51, 0.055);
-}
-
-.coding-start-card-header {
-  padding: 22px 24px;
-  border-bottom: 1px solid #e8edf3;
-}
-
-.coding-start-card-header h2 {
-  margin: 0;
-  color: #202a3d;
-  font-size: 19px;
-  font-weight: 750;
-}
-
-.coding-start-card-header p {
-  margin: 6px 0 0;
-  color: #7b8799;
-  font-size: 12px;
-}
-
-/* =========================================================
-   EXAM META
-   ========================================================= */
-
-.coding-start-meta {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-bottom: 1px solid #e8edf3;
-}
-
-.coding-start-meta-item {
-  padding: 17px 20px;
-  border-right: 1px solid #e8edf3;
-  text-align: center;
-}
-
-.coding-start-meta-item:last-child {
-  border-right: 0;
-}
-
-.coding-start-meta-label {
-  display: block;
-  color: #8a94a5;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.coding-start-meta-value {
-  display: block;
-  margin-top: 6px;
-  color: #202a3d;
-  font-size: 16px;
-  font-weight: 750;
-}
-
-/* =========================================================
-   CONTENT
-   ========================================================= */
-
-.coding-start-content {
-  padding: 24px;
-}
-
-.coding-start-section {
-  margin-bottom: 24px;
-}
-
-.coding-start-section:last-child {
-  margin-bottom: 0;
-}
-
-.coding-start-section-title {
-  margin: 0 0 10px;
-  color: #293449;
-  font-size: 14px;
-  font-weight: 750;
-}
-
-.coding-start-section p {
-  margin: 0;
-  color: #687489;
   font-size: 13px;
   line-height: 1.65;
 }
+
+
+/* =========================================================
+   EXAM INFORMATION
+   ========================================================= */
+
+.coding-exam-info {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+
+  padding: 20px 32px;
+
+  background: #fafbfc;
+
+  border-bottom: 1px solid #eef1f5;
+}
+
+.coding-info-item {
+  padding: 13px 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 7px;
+
+  text-align: center;
+}
+
+.coding-info-item span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #64748b;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.coding-info-item strong {
+  display: block;
+
+  color: #1f2937;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
 
 /* =========================================================
    INSTRUCTIONS
    ========================================================= */
 
-.coding-start-instructions {
+.coding-instructions {
+  margin: 20px 32px;
+
   padding: 16px 17px;
-  border: 1px solid #e4e8ef;
-  border-radius: 10px;
-  background: #fafbfc;
-  color: #596579;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-left: 3px solid #2563eb;
+
+  border-radius: 6px;
+}
+
+.coding-instructions h2 {
+  margin: 0 0 8px;
+
+  color: #1f2937;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.instructions-content {
+  color: #64748b;
+
   font-size: 12px;
-  line-height: 1.65;
+  line-height: 1.7;
+
   white-space: pre-line;
 }
 
-/* =========================================================
-   RULES
-   ========================================================= */
-
-.coding-start-rules {
-  display: grid;
-  gap: 9px;
-}
-
-.coding-start-rule {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  color: #596579;
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.coding-start-rule-icon {
-  width: 21px;
-  height: 21px;
-  flex: 0 0 21px;
-  border-radius: 6px;
-  background: #f0efff;
-  color: #635bff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 800;
-}
-
-/* =========================================================
-   LANGUAGE LIST
-   ========================================================= */
-
-.coding-start-languages {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-.coding-start-language {
-  padding: 6px 10px;
-  border: 1px solid #dedbff;
-  border-radius: 6px;
-  background: #f5f4ff;
-  color: #574fd9;
-  font-size: 11px;
-  font-weight: 700;
-}
 
 /* =========================================================
    CANDIDATE FORM
    ========================================================= */
 
-.coding-start-form {
-  padding: 24px;
-  border-top: 1px solid #e8edf3;
+.coding-candidate-form {
+  padding: 24px 32px 30px;
 }
 
-.coding-start-form-title {
-  margin: 0 0 16px;
-  color: #202a3d;
-  font-size: 15px;
-  font-weight: 750;
+.coding-candidate-form h2 {
+  margin: 0 0 20px;
+
+  color: #1f2937;
+
+  font-size: 17px;
+  font-weight: 700;
 }
 
-.coding-start-form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.coding-start-form-group {
-  margin-bottom: 15px;
-}
-
-.coding-start-form-group.full-width {
-  grid-column: 1 / -1;
-}
-
-.coding-start-form-group label {
-  display: block;
-  margin-bottom: 7px;
-  color: #364156;
-  font-size: 11px;
-  font-weight: 750;
-}
-
-.coding-start-form-group input,
-.coding-start-form-group select {
-  width: 100%;
-  height: 42px;
-  box-sizing: border-box;
-  padding: 0 11px;
-  border: 1px solid #dce2eb;
-  border-radius: 8px;
-  outline: none;
-  background: #ffffff;
-  color: #202a3d;
-  font-family: inherit;
-  font-size: 13px;
-  transition: 0.18s ease;
-}
-
-.coding-start-form-group input::placeholder {
-  color: #a1a9b6;
-}
-
-.coding-start-form-group input:focus,
-.coding-start-form-group select:focus {
-  border-color: #635bff;
-  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.09);
-}
 
 /* =========================================================
-   CONSENT
+   FORM GROUP
    ========================================================= */
 
-.coding-start-consent {
-  margin: 5px 0 18px;
-  padding: 12px 13px;
-  border: 1px solid #e2e7ee;
-  border-radius: 8px;
-  background: #fafbfc;
-  display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  color: #69758a;
+.coding-form-group {
+  margin-bottom: 17px;
+}
+
+.coding-form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #475569;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.coding-form-group input {
+  width: 100%;
+  height: 42px;
+
+  box-sizing: border-box;
+
+  padding: 0 12px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+
+  background: #ffffff;
+
+  color: #1f2937;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.coding-form-group input::placeholder {
+  color: #a1aab5;
+}
+
+.coding-form-group input:hover {
+  border-color: #b8c1cc;
+}
+
+.coding-form-group input:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.coding-form-group small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #94a3b8;
+
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.coding-start-error {
+  margin: 5px 0 16px;
+
+  padding: 10px 12px;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+
+  color: #b91c1c;
+
   font-size: 11px;
   line-height: 1.5;
 }
 
-.coding-start-consent input {
-  width: 15px;
-  height: 15px;
-  margin: 1px 0 0;
-  flex: 0 0 15px;
-  accent-color: #635bff;
-}
 
 /* =========================================================
    START BUTTON
@@ -339,127 +298,246 @@
 
 .coding-start-button {
   width: 100%;
-  height: 46px;
-  border: 0;
-  border-radius: 9px;
-  background: #635bff;
+  height: 43px;
+
+  margin-top: 3px;
+
+  border: 1px solid #2563eb;
+  border-radius: 6px;
+
+  background: #2563eb;
   color: #ffffff;
+
+  font-family: inherit;
+
   font-size: 13px;
-  font-weight: 750;
+  font-weight: 700;
+
   cursor: pointer;
+
   transition:
     background 0.2s ease,
     box-shadow 0.2s ease,
-    transform 0.15s ease;
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
-.coding-start-button:hover {
-  background: #554de6;
-  box-shadow: 0 7px 18px rgba(99, 91, 255, 0.2);
+.coding-start-button:hover:not(:disabled) {
+  background: #1d4ed8;
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.18);
+
+  transform: translateY(-1px);
 }
 
-.coding-start-button:active {
-  transform: translateY(1px);
+.coding-start-button:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .coding-start-button:disabled {
-  opacity: 0.55;
   cursor: not-allowed;
-  box-shadow: none;
+
+  opacity: 0.65;
 }
+
 
 /* =========================================================
-   ERROR / LOADING
+   LOADING CARD
    ========================================================= */
 
-.coding-start-error {
-  margin-bottom: 16px;
-  padding: 11px 13px;
-  border: 1px solid #f0ccd3;
-  border-radius: 8px;
-  background: #fff3f5;
-  color: #b43a51;
-  font-size: 12px;
-  line-height: 1.45;
-}
+.coding-start-card.loading-card {
+  width: min(420px, 100%);
 
-.coding-start-loading {
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #738096;
-  font-size: 13px;
-}
+  padding: 40px 30px;
 
-/* =========================================================
-   FOOTER NOTE
-   ========================================================= */
-
-.coding-start-footer {
-  margin-top: 16px;
-  color: #9099a8;
-  font-size: 10px;
-  line-height: 1.5;
   text-align: center;
 }
 
+.loading-card p {
+  margin: 15px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
 /* =========================================================
-   RESPONSIVE
+   SPINNER
+   ========================================================= */
+
+.coding-spinner {
+  width: 32px;
+  height: 32px;
+
+  margin: 0 auto;
+
+  border: 3px solid #dbeafe;
+  border-top-color: #2563eb;
+
+  border-radius: 50%;
+
+  animation: codingStartSpin 0.8s linear infinite;
+}
+
+@keyframes codingStartSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   ERROR CARD
+   ========================================================= */
+
+.coding-start-card.error-card {
+  width: min(480px, 100%);
+
+  padding: 35px 30px;
+
+  text-align: center;
+}
+
+.error-card h1 {
+  margin: 0 0 9px;
+
+  color: #1f2937;
+
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.error-card p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   TABLET
    ========================================================= */
 
 @media (max-width: 650px) {
   .coding-start-page {
-    padding: 24px 12px;
+    align-items: flex-start;
+
+    padding: 25px 14px;
+  }
+
+  .coding-start-header {
+    padding: 24px 20px 21px;
   }
 
   .coding-start-header h1 {
-    font-size: 24px;
+    font-size: 23px;
   }
 
-  .coding-start-header p {
-    font-size: 13px;
+  .coding-exam-info {
+    padding: 15px 20px;
+
+    gap: 8px;
   }
 
-  .coding-start-card-header,
-  .coding-start-content,
-  .coding-start-form {
-    padding: 18px;
+  .coding-info-item {
+    padding: 11px 8px;
   }
 
-  .coding-start-meta {
-    grid-template-columns: 1fr;
+  .coding-info-item strong {
+    font-size: 12px;
   }
 
-  .coding-start-meta-item {
-    border-right: 0;
-    border-bottom: 1px solid #e8edf3;
+  .coding-instructions {
+    margin: 17px 20px;
   }
 
-  .coding-start-meta-item:last-child {
-    border-bottom: 0;
-  }
-
-  .coding-start-form-grid {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .coding-start-form-group.full-width {
-    grid-column: auto;
+  .coding-candidate-form {
+    padding: 21px 20px 24px;
   }
 }
 
-@media (max-width: 420px) {
-  .coding-start-brand-name {
-    font-size: 13px;
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+  .coding-start-page {
+    padding: 15px 10px;
+  }
+
+  .coding-start-card {
+    border-radius: 8px;
+  }
+
+  .coding-start-header {
+    padding: 21px 17px 19px;
   }
 
   .coding-start-header h1 {
-    font-size: 22px;
+    font-size: 20px;
   }
 
-  .coding-start-card-header h2 {
-    font-size: 17px;
+  .coding-start-header p {
+    font-size: 12px;
+  }
+
+  .coding-exam-info {
+    grid-template-columns: 1fr;
+
+    padding: 13px 17px;
+  }
+
+  .coding-info-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    text-align: left;
+
+    padding: 10px 12px;
+  }
+
+  .coding-info-item span {
+    margin: 0;
+  }
+
+  .coding-info-item strong {
+    font-size: 12px;
+  }
+
+  .coding-instructions {
+    margin: 15px 17px;
+    padding: 14px;
+  }
+
+  .coding-candidate-form {
+    padding: 19px 17px 21px;
+  }
+
+  .coding-candidate-form h2 {
+    font-size: 16px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 350px) {
+  .coding-start-header h1 {
+    font-size: 19px;
+  }
+
+  .coding-start-button {
+    height: 42px;
+
+    font-size: 12px;
   }
 }
