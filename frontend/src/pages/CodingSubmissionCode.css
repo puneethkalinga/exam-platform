@@ -1,134 +1,400 @@
 /* =========================================================
-   CODING SUBMISSION CODE
-========================================================= */
+   CODING SUBMISSION CODE VIEW
+   Professional light admin UI
+   ========================================================= */
 
-.coding-submission-code-page {
+.coding-submission-page {
   min-height: 100vh;
-  background: #f8fafc;
-  color: #0f172a;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  background: #f4f7fb;
+  color: #172033;
 }
 
-.coding-submission-code-header {
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.coding-submission-header {
+  min-height: 72px;
+  padding: 0 32px;
   background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 20px 32px;
+  border-bottom: 1px solid #e5eaf1;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.coding-submission-code-header h1 {
-  margin: 0;
-  font-size: 22px;
+.coding-submission-header-left {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
 }
 
-.coding-submission-code-header p {
-  margin: 5px 0 0;
-  color: #64748b;
-  font-size: 12px;
-}
-
-.coding-submission-code-back {
-  border: 1px solid #cbd5e1;
+.coding-submission-back {
+  height: 35px;
+  padding: 0 12px;
+  border: 1px solid #dfe5ee;
+  border-radius: 8px;
   background: #ffffff;
-  color: #334155;
-  border-radius: 7px;
-  padding: 8px 13px;
+  color: #596579;
+  font-size: 12px;
+  font-weight: 650;
   cursor: pointer;
 }
 
-.coding-submission-code-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 28px 32px 50px;
+.coding-submission-back:hover {
+  background: #f7f8fb;
+  color: #172033;
 }
 
-.coding-code-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  overflow: hidden;
+.coding-submission-title {
+  min-width: 0;
 }
 
-.coding-code-card-header {
-  padding: 15px 18px;
-  border-bottom: 1px solid #e2e8f0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.coding-code-card-header h2 {
+.coding-submission-title h1 {
   margin: 0;
-  font-size: 14px;
-}
-
-.coding-code-language {
-  padding: 5px 8px;
-  border-radius: 999px;
-  background: #eff6ff;
-  color: #1d4ed8;
-  font-size: 9px;
+  color: #172033;
+  font-size: 17px;
   font-weight: 750;
 }
 
-.coding-source-code {
-  margin: 0;
-  padding: 22px;
-  background: #0f172a;
-  color: #e2e8f0;
-  overflow: auto;
-  min-height: 450px;
-  font-family:
-    "JetBrains Mono",
-    "Fira Code",
-    Consolas,
-    monospace;
-  font-size: 12px;
-  line-height: 1.65;
-  white-space: pre;
+.coding-submission-title p {
+  margin: 4px 0 0;
+  color: #8490a2;
+  font-size: 11px;
 }
 
-.coding-submission-meta {
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.coding-submission-main {
+  width: min(1200px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 30px 0 60px;
+}
+
+/* =========================================================
+   INFO CARD
+   ========================================================= */
+
+.coding-submission-info {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-template-columns: 1fr repeat(4, 130px);
+  gap: 10px;
   margin-bottom: 18px;
 }
 
-.coding-submission-meta-item {
+.coding-submission-info-card {
+  min-height: 72px;
+  padding: 14px 15px;
+  box-sizing: border-box;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 14px;
+  border: 1px solid #e5eaf1;
+  border-radius: 10px;
 }
 
-.coding-submission-meta-item span {
-  display: block;
-  color: #64748b;
+.coding-submission-info-label {
+  color: #8490a2;
   font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.coding-submission-meta-item strong {
-  display: block;
-  margin-top: 5px;
+.coding-submission-info-value {
+  margin-top: 6px;
+  color: #202a3d;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   CODE CARD
+   ========================================================= */
+
+.coding-submission-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e5eaf1;
+  border-radius: 13px;
+  box-shadow: 0 3px 12px rgba(23, 32, 51, 0.04);
+}
+
+.coding-submission-card-header {
+  min-height: 65px;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e8edf3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.coding-submission-card-header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.coding-submission-card-header p {
+  margin: 4px 0 0;
+  color: #8490a2;
+  font-size: 11px;
+}
+
+.coding-submission-language {
+  padding: 5px 9px;
+  border: 1px solid #dedbff;
+  border-radius: 6px;
+  background: #f4f3ff;
+  color: #574fd9;
+  font-size: 10px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   SOURCE CODE
+   ========================================================= */
+
+.coding-submission-code-wrapper {
+  background: #1e2430;
+}
+
+.coding-submission-code {
+  margin: 0;
+  padding: 22px;
+  min-height: 420px;
+  max-height: 700px;
+  overflow: auto;
+  box-sizing: border-box;
+  color: #e6eaf0;
+  background: #1e2430;
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.65;
+  tab-size: 4;
+  white-space: pre;
+}
+
+/* =========================================================
+   SUBMISSION RESULT
+   ========================================================= */
+
+.coding-submission-result {
+  padding: 20px;
+}
+
+.coding-submission-result-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.coding-submission-result-item {
+  padding: 13px;
+  border: 1px solid #e5eaf1;
+  border-radius: 9px;
+  background: #fafbfc;
+}
+
+.coding-submission-result-label {
+  color: #8490a2;
+  font-size: 9px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.coding-submission-result-value {
+  margin-top: 6px;
+  color: #202a3d;
   font-size: 14px;
+  font-weight: 750;
 }
 
-@media (max-width: 750px) {
-  .coding-submission-code-header,
-  .coding-submission-code-container {
-    padding-left: 15px;
-    padding-right: 15px;
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.coding-submission-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.coding-submission-status.accepted,
+.coding-submission-status.success {
+  color: #117553;
+  background: #e9f8f1;
+}
+
+.coding-submission-status.error,
+.coding-submission-status.rejected {
+  color: #b43a51;
+  background: #fff0f2;
+}
+
+.coding-submission-status.pending,
+.coding-submission-status.processing {
+  color: #9a680d;
+  background: #fff8e9;
+}
+
+/* =========================================================
+   EXECUTION METRICS
+   ========================================================= */
+
+.coding-submission-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.coding-submission-metric {
+  padding: 6px 9px;
+  border: 1px solid #e2e7ee;
+  border-radius: 6px;
+  background: #f8f9fb;
+  color: #687489;
+  font-size: 10px;
+}
+
+.coding-submission-metric strong {
+  color: #364156;
+}
+
+/* =========================================================
+   EMPTY / ERROR / LOADING
+   ========================================================= */
+
+.coding-submission-loading {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f7fb;
+  color: #738096;
+  font-size: 13px;
+}
+
+.coding-submission-error {
+  padding: 14px 16px;
+  border: 1px solid #f0ccd3;
+  border-radius: 8px;
+  background: #fff3f5;
+  color: #b43a51;
+  font-size: 12px;
+}
+
+.coding-submission-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: #8490a2;
+  font-size: 13px;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.coding-submission-code::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+.coding-submission-code::-webkit-scrollbar-track {
+  background: #171c25;
+}
+
+.coding-submission-code::-webkit-scrollbar-thumb {
+  background: #4a5363;
+  border-radius: 5px;
+}
+
+.coding-submission-code::-webkit-scrollbar-thumb:hover {
+  background: #626d7e;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+  .coding-submission-info {
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
-  .coding-submission-meta {
+  .coding-submission-info-card:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .coding-submission-result-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .coding-submission-header {
+    padding: 0 16px;
+  }
+
+  .coding-submission-main {
+    width: calc(100% - 24px);
+    padding-top: 22px;
+  }
+
+  .coding-submission-header-left {
+    gap: 8px;
+  }
+
+  .coding-submission-title h1 {
+    font-size: 14px;
+  }
+
+  .coding-submission-info {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .coding-submission-info-card:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .coding-submission-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .coding-submission-code {
+    min-height: 360px;
+    padding: 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 450px) {
+  .coding-submission-info {
+    grid-template-columns: 1fr;
+  }
+
+  .coding-submission-info-card:first-child {
+    grid-column: auto;
+  }
+
+  .coding-submission-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .coding-submission-back {
+    padding: 0 9px;
+    font-size: 11px;
   }
 }

@@ -1,230 +1,465 @@
+/* =========================================================
+   CODING EXAM START PAGE
+   Professional light candidate UI
+   ========================================================= */
+
 .coding-start-page {
   min-height: 100vh;
-  background: #f6f8fb;
-  padding: 50px 20px;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  background: #f4f7fb;
+  color: #172033;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
 }
 
-.coding-start-card {
-  width: 100%;
-  max-width: 850px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.07);
-  overflow: hidden;
+.coding-start-container {
+  width: min(900px, 100%);
 }
+
+/* =========================================================
+   HEADER
+   ========================================================= */
 
 .coding-start-header {
-  padding: 38px 42px 30px;
-  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 22px;
+  text-align: center;
 }
 
-.coding-label {
-  display: inline-block;
-  padding: 6px 10px;
-  background: #eef2ff;
-  color: #4338ca;
-  border-radius: 5px;
-  font-size: 11px;
+.coding-start-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.coding-start-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #635bff;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.coding-start-brand-name {
+  color: #172033;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+
+.coding-start-product {
+  margin-top: 3px;
+  color: #8a94a6;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  margin-bottom: 14px;
+  letter-spacing: 0.12em;
+  text-align: left;
 }
 
 .coding-start-header h1 {
   margin: 0;
-  color: #111827;
+  color: #172033;
   font-size: 30px;
+  line-height: 1.2;
+  font-weight: 750;
 }
 
 .coding-start-header p {
-  margin: 10px 0 0;
-  color: #6b7280;
-  line-height: 1.6;
+  max-width: 620px;
+  margin: 9px auto 0;
+  color: #738096;
   font-size: 14px;
+  line-height: 1.6;
 }
 
-.coding-exam-info {
+/* =========================================================
+   EXAM CARD
+   ========================================================= */
+
+.coding-start-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e3e8ef;
+  border-radius: 15px;
+  box-shadow: 0 5px 18px rgba(23, 32, 51, 0.055);
+}
+
+.coding-start-card-header {
+  padding: 22px 24px;
+  border-bottom: 1px solid #e8edf3;
+}
+
+.coding-start-card-header h2 {
+  margin: 0;
+  color: #202a3d;
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.coding-start-card-header p {
+  margin: 6px 0 0;
+  color: #7b8799;
+  font-size: 12px;
+}
+
+/* =========================================================
+   EXAM META
+   ========================================================= */
+
+.coding-start-meta {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: #e5e7eb;
+  border-bottom: 1px solid #e8edf3;
 }
 
-.coding-info-item {
-  padding: 20px 24px;
-  background: #ffffff;
+.coding-start-meta-item {
+  padding: 17px 20px;
+  border-right: 1px solid #e8edf3;
+  text-align: center;
 }
 
-.coding-info-item span {
+.coding-start-meta-item:last-child {
+  border-right: 0;
+}
+
+.coding-start-meta-label {
   display: block;
-  color: #6b7280;
-  font-size: 12px;
-  margin-bottom: 6px;
+  color: #8a94a5;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.coding-info-item strong {
-  color: #111827;
-  font-size: 15px;
-}
-
-.coding-instructions {
-  padding: 28px 42px 0;
-}
-
-.coding-instructions h2,
-.coding-candidate-form h2 {
-  margin: 0 0 14px;
-  color: #111827;
-  font-size: 18px;
-}
-
-.instructions-content {
-  padding: 18px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 9px;
-  white-space: pre-wrap;
-  color: #374151;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.coding-candidate-form {
-  padding: 30px 42px 42px;
-}
-
-.coding-form-group {
-  margin-bottom: 18px;
-}
-
-.coding-form-group label {
-  display: block;
-  margin-bottom: 7px;
-  color: #374151;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.coding-form-group input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 12px 13px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #111827;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.coding-form-group input:focus {
-  border-color: #4f46e5;
-}
-
-.coding-form-group small {
+.coding-start-meta-value {
   display: block;
   margin-top: 6px;
-  color: #9ca3af;
-  font-size: 11px;
+  color: #202a3d;
+  font-size: 16px;
+  font-weight: 750;
 }
 
-.coding-start-error {
-  margin-bottom: 18px;
-  padding: 12px 14px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  color: #b91c1c;
-  font-size: 13px;
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.coding-start-content {
+  padding: 24px;
 }
+
+.coding-start-section {
+  margin-bottom: 24px;
+}
+
+.coding-start-section:last-child {
+  margin-bottom: 0;
+}
+
+.coding-start-section-title {
+  margin: 0 0 10px;
+  color: #293449;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.coding-start-section p {
+  margin: 0;
+  color: #687489;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+/* =========================================================
+   INSTRUCTIONS
+   ========================================================= */
+
+.coding-start-instructions {
+  padding: 16px 17px;
+  border: 1px solid #e4e8ef;
+  border-radius: 10px;
+  background: #fafbfc;
+  color: #596579;
+  font-size: 12px;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+/* =========================================================
+   RULES
+   ========================================================= */
+
+.coding-start-rules {
+  display: grid;
+  gap: 9px;
+}
+
+.coding-start-rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #596579;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.coding-start-rule-icon {
+  width: 21px;
+  height: 21px;
+  flex: 0 0 21px;
+  border-radius: 6px;
+  background: #f0efff;
+  color: #635bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   LANGUAGE LIST
+   ========================================================= */
+
+.coding-start-languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.coding-start-language {
+  padding: 6px 10px;
+  border: 1px solid #dedbff;
+  border-radius: 6px;
+  background: #f5f4ff;
+  color: #574fd9;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   CANDIDATE FORM
+   ========================================================= */
+
+.coding-start-form {
+  padding: 24px;
+  border-top: 1px solid #e8edf3;
+}
+
+.coding-start-form-title {
+  margin: 0 0 16px;
+  color: #202a3d;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.coding-start-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.coding-start-form-group {
+  margin-bottom: 15px;
+}
+
+.coding-start-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.coding-start-form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: #364156;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.coding-start-form-group input,
+.coding-start-form-group select {
+  width: 100%;
+  height: 42px;
+  box-sizing: border-box;
+  padding: 0 11px;
+  border: 1px solid #dce2eb;
+  border-radius: 8px;
+  outline: none;
+  background: #ffffff;
+  color: #202a3d;
+  font-family: inherit;
+  font-size: 13px;
+  transition: 0.18s ease;
+}
+
+.coding-start-form-group input::placeholder {
+  color: #a1a9b6;
+}
+
+.coding-start-form-group input:focus,
+.coding-start-form-group select:focus {
+  border-color: #635bff;
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.09);
+}
+
+/* =========================================================
+   CONSENT
+   ========================================================= */
+
+.coding-start-consent {
+  margin: 5px 0 18px;
+  padding: 12px 13px;
+  border: 1px solid #e2e7ee;
+  border-radius: 8px;
+  background: #fafbfc;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: #69758a;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.coding-start-consent input {
+  width: 15px;
+  height: 15px;
+  margin: 1px 0 0;
+  flex: 0 0 15px;
+  accent-color: #635bff;
+}
+
+/* =========================================================
+   START BUTTON
+   ========================================================= */
 
 .coding-start-button {
   width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 8px;
-  background: #111827;
+  height: 46px;
+  border: 0;
+  border-radius: 9px;
+  background: #635bff;
   color: #ffffff;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 750;
   cursor: pointer;
-  transition: background 0.2s;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
 }
 
-.coding-start-button:hover:not(:disabled) {
-  background: #1f2937;
+.coding-start-button:hover {
+  background: #554de6;
+  box-shadow: 0 7px 18px rgba(99, 91, 255, 0.2);
+}
+
+.coding-start-button:active {
+  transform: translateY(1px);
 }
 
 .coding-start-button:disabled {
-  background: #9ca3af;
+  opacity: 0.55;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-.loading-card {
-  padding: 60px;
+/* =========================================================
+   ERROR / LOADING
+   ========================================================= */
+
+.coding-start-error {
+  margin-bottom: 16px;
+  padding: 11px 13px;
+  border: 1px solid #f0ccd3;
+  border-radius: 8px;
+  background: #fff3f5;
+  color: #b43a51;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.coding-start-loading {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #738096;
+  font-size: 13px;
+}
+
+/* =========================================================
+   FOOTER NOTE
+   ========================================================= */
+
+.coding-start-footer {
+  margin-top: 16px;
+  color: #9099a8;
+  font-size: 10px;
+  line-height: 1.5;
   text-align: center;
 }
 
-.loading-card p {
-  color: #6b7280;
-}
-
-.coding-spinner {
-  width: 32px;
-  height: 32px;
-  margin: 0 auto 14px;
-  border: 3px solid #e5e7eb;
-  border-top-color: #374151;
-  border-radius: 50%;
-  animation: coding-spin 0.8s linear infinite;
-}
-
-@keyframes coding-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.error-card {
-  padding: 50px;
-  text-align: center;
-}
-
-.error-card h1 {
-  color: #111827;
-}
-
-.error-card p {
-  color: #6b7280;
-}
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
 
 @media (max-width: 650px) {
   .coding-start-page {
-    padding: 20px 12px;
-  }
-
-  .coding-start-header {
-    padding: 28px 24px;
+    padding: 24px 12px;
   }
 
   .coding-start-header h1 {
     font-size: 24px;
   }
 
-  .coding-exam-info {
+  .coding-start-header p {
+    font-size: 13px;
+  }
+
+  .coding-start-card-header,
+  .coding-start-content,
+  .coding-start-form {
+    padding: 18px;
+  }
+
+  .coding-start-meta {
     grid-template-columns: 1fr;
   }
 
-  .coding-instructions {
-    padding: 24px 24px 0;
+  .coding-start-meta-item {
+    border-right: 0;
+    border-bottom: 1px solid #e8edf3;
   }
 
-  .coding-candidate-form {
-    padding: 28px 24px;
+  .coding-start-meta-item:last-child {
+    border-bottom: 0;
+  }
+
+  .coding-start-form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .coding-start-form-group.full-width {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .coding-start-brand-name {
+    font-size: 13px;
+  }
+
+  .coding-start-header h1 {
+    font-size: 22px;
+  }
+
+  .coding-start-card-header h2 {
+    font-size: 17px;
   }
 }
