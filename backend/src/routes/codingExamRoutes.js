@@ -13,6 +13,13 @@ const {
 
 const authMiddleware = require("../middleware/authMiddleware");
 
+router.put("/debug-publish/:id", (req, res) => {
+  res.json({
+    ok: true,
+    route: "codingExamRoutes is working",
+    id: req.params.id,
+  });
+});
 // Admin
 router.get("/", authMiddleware, getCodingExams);
 
