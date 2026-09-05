@@ -55,100 +55,72 @@ const CodingStart = () => {
   };
 
   const handleStart = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  setError("");
 
-    setError("");
+  if (!name.trim()) {
+    setError("Please enter your name.");
+    return;
+  }
 
-    if (!name.trim()) {
-      setError("Please enter your name.");
-      return;
-    }
+  if (!rollNumber.trim()) {
+    setError("Please enter your roll number.");
+    return;
+  }
 
-    if (!rollNumber.trim()) {
-      setError("Please enter your roll number.");
-      return;
-    }
+  if (!course.trim()) {
+    setError("Please enter your course.");
+    return;
+  }
 
-    if (!course.trim()) {
-      setError("Please enter your course.");
-      return;
-    }
+  try {
+    setStarting(true);
 
-    try {
-      setStarting(true);
-
-      const response = await fetch(
-        `${API_URL}/api/coding-attempts/start`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            coding_exam_id: Number(examId),
-            name: name.trim(),
-            roll_number: rollNumber.trim().toUpperCase(),
-            course: course.trim(),
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to start coding exam"
-        );
+    const response = await fetch(
+      `${API_URL}/api/coding-attempts/start`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          coding_exam_id: Number(examId),
+          name: name.trim(),
+          roll_number: rollNumber.trim().toUpperCase(),
+          course: course.trim(),
+        }),
       }
+    );
 
-      // =====================================================
-      // CODING ATTEMPT + ACCESS TOKEN
-      // =====================================================
+    const data = await response.json();
 
-      const attemptId = data.attempt?.id;
-      const accessToken = data.accessToken;
-
-      if (!attemptId) {
-        throw new Error(
-          "Coding attempt was not created by the server."
-        );
-      }
-
-      if (!accessToken) {
-        throw new Error(
-          "Coding access token was not returned by the server."
-        );
-      }
-
-      // Store the token specifically for this attempt.
-      localStorage.setItem(
-        `codingAccessToken_${attemptId}`,
-        accessToken
+    if (!response.ok) {
+      throw new Error(
+        data.message || "Failed to start coding exam"
       );
-
-      // Store attempt ID as well.
-      localStorage.setItem(
-        "codingAttemptId",
-        String(attemptId)
-      );
-
-      // Navigate to coding examination.
-      navigate(
-        `/coding-exam/${examId}/attempt/${attemptId}`,
-        {
-          replace: true,
-        }
-      );
-    } catch (err) {
-      console.error("START CODING EXAM ERROR:", err);
-
-      setError(
-        err.message || "Failed to start coding examination"
-      );
-    } finally {
-      setStarting(false);
     }
-  };
+
+    const attemptId = data.attempt?.id || data.id;
+
+    if (!attemptId) {
+      throw new Error(
+        "Coding attempt was not created by the server."
+      );
+    }
+
+    navigate(
+      `/coding-exam/${examId}/attempt/${attemptId}`,
+      { replace: true }
+    );
+  } catch (err) {
+    console.error("START CODING EXAM ERROR:", err);
+    setError(
+      err.message || "Failed to start coding examination"
+    );
+  } finally {
+    setStarting(false);
+  }
+};
 
   if (loading) {
     return (
