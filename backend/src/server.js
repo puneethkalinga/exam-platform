@@ -21,6 +21,7 @@ const codingWorkspaceRoutes = require("./routes/codingSpaceRoutes");
 const codingExecutionRoutes = require("./routes/codingExecutionRoutes");
 const codingResultRoutes = require("./routes/codingResultRoutes");
 const codingSecurityRoutes = require("./routes/codingSecurityRoutes");
+const codingSpaceRoutes = require("./routes/codingSpaceRoutes");
 
 app.use(helmet());
 
@@ -99,7 +100,7 @@ app.put("/api/test-publish-route", (req, res) => {
 });
 app.use("/api/coding-results", codingResultRoutes);
 app.use("/api/coding-security", codingSecurityRoutes);
-
+app.use("/api/coding-space", codingSpaceRoutes);
 
 
 app.listen(PORT, () => {

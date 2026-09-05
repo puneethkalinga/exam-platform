@@ -48,17 +48,7 @@ const CodingExam = () => {
   // CODING AUTHENTICATION
   // =====================================================
 
-  const getCodingHeaders = () => {
-    const token = localStorage.getItem(
-      `codingAccessToken_${attemptId}`
-    );
-
-    return token
-      ? {
-          Authorization: `Bearer ${token}`,
-        }
-      : {};
-  };
+  
 
   // =====================================================
   // EXAM DATA

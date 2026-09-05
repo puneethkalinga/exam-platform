@@ -1,15 +1,22 @@
 const pool = require("../config/db");
 
 /*
-  Get coding questions for an active attempt.
+  Get coding questions for an attempt.
 
-  IMPORTANT:
-  Hidden expected outputs are NEVER returned.
+  Candidate authentication is NOT required.
+  The attempt ID comes from the URL.
+
+  Hidden expected outputs are never returned.
 */
 const getAttemptQuestions = async (req, res) => {
   try {
-    // Get authenticated attempt from codingAuth middleware
-    const attemptId = req.codingAttempt.id;
+    const attemptId = req.params.attemptId || req.params.id;
+
+    if (!attemptId) {
+      return res.status(400).json({
+        message: "Attempt ID is required",
+      });
+    }
 
     const attemptResult = await pool.query(
       `
@@ -61,7 +68,7 @@ const getAttemptQuestions = async (req, res) => {
       [attempt.coding_exam_id]
     );
 
-    res.json({
+    return res.json({
       attempt: {
         id: attempt.id,
         coding_exam_id: attempt.coding_exam_id,
@@ -76,7 +83,7 @@ const getAttemptQuestions = async (req, res) => {
   } catch (error) {
     console.error("Get coding workspace error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Failed to load coding workspace",
     });
   }
@@ -84,14 +91,26 @@ const getAttemptQuestions = async (req, res) => {
 
 
 /*
-  Get the candidate's saved draft.
+  Get candidate's saved draft.
+
+  No authentication required.
 */
 const getDraft = async (req, res) => {
   try {
-    // Attempt comes from authenticated middleware
-    const attemptId = req.codingAttempt.id;
-
+    const attemptId = req.params.attemptId || req.params.id;
     const { questionId } = req.params;
+
+    if (!attemptId) {
+      return res.status(400).json({
+        message: "Attempt ID is required",
+      });
+    }
+
+    if (!questionId) {
+      return res.status(400).json({
+        message: "Question ID is required",
+      });
+    }
 
     const result = await pool.query(
       `
@@ -103,7 +122,7 @@ const getDraft = async (req, res) => {
         updated_at
       FROM coding_drafts
       WHERE attempt_id = $1
-      AND question_id = $2
+        AND question_id = $2
       `,
       [attemptId, questionId]
     );
@@ -114,13 +133,13 @@ const getDraft = async (req, res) => {
       });
     }
 
-    res.json({
+    return res.json({
       draft: result.rows[0],
     });
   } catch (error) {
     console.error("Get coding draft error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Failed to load draft",
     });
   }
@@ -128,13 +147,13 @@ const getDraft = async (req, res) => {
 
 
 /*
-  Create/update candidate draft.
+  Create / update candidate draft.
+
+  No authentication required.
 */
 const saveDraft = async (req, res) => {
   try {
-    // Attempt comes from authenticated middleware
-    const attemptId = req.codingAttempt.id;
-
+    const attemptId = req.params.attemptId || req.params.id;
     const { questionId } = req.params;
 
     const {
@@ -142,12 +161,27 @@ const saveDraft = async (req, res) => {
       source_code,
     } = req.body;
 
+    if (!attemptId) {
+      return res.status(400).json({
+        message: "Attempt ID is required",
+      });
+    }
+
+    if (!questionId) {
+      return res.status(400).json({
+        message: "Question ID is required",
+      });
+    }
+
     if (!language) {
       return res.status(400).json({
         message: "Language is required",
       });
     }
 
+    /*
+      Verify attempt exists.
+    */
     const attemptResult = await pool.query(
       `
       SELECT
@@ -169,29 +203,36 @@ const saveDraft = async (req, res) => {
 
     const attempt = attemptResult.rows[0];
 
+    /*
+      Only active attempts can save drafts.
+    */
     if (attempt.status !== "in_progress") {
       return res.status(400).json({
         message: "Coding attempt is no longer active",
       });
     }
 
-    if (new Date(attempt.ends_at) <= new Date()) {
+    /*
+      Check exam time.
+    */
+    if (
+      attempt.ends_at &&
+      new Date(attempt.ends_at) <= new Date()
+    ) {
       return res.status(400).json({
         message: "Coding exam time has expired",
       });
     }
 
     /*
-      Make sure the question belongs to this coding exam.
-      This prevents a candidate from saving a draft
-      against another exam's question ID.
+      Make sure the question belongs to this exam.
     */
     const questionResult = await pool.query(
       `
       SELECT id
       FROM coding_questions
       WHERE id = $1
-      AND coding_exam_id = $2
+        AND coding_exam_id = $2
       `,
       [
         questionId,
@@ -205,6 +246,9 @@ const saveDraft = async (req, res) => {
       });
     }
 
+    /*
+      Insert or update draft.
+    */
     const result = await pool.query(
       `
       INSERT INTO coding_drafts (
@@ -214,7 +258,13 @@ const saveDraft = async (req, res) => {
         source_code,
         updated_at
       )
-      VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP)
+      VALUES (
+        $1,
+        $2,
+        $3,
+        $4,
+        CURRENT_TIMESTAMP
+      )
 
       ON CONFLICT (attempt_id, question_id)
       DO UPDATE SET
@@ -232,14 +282,14 @@ const saveDraft = async (req, res) => {
       ]
     );
 
-    res.json({
+    return res.json({
       message: "Draft saved",
       draft: result.rows[0],
     });
   } catch (error) {
     console.error("Save coding draft error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       message: "Failed to save draft",
     });
   }
