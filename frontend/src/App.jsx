@@ -91,14 +91,8 @@ function App() {
 
         {/* Coding candidate result */}
         <Route
-  path="/admin/coding-exams/:examId/results"
-  element={
-    admin ? (
-      <CodingResult />
-    ) : (
-      <Navigate to="/admin/login" replace />
-    )
-  }
+  path="/coding-exam/:examId/result/:attemptId"
+  element={<CodingResult />}
 />
 
         {/* =========================================

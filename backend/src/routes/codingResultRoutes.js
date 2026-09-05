@@ -9,38 +9,59 @@ const {
   getAdminSubmissionCode,
 } = require("../controllers/codingResultController");
 
-const authenticateCodingAttempt =
-  require("../middleware/codingAuth");
+const authenticateAdmin = require("../middleware/authMiddleware");
 
-const authenticateAdmin =
-  require("../middleware/authMiddleware");
+/*
+====================================================
+CANDIDATE RESULT
+NO AUTHORIZATION
 
-// Candidate result
+Same as MCQ result flow.
+====================================================
+*/
 router.get(
   "/attempt/:attemptId",
-  authenticateCodingAttempt,
   getCodingResult
 );
 
-// Admin result list
+
+/*
+====================================================
+ADMIN
+ALL RESULTS FOR ONE CODING EXAM
+====================================================
+*/
 router.get(
   "/exam/:examId",
   authenticateAdmin,
   getCodingExamResults
 );
 
-// Admin result details
+
+/*
+====================================================
+ADMIN
+ONE CANDIDATE'S COMPLETE CODING RESULT
+====================================================
+*/
 router.get(
   "/admin/attempt/:attemptId",
   authenticateAdmin,
   getAdminCodingResultDetails
 );
 
-// Admin submitted code
+
+/*
+====================================================
+ADMIN
+VIEW SUBMITTED CODE
+====================================================
+*/
 router.get(
   "/admin/attempt/:attemptId/question/:questionId/code",
   authenticateAdmin,
   getAdminSubmissionCode
 );
+
 
 module.exports = router;

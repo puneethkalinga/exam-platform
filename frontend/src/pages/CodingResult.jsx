@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
 import "./CodingResult.css";
 
-const API_URL =
-  "https://exam-platform-qhk8.onrender.com";
+const API_URL = "https://exam-platform-qhk8.onrender.com";
 
 const CodingResult = () => {
   const { examId, attemptId } = useParams();
@@ -11,232 +11,218 @@ const CodingResult = () => {
 
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const getCodingHeaders = () => {
-    const token = localStorage.getItem(
-      `codingAccessToken_${attemptId}`
-    );
-
-    return token
-      ? {
-          Authorization: `Bearer ${token}`,
-        }
-      : {};
-  };
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    loadResult();
+    fetchResult();
   }, [attemptId]);
 
-  const loadResult = async () => {
+  const fetchResult = async () => {
     try {
       setLoading(true);
+      setError("");
+
+      if (!attemptId) {
+        throw new Error("Attempt ID is missing");
+      }
 
       const response = await fetch(
-        `${API_URL}/api/coding-results/attempt/${attemptId}`,
-        {
-          method: "GET",
-          headers: {
-            ...getCodingHeaders(),
-          },
-        }
+        `${API_URL}/api/coding-results/attempt/${attemptId}`
       );
 
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          data.message ||
-            "Unable to load coding result."
+          data.message || "Failed to load coding result"
         );
       }
 
       setResult(data);
-    } catch (error) {
-      console.error(
-        "Coding result error:",
-        error
-      );
+    } catch (err) {
+      console.error("Coding result error:", err);
 
-      alert(
-        error.message ||
-          "Unable to load coding result."
+      setError(
+        err.message || "Unable to load coding result"
       );
-
-      navigate(`/coding-exam/${examId}`);
     } finally {
       setLoading(false);
     }
   };
 
-  const formatDate = (date) => {
-    if (!date) {
-      return "-";
-    }
-
-    return new Date(date).toLocaleString();
-  };
-
-  const getStatusClass = (status) => {
-    if (status === "Accepted") {
-      return "coding-result-success";
-    }
-
-    if (
-      status === "Wrong Answer" ||
-      status === "Compilation Error" ||
-      status === "Time Limit Exceeded"
-    ) {
-      return "coding-result-danger";
-    }
-
-    return "coding-result-neutral";
-  };
-
   if (loading) {
     return (
-      <div className="coding-result-loading">
-        Loading your coding result...
+      <div className="coding-result-page">
+        <div className="coding-result-card loading-card">
+          <div className="result-loader"></div>
+
+          <h2>Loading Result...</h2>
+
+          <p>
+            Please wait while we load your coding
+            examination result.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="coding-result-page">
+        <div className="coding-result-card error-card">
+          <div className="result-error-icon">!</div>
+
+          <h2>Unable to Load Result</h2>
+
+          <p>{error}</p>
+
+          <button
+            className="result-primary-button"
+            onClick={fetchResult}
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
 
   if (!result) {
-    return (
-      <div className="coding-result-loading">
-        Result not available.
-      </div>
-    );
+    return null;
   }
 
-  const attempt = result.attempt || {};
+  const candidate = result.candidate || {};
   const exam = result.exam || {};
-  const questions = result.questions || [];
+  const attempt = result.attempt || {};
+  const submissions = result.submissions || [];
 
   const totalMarks = Number(
-    result.total_marks ??
-      exam.total_marks ??
+    attempt.total_marks ||
+      exam.total_marks ||
       0
   );
 
-  const obtainedMarks = Number(
-    result.total_score ??
-      attempt.total_score ??
-      0
+  const totalScore = Number(
+    attempt.total_score || 0
   );
 
   const percentage =
     totalMarks > 0
-      ? ((obtainedMarks / totalMarks) * 100).toFixed(2)
+      ? ((totalScore / totalMarks) * 100).toFixed(2)
       : "0.00";
+
+  const getStatusClass = (status) => {
+    const value = String(
+      status || ""
+    ).toLowerCase();
+
+    if (
+      value.includes("accepted") ||
+      value.includes("passed")
+    ) {
+      return "passed";
+    }
+
+    if (
+      value.includes("wrong") ||
+      value.includes("failed") ||
+      value.includes("error")
+    ) {
+      return "failed";
+    }
+
+    return "neutral";
+  };
 
   return (
     <div className="coding-result-page">
 
-      {/* =================================================
+      {/* ================================
           HEADER
-      ================================================= */}
-
+      ================================= */}
       <header className="coding-result-header">
         <div>
-          <h1>
-            Coding Assessment Result
-          </h1>
+          <span className="result-eyebrow">
+            CODING ASSESSMENT
+          </span>
+
+          <h1>Coding Examination Result</h1>
 
           <p>
-            {exam.title ||
-              "Coding Examination"}
+            {exam.title || "Coding Assessment"}
           </p>
         </div>
       </header>
 
-      {/* =================================================
-          MAIN CONTENT
-      ================================================= */}
 
       <main className="coding-result-container">
 
-        {/* =================================================
-            COMPLETION MESSAGE
-        ================================================= */}
+        {/* ================================
+            SUCCESS MESSAGE
+        ================================= */}
+        <section className="result-success-banner">
 
-        <section className="coding-result-complete">
-
-          <div className="result-check">
+          <div className="success-icon">
             ✓
           </div>
 
           <div>
-            <h2>
-              Coding Exam Submitted
-            </h2>
+            <h2>Examination Submitted</h2>
 
             <p>
-              Your coding assessment has
-              been submitted successfully.
+              Your coding examination has been
+              successfully submitted.
             </p>
           </div>
 
         </section>
 
-        {/* =================================================
+
+        {/* ================================
             CANDIDATE INFORMATION
-        ================================================= */}
+        ================================= */}
+        <section className="result-card">
 
-        <section className="coding-result-card">
+          <div className="result-card-heading">
+            <div>
+              <span className="result-section-label">
+                CANDIDATE
+              </span>
 
-          <div className="coding-result-card-header">
-            <h2>
-              Candidate Information
-            </h2>
+              <h2>Candidate Information</h2>
+            </div>
           </div>
 
-          <div className="candidate-result-grid">
 
-            <div>
-              <span>
-                Name
-              </span>
+          <div className="candidate-grid">
 
+            <div className="candidate-item">
+              <span>Name</span>
               <strong>
-                {result.candidate?.name ||
-                  attempt.name ||
-                  "-"}
+                {candidate.name || "-"}
               </strong>
             </div>
 
-            <div>
-              <span>
-                Roll Number
-              </span>
-
+            <div className="candidate-item">
+              <span>Roll Number</span>
               <strong>
-                {result.candidate
-                  ?.roll_number ||
-                  "-"}
+                {candidate.roll_number || "-"}
               </strong>
             </div>
 
-            <div>
-              <span>
-                Course
-              </span>
-
+            <div className="candidate-item">
+              <span>Course</span>
               <strong>
-                {result.candidate?.course ||
-                  "-"}
+                {candidate.course || "-"}
               </strong>
             </div>
 
-            <div>
-              <span>
-                Submitted
-              </span>
+            <div className="candidate-item">
+              <span>Status</span>
 
-              <strong>
-                {formatDate(
-                  attempt.submitted_at
-                )}
+              <strong className="status-completed">
+                {attempt.status || "Submitted"}
               </strong>
             </div>
 
@@ -244,221 +230,257 @@ const CodingResult = () => {
 
         </section>
 
-        {/* =================================================
+
+        {/* ================================
             SCORE
-        ================================================= */}
+        ================================= */}
+        <section className="score-card">
 
-        <section className="coding-score-card">
+          <div className="score-main">
 
-          <div className="coding-score-main">
-
-            <span>
-              Total Score
+            <span className="result-section-label">
+              FINAL SCORE
             </span>
 
-            <strong>
-              {obtainedMarks}
-              <small>
-                {" "}
+            <div className="score-value">
+              {totalScore}
+              <span>
                 / {totalMarks}
-              </small>
-            </strong>
+              </span>
+            </div>
+
+            <p>
+              Overall Coding Score
+            </p>
 
           </div>
 
-          <div className="coding-score-item">
+
+          <div className="score-percentage">
+
+            <div className="percentage-value">
+              {percentage}%
+            </div>
 
             <span>
               Percentage
             </span>
 
-            <strong>
-              {percentage}%
-            </strong>
-
-          </div>
-
-          <div className="coding-score-item">
-
-            <span>
-              Problems
-            </span>
-
-            <strong>
-              {questions.length}
-            </strong>
-
           </div>
 
         </section>
 
-        {/* =================================================
-            PROBLEM-WISE RESULTS
-        ================================================= */}
 
-        <section className="coding-result-card">
+        {/* ================================
+            QUESTION RESULTS
+        ================================= */}
+        <section className="result-card">
 
-          <div className="coding-result-card-header">
+          <div className="result-card-heading">
 
             <div>
-              <h2>
-                Problem-wise Results
-              </h2>
+              <span className="result-section-label">
+                PERFORMANCE
+              </span>
 
-              <p>
-                Your best submission for each
-                problem is counted.
-              </p>
+              <h2>Question Results</h2>
             </div>
+
+            <span className="question-count">
+              {submissions.length} Questions
+            </span>
 
           </div>
 
-          {questions.length === 0 ? (
-            <div className="coding-result-empty">
-              No problem results available.
+
+          {submissions.length === 0 ? (
+            <div className="empty-results">
+              No question submission details
+              available.
             </div>
           ) : (
-            <div className="coding-result-table-wrapper">
+            <div className="question-results">
 
-              <table className="coding-result-table">
+              {submissions.map(
+                (submission, index) => {
 
-                <thead>
-                  <tr>
-                    <th>
-                      #
-                    </th>
+                  const questionMarks =
+                    Number(
+                      submission.question_marks || 0
+                    );
 
-                    <th>
-                      Problem
-                    </th>
+                  const marksObtained =
+                    Number(
+                      submission.marks_obtained || 0
+                    );
 
-                    <th>
-                      Language
-                    </th>
+                  const passed =
+                    Number(
+                      submission.passed_tests || 0
+                    );
 
-                    <th>
-                      Tests
-                    </th>
+                  const totalTests =
+                    Number(
+                      submission.total_tests || 0
+                    );
 
-                    <th>
-                      Marks
-                    </th>
+                  return (
+                    <div
+                      className="question-result-row"
+                      key={
+                        submission.question_id ||
+                        index
+                      }
+                    >
 
-                    <th>
-                      Status
-                    </th>
-                  </tr>
-                </thead>
+                      <div className="question-number">
+                        {index + 1}
+                      </div>
 
-                <tbody>
 
-                  {questions.map(
-                    (question, index) => {
+                      <div className="question-info">
 
-                      const submission =
-                        question.submission ||
-                        question.best_submission ||
-                        null;
+                        <h3>
+                          {submission.title ||
+                            `Question ${
+                              index + 1
+                            }`}
+                        </h3>
 
-                      const passed =
-                        Number(
-                          submission?.passed_tests ||
-                            0
-                        );
+                        <div className="question-meta">
 
-                      const totalTests =
-                        Number(
-                          submission?.total_tests ||
-                            0
-                        );
-
-                      const marks =
-                        Number(
-                          submission?.marks_obtained ||
-                            0
-                        );
-
-                      const status =
-                        submission?.status ||
-                        "Not Submitted";
-
-                      return (
-                        <tr
-                          key={question.id}
-                        >
-
-                          <td>
-                            {index + 1}
-                          </td>
-
-                          <td>
+                          <span>
+                            Language:{" "}
                             <strong>
-                              {question.title}
+                              {submission.language ||
+                                "-"}
                             </strong>
-                          </td>
+                          </span>
 
-                          <td>
-                            {submission?.language
-                              ? submission.language.toUpperCase()
-                              : "-"}
-                          </td>
+                          <span>
+                            Tests:{" "}
+                            <strong>
+                              {passed}/{totalTests}
+                            </strong>
+                          </span>
 
-                          <td>
-                            {totalTests > 0
-                              ? `${passed}/${totalTests}`
-                              : "-"}
-                          </td>
+                        </div>
 
-                          <td>
-                            {marks} /{" "}
-                            {question.marks}
-                          </td>
+                      </div>
 
-                          <td>
-                            <span
-                              className={`coding-result-status ${getStatusClass(
-                                status
-                              )}`}
-                            >
-                              {status}
-                            </span>
-                          </td>
 
-                        </tr>
-                      );
-                    }
-                  )}
+                      <div className="question-status">
 
-                </tbody>
+                        <span
+                          className={`submission-status ${getStatusClass(
+                            submission.status
+                          )}`}
+                        >
+                          {submission.status ||
+                            "Not Submitted"}
+                        </span>
 
-              </table>
+                      </div>
+
+
+                      <div className="question-score">
+
+                        <strong>
+                          {marksObtained}
+                        </strong>
+
+                        <span>
+                          / {questionMarks}
+                        </span>
+
+                      </div>
+
+                    </div>
+                  );
+                }
+              )}
 
             </div>
           )}
 
         </section>
 
-        {/* =================================================
-            IMPORTANT NOTE
-        ================================================= */}
 
-        <section className="coding-result-note">
+        {/* ================================
+            EXAM INFORMATION
+        ================================= */}
+        <section className="result-card">
 
-          <strong>
-            Assessment Completed
-          </strong>
+          <div className="result-card-heading">
 
-          <p>
-            Your result has been recorded.
-            You can no longer modify your
-            coding submissions for this
-            attempt.
-          </p>
+            <div>
+              <span className="result-section-label">
+                EXAMINATION
+              </span>
+
+              <h2>Exam Information</h2>
+            </div>
+
+          </div>
+
+
+          <div className="exam-info-grid">
+
+            <div>
+              <span>Exam</span>
+              <strong>
+                {exam.title || "-"}
+              </strong>
+            </div>
+
+            <div>
+              <span>Total Marks</span>
+              <strong>
+                {totalMarks}
+              </strong>
+            </div>
+
+            <div>
+              <span>Duration</span>
+              <strong>
+                {exam.duration_minutes || 0} Minutes
+              </strong>
+            </div>
+
+            <div>
+              <span>Attempt ID</span>
+              <strong>
+                #{attempt.id}
+              </strong>
+            </div>
+
+          </div>
 
         </section>
 
-      </main>
 
+        {/* ================================
+            FOOTER ACTION
+        ================================= */}
+        <div className="result-footer">
+
+          <p>
+            Your result has been recorded
+            successfully.
+          </p>
+
+          <button
+            className="result-primary-button"
+            onClick={() =>
+              navigate("/candidate/start")
+            }
+          >
+            Finish
+          </button>
+
+        </div>
+
+      </main>
     </div>
   );
 };
