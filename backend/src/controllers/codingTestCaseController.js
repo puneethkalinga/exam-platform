@@ -2,6 +2,9 @@ const pool = require("../config/db");
 
 const createTestCase = async (req, res) => {
   try {
+    console.log("CREATE TEST CASE BODY:", req.body);
+    console.log("CREATE TEST CASE USER:", req.user);
+
     const {
       question_id,
       input,
@@ -33,7 +36,7 @@ const createTestCase = async (req, res) => {
       });
     }
 
-    const result = await pool.query(
+    const testCaseResult = await pool.query(
       `
       INSERT INTO coding_test_cases (
         question_id,
@@ -46,25 +49,34 @@ const createTestCase = async (req, res) => {
       RETURNING *
       `,
       [
-        question_id,
+        Number(question_id),
         String(input),
         String(expected_output),
         is_hidden !== false,
-        marks === "" || marks === undefined
+        marks === "" || marks === undefined || marks === null
           ? null
           : Number(marks),
       ]
     );
 
-    res.status(201).json({
-      message: "Test case created successfully",
-      testCase: result.rows[0],
-    });
-  } catch (error) {
-    console.error("Create test case error:", error);
+    console.log(
+      "TEST CASE CREATED:",
+      testCaseResult.rows[0]
+    );
 
-    res.status(500).json({
-      message: "Failed to create test case",
+    return res.status(201).json({
+      message: "Test case created successfully",
+      testCase: testCaseResult.rows[0],
+    });
+
+  } catch (error) {
+    console.error("=================================");
+    console.error("CREATE TEST CASE ERROR");
+    console.error(error);
+    console.error("=================================");
+
+    return res.status(500).json({
+      message: error.message || "Failed to create test case",
     });
   }
 };

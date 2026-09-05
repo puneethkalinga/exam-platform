@@ -1,30 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
-const authenticateCodingAttempt = require("../middleware/codingAuth");
-
 const {
-  getAttemptQuestions,
-  getDraft,
-  saveDraft
+  getWorkspace,
+  saveWorkspace,
 } = require("../controllers/codingWorkspaceController");
 
-router.get(
-  "/attempt/:attemptId",
-  authenticateCodingAttempt,
-  getAttemptQuestions
-);
+const authMiddleware = require("../middleware/authMiddleware");
 
-router.get(
-  "/attempt/:attemptId/question/:questionId/draft",
-  authenticateCodingAttempt,
-  getDraft
-);
-
-router.put(
-  "/attempt/:attemptId/question/:questionId/draft",
-  authenticateCodingAttempt,
-  saveDraft
-);
+router.get("/:attemptId", authMiddleware, getWorkspace);
+router.put("/:attemptId", authMiddleware, saveWorkspace);
 
 module.exports = router;
