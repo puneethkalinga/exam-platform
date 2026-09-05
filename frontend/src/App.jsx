@@ -22,7 +22,7 @@ import CodingResultDetails from "./pages/CodingResultDetails";
 import CodingExamManagement from "./pages/CodingExamManagement";
 import CodingStart from "./pages/CodingStart";
 import CodingSubmissionCode from "./pages/CodingSubmissionCode";
-
+import CodingExamResults from "./pages/CodingExamResults";
 function App() {
   const [admin, setAdmin] = useState(() => {
     const token = localStorage.getItem("adminToken");
@@ -93,6 +93,18 @@ function App() {
         <Route
   path="/coding-exam/:examId/result/:attemptId"
   element={<CodingResult />}
+/>
+
+{/* Coding exam results */}
+<Route
+  path="/admin/coding-exams/:examId/results"
+  element={
+    admin ? (
+      <CodingExamResults />
+    ) : (
+      <Navigate to="/admin/login" replace />
+    )
+  }
 />
 
         {/* =========================================
