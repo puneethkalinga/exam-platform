@@ -780,9 +780,17 @@ export default function CandidateExam() {
 
           </div>
 
-          <h2>
-            {question.question_text}
-          </h2>
+         <div
+  className={
+  /pseudocode|integer|set\s+\w+\s*=|while\s*\(|for\s*\(|print\s+/i.test(
+    question.question_text
+  )
+    ? "exam-question-text code-question"
+    : "exam-question-text"
+}
+>
+  {question.question_text}
+</div>
 
           {/* OPTIONS */}
 
