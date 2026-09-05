@@ -148,64 +148,89 @@ const CodingTestCaseManagement = () => {
   };
 
   const saveTestCase = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (
-      !form.input.trim() ||
-      !form.expected_output.trim()
-    ) {
-      alert("Input and expected output are required");
+  try {
+    const token = localStorage.getItem("adminToken");
+
+    if (!token) {
+      throw new Error("Admin authentication token not found");
+    }
+
+    if (!form.input.trim()) {
+      alert("Please enter test case input");
       return;
     }
 
-    const url = editingId
-      ? `${API_URL}/api/coding-test-cases/${editingId}`
-      : `${API_URL}/api/coding-test-cases`;
+    if (!form.expected_output.trim()) {
+      alert("Please enter expected output");
+      return;
+    }
 
-    try {
-      const response = await fetch(url, {
-        method: editingId ? "PUT" : "POST",
+    const payload = {
+      question_id: Number(questionId),
+      input: form.input,
+      expected_output: form.expected_output,
+      is_hidden: Boolean(form.is_hidden),
+      marks: form.marks === "" ? null : Number(form.marks),
+    };
+
+    console.log("SAVING TEST CASE:", payload);
+
+    const response = await fetch(
+      `${API_URL}/api/coding-test-cases`,
+      {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          question_id: Number(questionId),
-          input: form.input,
-          expected_output: form.expected_output,
-          is_hidden: form.is_hidden,
-          marks: form.marks,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert(data.message || "Failed to save test case");
-        return;
+        body: JSON.stringify(payload),
       }
+    );
 
-      if (editingId) {
-        setTestCases((prev) =>
-          prev.map((item) =>
-            item.id === editingId
-              ? data.testCase
-              : item
-          )
-        );
-      } else {
-        setTestCases((prev) => [
-          ...prev,
-          data.testCase,
-        ]);
-      }
+    const responseText = await response.text();
 
-      resetForm();
-    } catch (error) {
-      console.error(error);
-      alert("Unable to save test case");
+    console.log("SAVE STATUS:", response.status);
+    console.log("SAVE RESPONSE:", responseText);
+
+    let data = {};
+
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      throw new Error(
+        `Backend returned HTML instead of JSON. Status: ${response.status}`
+      );
     }
-  };
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+        data.error ||
+        `Failed to save test case (${response.status})`
+      );
+    }
+
+    alert("Test case saved successfully");
+
+    setForm({
+      input: "",
+      expected_output: "",
+      is_hidden: true,
+      marks: "",
+    });
+
+    await loadData();
+
+  } catch (error) {
+    console.error("SAVE TEST CASE ERROR:", error);
+
+    alert(
+      error.message || "Unable to save test case"
+    );
+  }
+};
 
   const editTestCase = (testCase) => {
     setEditingId(testCase.id);
