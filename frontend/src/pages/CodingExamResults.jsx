@@ -86,7 +86,7 @@ const CodingExamResults = () => {
     }
 
     navigate(
-      `/admin/coding-results/${attemptId}`
+      `/admin/coding-results/${result.id}`
     );
   };
 
