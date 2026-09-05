@@ -130,7 +130,7 @@ const CodingExam = () => {
 
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            
           },
 
           body: JSON.stringify({
@@ -454,7 +454,7 @@ const CodingExam = () => {
         {
           method: "GET",
           headers: {
-            ...getCodingHeaders(),
+            
           },
         }
       );
@@ -511,7 +511,7 @@ const CodingExam = () => {
         {
           method: "GET",
           headers: {
-            ...getCodingHeaders(),
+            
           },
         }
       );
@@ -580,7 +580,7 @@ const CodingExam = () => {
 
           headers: {
             "Content-Type": "application/json",
-            ...getCodingHeaders(),
+            
           },
 
           body: JSON.stringify({
@@ -714,7 +714,7 @@ const CodingExam = () => {
 
           headers: {
             "Content-Type": "application/json",
-            ...getCodingHeaders(),
+            
           },
 
           body: JSON.stringify({
@@ -849,7 +849,7 @@ const CodingExam = () => {
 
           headers: {
             "Content-Type": "application/json",
-            ...getCodingHeaders(),
+            
           },
 
           body: JSON.stringify({
@@ -947,7 +947,7 @@ const CodingExam = () => {
 
           headers: {
             "Content-Type": "application/json",
-            ...getCodingHeaders(),
+            
           },
         }
       );
