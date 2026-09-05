@@ -1,5 +1,4 @@
 const pool = require("../config/db");
-const crypto = require("crypto");
 
 /* =========================================================
    START CODING ATTEMPT
@@ -217,8 +216,7 @@ const startCodingAttempt = async (req, res) => {
           candidate_id,
           started_at,
           ends_at,
-          status,
-          access_token
+          status
         FROM coding_attempts
         WHERE coding_exam_id = $1
           AND candidate_id = $2
@@ -257,7 +255,7 @@ const startCodingAttempt = async (req, res) => {
             `
             UPDATE coding_attempts
             SET
-              status = 'timeout',
+              status = 'expired',
               submitted_at = CURRENT_TIMESTAMP
             WHERE id = $1
               AND status = 'in_progress'
@@ -265,30 +263,6 @@ const startCodingAttempt = async (req, res) => {
             [existingAttempt.id]
           );
         } else {
-          /* ---------------------------------------------
-             MAKE SURE ACCESS TOKEN EXISTS
-          --------------------------------------------- */
-
-          let accessToken =
-            existingAttempt.access_token;
-
-          if (!accessToken) {
-            accessToken =
-              crypto.randomBytes(32).toString("hex");
-
-            await pool.query(
-              `
-              UPDATE coding_attempts
-              SET access_token = $1
-              WHERE id = $2
-              `,
-              [
-                accessToken,
-                existingAttempt.id,
-              ]
-            );
-          }
-
           const remainingSeconds = Math.max(
             0,
             Math.floor(
@@ -323,7 +297,6 @@ const startCodingAttempt = async (req, res) => {
                 existingAttempt.ends_at,
               status:
                 existingAttempt.status,
-              accessToken,
             },
 
             exam: {
@@ -374,13 +347,6 @@ const startCodingAttempt = async (req, res) => {
         durationMinutes * 60 * 1000
     );
 
-    /*
-     * This token protects the actual coding attempt.
-     * Candidate never supplies candidate_id after this.
-     */
-    const accessToken =
-      crypto.randomBytes(32).toString("hex");
-
     const attemptResult = await pool.query(
       `
       INSERT INTO coding_attempts
@@ -389,8 +355,7 @@ const startCodingAttempt = async (req, res) => {
           candidate_id,
           started_at,
           ends_at,
-          status,
-          access_token
+          status
         )
       VALUES
         (
@@ -398,8 +363,7 @@ const startCodingAttempt = async (req, res) => {
           $2,
           $3,
           $4,
-          'in_progress',
-          $5
+          'in_progress'
         )
       RETURNING
         id,
@@ -407,15 +371,13 @@ const startCodingAttempt = async (req, res) => {
         candidate_id,
         started_at,
         ends_at,
-        status,
-        access_token
+        status
       `,
       [
         exam.id,
         candidate.id,
         startedAt,
         endsAt,
-        accessToken,
       ]
     );
 
@@ -460,8 +422,6 @@ const startCodingAttempt = async (req, res) => {
           attempt.ends_at,
         status:
           attempt.status,
-        accessToken:
-          attempt.access_token,
       },
 
       exam: {

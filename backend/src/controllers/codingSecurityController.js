@@ -6,7 +6,7 @@ const pool = require("../config/db");
 */
 const logSecurityEvent = async (req, res) => {
   try {
-    const attemptId = req.codingAttempt.id;
+    const attemptId = req.params.attemptId;
     const { event_type, event_data = {} } = req.body;
 
     const allowedEvents = [

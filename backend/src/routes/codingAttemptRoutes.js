@@ -7,18 +7,7 @@ const {
   getCodingAttempt,
 } = require("../controllers/codingAttemptController");
 
-const authenticateCodingAttempt =
-  require("../middleware/codingAuth");
-
-router.post(
-  "/start",
-  startCodingAttempt
-);
-
-router.get(
-  "/:id",
-  authenticateCodingAttempt,
-  getCodingAttempt
-);
+router.post("/start", startCodingAttempt);
+router.get("/:id", getCodingAttempt);
 
 module.exports = router;

@@ -6,9 +6,7 @@ const {
   saveWorkspace,
 } = require("../controllers/codingWorkspaceController");
 
-const authMiddleware = require("../middleware/authMiddleware");
-
-router.get("/:attemptId", authMiddleware, getWorkspace);
-router.put("/:attemptId", authMiddleware, saveWorkspace);
+router.get("/:attemptId", getWorkspace);
+router.put("/:attemptId", saveWorkspace);
 
 module.exports = router;

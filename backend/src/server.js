@@ -21,7 +21,6 @@ const codingWorkspaceRoutes = require("./routes/codingSpaceRoutes");
 const codingExecutionRoutes = require("./routes/codingExecutionRoutes");
 const codingResultRoutes = require("./routes/codingResultRoutes");
 const codingSecurityRoutes = require("./routes/codingSecurityRoutes");
-const codingSpaceRoutes = require("./routes/codingSpaceRoutes");
 
 app.use(helmet());
 
@@ -92,15 +91,8 @@ app.use("/api/coding-test-cases", codingTestCaseRoutes);
 app.use("/api/coding-attempts", codingAttemptRoutes);
 app.use("/api/coding-workspace", codingWorkspaceRoutes);
 app.use("/api/coding-execution", codingExecutionRoutes);
-app.put("/api/test-publish-route", (req, res) => {
-  res.json({
-    ok: true,
-    message: "NEW BACKEND CODE IS LIVE"
-  });
-});
 app.use("/api/coding-results", codingResultRoutes);
 app.use("/api/coding-security", codingSecurityRoutes);
-app.use("/api/coding-space", codingSpaceRoutes);
 
 
 app.listen(PORT, () => {

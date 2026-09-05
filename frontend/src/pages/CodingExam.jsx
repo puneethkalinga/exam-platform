@@ -115,16 +115,12 @@ const CodingExam = () => {
     eventData = {}
   ) => {
     try {
-      const accessToken = localStorage.getItem(
-        `codingAccessToken_${attemptId}`
-      );
-
-      if (!accessToken || !attemptId) {
+      if (!attemptId) {
         return;
       }
 
       await fetch(
-        `${API_URL}/api/coding-security/events`,
+        `${API_URL}/api/coding-security/attempt/${attemptId}/events`,
         {
           method: "POST",
 

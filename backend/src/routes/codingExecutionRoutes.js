@@ -7,7 +7,6 @@ const {
   submitCodingExam,
 } = require("../controllers/codingExecutionController");
 
-const authenticateCodingAttempt = require("../middleware/codingAuth");
 
 router.post(
   "/attempt/:attemptId/run",

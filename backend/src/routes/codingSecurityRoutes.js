@@ -1,5 +1,4 @@
 const express = require("express");
-
 const router = express.Router();
 
 const {
@@ -8,44 +7,15 @@ const {
   getAdminSecurityEvents,
 } = require("../controllers/codingSecurityController");
 
-const authenticateCodingAttempt =
-  require("../middleware/codingAuth");
+const authenticateAdmin = require("../middleware/authMiddleware");
 
-// IMPORTANT:
-// Replace this import with the exact admin middleware
-// already used by your existing /api/exams routes.
-const authenticateAdmin =
-  require("../middleware/authMiddleware");
+router.post("/attempt/:attemptId/events", logSecurityEvent);
+router.get("/attempt/:attemptId", getSecurityEvents);
 
-
-/*
-  Candidate security logging
-*/
-router.post(
-  "/events",
-  authenticateCodingAttempt,
-  logSecurityEvent
-);
-
-
-/*
-  Candidate security events
-*/
-router.get(
-  "/attempt/:attemptId",
-  authenticateCodingAttempt,
-  getSecurityEvents
-);
-
-
-/*
-  Admin security events
-*/
 router.get(
   "/admin/attempt/:attemptId",
   authenticateAdmin,
   getAdminSecurityEvents
 );
-
 
 module.exports = router;

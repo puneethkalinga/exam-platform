@@ -25,6 +25,12 @@ const CodingResultDetails = () => {
   };
 
   useEffect(() => {
+    if (!attemptId) {
+      setLoading(false);
+      setLoadingSecurity(false);
+      return;
+    }
+
     loadResult();
     loadSecurityEvents();
   }, [attemptId]);
@@ -69,6 +75,12 @@ const CodingResultDetails = () => {
   };
 
   const loadSecurityEvents = async () => {
+  if (!attemptId) {
+    setSecurityEvents([]);
+    setLoadingSecurity(false);
+    return;
+  }
+
   try {
     setLoadingSecurity(true);
 

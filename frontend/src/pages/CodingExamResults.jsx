@@ -85,9 +85,7 @@ const CodingExamResults = () => {
       return;
     }
 
-    navigate(
-      `/admin/coding-results/${result.id}`
-    );
+    navigate(`/admin/coding-results/${attemptId}`);
   };
 
   // ==================================================
