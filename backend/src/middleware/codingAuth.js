@@ -28,8 +28,8 @@ const authenticateCodingAttempt = async (
       });
     }
 
-    const { attemptId } =
-      req.params;
+    const attemptId =
+  req.params.attemptId || req.params.id;
 
     if (!attemptId) {
       return res.status(400).json({

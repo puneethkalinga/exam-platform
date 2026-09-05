@@ -5,12 +5,15 @@ const router = express.Router();
 const {
   getCodingResult,
   getCodingExamResults,
-    getAdminCodingResultDetails,
-    getAdminSubmissionCode,
+  getAdminCodingResultDetails,
+  getAdminSubmissionCode,
 } = require("../controllers/codingResultController");
 
-const authenticateCodingAttempt = require("../middleware/codingAuth");
+const authenticateCodingAttempt =
+  require("../middleware/codingAuth");
 
+const authenticateAdmin =
+  require("../middleware/authMiddleware");
 
 // Candidate result
 router.get(
@@ -19,31 +22,25 @@ router.get(
   getCodingResult
 );
 
+// Admin result list
+router.get(
+  "/exam/:examId",
+  authenticateAdmin,
+  getCodingExamResults
+);
+
+// Admin result details
 router.get(
   "/admin/attempt/:attemptId",
   authenticateAdmin,
   getAdminCodingResultDetails
 );
 
-
-// Admin results
-// IMPORTANT:
-// This route must use your existing admin authentication middleware.
-const authenticateAdmin = require("../middleware/authMiddleware");
-
+// Admin submitted code
 router.get(
-  "/exam/:examId",
-  authenticateAdmin,
-  getCodingExamResults
-
-);
-
-
-router.get(
-  "/admin/submission/:attemptId/:questionId",
+  "/admin/attempt/:attemptId/question/:questionId/code",
   authenticateAdmin,
   getAdminSubmissionCode
 );
-
 
 module.exports = router;
