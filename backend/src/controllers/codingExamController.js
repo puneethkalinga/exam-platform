@@ -254,8 +254,7 @@ const publishCodingExam = async (req, res) => {
       UPDATE coding_exams
       SET
         status = CASE
-          WHEN status = 'published'
-          THEN 'draft'
+          WHEN status = 'published' THEN 'draft'
           ELSE 'published'
         END,
         updated_at = CURRENT_TIMESTAMP
