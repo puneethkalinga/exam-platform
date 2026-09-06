@@ -51,7 +51,7 @@ export default function CandidateStart() {
           body: JSON.stringify({
             examId,
             name: name.trim(),
-            rollNumber: rollNumber.trim(),
+            rollNumber: rollNumber.trim().toUpperCase(),
             course: course.trim(),
           }),
         }
@@ -162,10 +162,10 @@ export default function CandidateStart() {
 
             <input
               type="text"
-              placeholder="Enter your roll number"
+              placeholder="XEVO/YEN/T/001"
               value={rollNumber}
               onChange={(e) =>
-                setRollNumber(e.target.value)
+                setRollNumber(e.target.value.toUpperCase())
               }
               required
             />
