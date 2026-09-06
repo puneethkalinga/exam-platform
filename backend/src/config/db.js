@@ -6,6 +6,10 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false,
   },
+  max: process.env.DB_POOL_MAX ? parseInt(process.env.DB_POOL_MAX, 10) : 40,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
+  keepAlive: true,
 });
 
 pool.on("error", (err) => {

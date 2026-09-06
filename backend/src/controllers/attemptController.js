@@ -745,8 +745,30 @@ const submitAttempt = async (req, res) => {
             1000
       );
 
-    const isExpired =
-      new Date() >= expiresAt;
+    /* -----------------------------------------------------
+       BACKUP: ENSURE ALL PENDING ANSWERS ARE SAVED
+    ----------------------------------------------------- */
+    const { answers } = req.body || {};
+    if (answers && typeof answers === "object") {
+      for (const [qId, selectedAns] of Object.entries(answers)) {
+        const cleanAns = String(selectedAns || "").toUpperCase();
+        if (["A", "B", "C", "D"].includes(cleanAns)) {
+          await client.query(
+            `
+            INSERT INTO answers
+              (attempt_id, question_id, selected_answer, answered_at)
+            VALUES
+              ($1, $2, $3, CURRENT_TIMESTAMP)
+            ON CONFLICT (attempt_id, question_id)
+            DO UPDATE SET
+              selected_answer = EXCLUDED.selected_answer,
+              answered_at = CURRENT_TIMESTAMP
+            `,
+            [attemptId, qId, cleanAns]
+          );
+        }
+      }
+    }
 
     /* -----------------------------------------------------
        CALCULATE SCORE

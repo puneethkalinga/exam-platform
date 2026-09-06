@@ -225,6 +225,47 @@ setCutoffInput(
     return true;
   });
 
+  const exportToCSV = () => {
+    if (!results || results.length === 0) {
+      alert("No results to export.");
+      return;
+    }
+
+    const headers = [
+      "Rank",
+      "Candidate Name",
+      "Roll Number",
+      "Course",
+      "Marks Obtained",
+      "Total Marks",
+      "Percentage",
+      "Status",
+      "Submitted At"
+    ];
+
+    const rows = filteredResults.map((r, index) => [
+      index + 1,
+      `"${(r.name || "").replace(/"/g, '""')}"`,
+      `"${r.roll_number || ""}"`,
+      `"${r.course || ""}"`,
+      r.obtained_marks,
+      r.total_marks,
+      `${r.percentage}%`,
+      r.shortlisted ? "SHORTLISTED" : "NOT SHORTLISTED",
+      r.submitted_at ? `"${new Date(r.submitted_at).toLocaleString()}"` : '"—"'
+    ]);
+
+    const csvContent = [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `${(exam?.title || "Exam").replace(/\s+/g, "_")}_Results.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="exam-results">
 
@@ -269,12 +310,21 @@ setCutoffInput(
 
           </div>
 
-          <button
-            className="refresh-results"
-            onClick={loadResults}
-          >
-            ↻ Refresh
-          </button>
+          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            <button
+              className="refresh-results"
+              style={{ background: "#2563eb", color: "#fff", borderColor: "#2563eb" }}
+              onClick={exportToCSV}
+            >
+              📥 Export CSV
+            </button>
+            <button
+              className="refresh-results"
+              onClick={loadResults}
+            >
+              ↻ Refresh
+            </button>
+          </div>
 
         </div>
 

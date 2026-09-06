@@ -26,20 +26,36 @@ app.use(helmet());
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:3000",
   "https://exam-platform-inky-nine.vercel.app",
+  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : []),
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests without an origin
-      // such as Postman/server-to-server requests
+      // Allow requests without an origin (Postman, curl, server-to-server)
       if (!origin) {
         return callback(null, true);
       }
 
+      // Check if origin is explicitly in allowedOrigins
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
+      }
+
+      // Allow any vercel deployment or company domains (e.g. xevotech)
+      try {
+        const url = new URL(origin);
+        if (
+          url.hostname.endsWith(".vercel.app") ||
+          url.hostname.includes("xevotech") ||
+          url.hostname === "localhost"
+        ) {
+          return callback(null, true);
+        }
+      } catch (e) {
+        // Invalid URL format
       }
 
       return callback(

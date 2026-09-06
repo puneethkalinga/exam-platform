@@ -188,13 +188,58 @@ const CodingExamResults = () => {
           </p>
         </div>
 
-        <button
-          className="coding-refresh-button"
-          onClick={fetchResults}
-          disabled={loading}
-        >
-          ↻ Refresh
-        </button>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <button
+            className="coding-refresh-button"
+            style={{ background: "#2563eb", color: "#fff", borderColor: "#2563eb" }}
+            onClick={() => {
+              if (!results || results.length === 0) {
+                alert("No results to export.");
+                return;
+              }
+              const headers = [
+                "Rank",
+                "Candidate Name",
+                "Roll Number",
+                "Course",
+                "Score",
+                "Total Marks",
+                "Percentage",
+                "Status",
+                "Submitted At"
+              ];
+              const rows = results.map((r, index) => [
+                index + 1,
+                `"${(r.candidate_name || "").replace(/"/g, '""')}"`,
+                `"${r.roll_number || ""}"`,
+                `"${r.course || ""}"`,
+                r.total_score ?? 0,
+                r.total_marks ?? 0,
+                `${r.percentage ?? 0}%`,
+                r.status || "Submitted",
+                r.submitted_at ? `"${new Date(r.submitted_at).toLocaleString()}"` : '"—"'
+              ]);
+              const csvContent = [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
+              const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.setAttribute("href", url);
+              link.setAttribute("download", `${(exam?.title || "Coding_Exam").replace(/\s+/g, "_")}_Results.csv`);
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
+          >
+            📥 Export CSV
+          </button>
+          <button
+            className="coding-refresh-button"
+            onClick={fetchResults}
+            disabled={loading}
+          >
+            ↻ Refresh
+          </button>
+        </div>
 
       </header>
 

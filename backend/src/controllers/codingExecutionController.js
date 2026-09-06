@@ -254,11 +254,7 @@ exports.runCode = async (req, res) => {
 // ==================================================
 
 exports.submitCode = async (req, res) => {
-  const client = await pool.connect();
-
   try {
-    await client.query("BEGIN");
-
     // IMPORTANT:
     // Attempt ID comes from authenticated middleware.
     const attempt_id = req.params.attemptId;
@@ -270,8 +266,6 @@ exports.submitCode = async (req, res) => {
     } = req.body;
 
     if (!question_id || !language) {
-      await client.query("ROLLBACK");
-
       return res.status(400).json({
         message:
           "question_id and language are required",
@@ -279,8 +273,6 @@ exports.submitCode = async (req, res) => {
     }
 
     if (!source_code || !source_code.trim()) {
-      await client.query("ROLLBACK");
-
       return res.status(400).json({
         message:
           "Source code cannot be empty",
@@ -290,8 +282,6 @@ exports.submitCode = async (req, res) => {
     const languageId = LANGUAGE_IDS[language];
 
     if (!languageId) {
-      await client.query("ROLLBACK");
-
       return res.status(400).json({
         message:
           "Unsupported programming language",
@@ -299,22 +289,19 @@ exports.submitCode = async (req, res) => {
     }
 
     // --------------------------------------------------
-    // 1. Verify attempt
+    // 1. Verify attempt (Quick read query without holding a lock)
     // --------------------------------------------------
 
-    const attemptResult = await client.query(
+    const attemptResult = await pool.query(
       `
       SELECT *
       FROM coding_attempts
       WHERE id = $1
-      FOR UPDATE
       `,
       [attempt_id]
     );
 
     if (attemptResult.rows.length === 0) {
-      await client.query("ROLLBACK");
-
       return res.status(404).json({
         message:
           "Coding attempt not found",
@@ -324,8 +311,6 @@ exports.submitCode = async (req, res) => {
     const attempt = attemptResult.rows[0];
 
     if (attempt.status !== "in_progress") {
-      await client.query("ROLLBACK");
-
       return res.status(400).json({
         message:
           "This coding attempt is already submitted.",
@@ -340,7 +325,7 @@ exports.submitCode = async (req, res) => {
       new Date() >=
       new Date(attempt.ends_at)
     ) {
-      await client.query(
+      await pool.query(
         `
         UPDATE coding_attempts
         SET
@@ -350,8 +335,6 @@ exports.submitCode = async (req, res) => {
         `,
         [attempt_id]
       );
-
-      await client.query("COMMIT");
 
       return res.status(400).json({
         message:
@@ -364,7 +347,7 @@ exports.submitCode = async (req, res) => {
     // --------------------------------------------------
 
     const questionResult =
-      await client.query(
+      await pool.query(
         `
         SELECT *
         FROM coding_questions
@@ -380,8 +363,6 @@ exports.submitCode = async (req, res) => {
     if (
       questionResult.rows.length === 0
     ) {
-      await client.query("ROLLBACK");
-
       return res.status(404).json({
         message:
           "Question not found.",
@@ -396,7 +377,7 @@ exports.submitCode = async (req, res) => {
     // --------------------------------------------------
 
     const testCasesResult =
-      await client.query(
+      await pool.query(
         `
         SELECT *
         FROM coding_test_cases
@@ -410,8 +391,6 @@ exports.submitCode = async (req, res) => {
       testCasesResult.rows;
 
     if (testCases.length === 0) {
-      await client.query("ROLLBACK");
-
       return res.status(400).json({
         message:
           "No test cases configured for this question.",
@@ -419,7 +398,7 @@ exports.submitCode = async (req, res) => {
     }
 
     // --------------------------------------------------
-    // 5. Run every test case
+    // 5. Run every test case (NO DB connection is held open during external Judge0 requests!)
     // --------------------------------------------------
 
     let passedTests = 0;
@@ -574,90 +553,106 @@ exports.submitCode = async (req, res) => {
           );
 
     // --------------------------------------------------
-    // 7. Save submission
+    // 7. Save submission (Quick transaction strictly for writing)
     // --------------------------------------------------
 
-    await client.query(
-      `
-      INSERT INTO coding_submissions (
-        attempt_id,
-        question_id,
-        language,
-        source_code,
-        status,
-        passed_tests,
-        total_tests,
-        marks_obtained,
-        execution_time_ms,
-        memory_used_kb
-      )
-      VALUES (
-        $1, $2, $3, $4, $5,
-        $6, $7, $8, $9, $10
-      )
-      `,
-      [
-        attempt_id,
-        question_id,
-        language,
-        source_code,
-        finalStatus,
-        passedTests,
-        testCases.length,
-        marksObtained,
-        totalExecutionTime,
-        maxMemory,
-      ]
-    );
+    const client = await pool.connect();
+    let totalScore = 0;
 
-    // --------------------------------------------------
-    // 8. Calculate BEST score per question
-    // --------------------------------------------------
+    try {
+      await client.query("BEGIN");
 
-    const scoreResult =
       await client.query(
         `
-        SELECT COALESCE(
-          SUM(best_marks),
-          0
-        ) AS total_score
-        FROM (
-          SELECT
-            question_id,
-            MAX(marks_obtained) AS best_marks
-          FROM coding_submissions
-          WHERE attempt_id = $1
-          GROUP BY question_id
-        ) best_submissions
+        INSERT INTO coding_submissions (
+          attempt_id,
+          question_id,
+          language,
+          source_code,
+          status,
+          passed_tests,
+          total_tests,
+          marks_obtained,
+          execution_time_ms,
+          memory_used_kb
+        )
+        VALUES (
+          $1, $2, $3, $4, $5,
+          $6, $7, $8, $9, $10
+        )
         `,
-        [attempt_id]
+        [
+          attempt_id,
+          question_id,
+          language,
+          source_code,
+          finalStatus,
+          passedTests,
+          testCases.length,
+          marksObtained,
+          totalExecutionTime,
+          maxMemory,
+        ]
       );
 
-    const totalScore =
-      Number(
-        scoreResult.rows[0]
-          .total_score
+      // --------------------------------------------------
+      // 8. Calculate BEST score per question
+      // --------------------------------------------------
+
+      const scoreResult =
+        await client.query(
+          `
+          SELECT COALESCE(
+            SUM(best_marks),
+            0
+          ) AS total_score
+          FROM (
+            SELECT
+              question_id,
+              MAX(marks_obtained) AS best_marks
+            FROM coding_submissions
+            WHERE attempt_id = $1
+            GROUP BY question_id
+          ) best_submissions
+          `,
+          [attempt_id]
+        );
+
+      totalScore =
+        Number(
+          scoreResult.rows[0]
+            .total_score
+        );
+
+      // --------------------------------------------------
+      // 9. Update attempt score
+      // --------------------------------------------------
+
+      await client.query(
+        `
+        UPDATE coding_attempts
+        SET total_score = $1
+        WHERE id = $2
+        `,
+        [
+          totalScore,
+          attempt_id,
+        ]
       );
 
-    // --------------------------------------------------
-    // 9. Update attempt score
-    // --------------------------------------------------
+      await client.query("COMMIT");
+    } catch (saveError) {
+      try {
+        await client.query("ROLLBACK");
+      } catch (rbErr) {
+        console.error("Rollback error:", rbErr);
+      }
+      throw saveError;
+    } finally {
+      client.release();
+    }
 
-    await client.query(
-      `
-      UPDATE coding_attempts
-      SET total_score = $1
-      WHERE id = $2
-      `,
-      [
-        totalScore,
-        attempt_id,
-      ]
-    );
-
-    await client.query("COMMIT");
-
-    res.json({
+    return res.json({
       success: true,
 
       result: {
@@ -683,28 +678,15 @@ exports.submitCode = async (req, res) => {
       },
     });
   } catch (error) {
-    try {
-      await client.query(
-        "ROLLBACK"
-      );
-    } catch (rollbackError) {
-      console.error(
-        "Rollback error:",
-        rollbackError
-      );
-    }
-
     console.error(
       "Submit code error:",
       error
     );
 
-    res.status(500).json({
+    return res.status(500).json({
       message:
         "Code submission failed.",
     });
-  } finally {
-    client.release();
   }
 };
 

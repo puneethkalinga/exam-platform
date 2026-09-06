@@ -91,6 +91,16 @@ export default function CandidateExam() {
         attemptId
       );
 
+      let allAnswers = answers;
+      try {
+        const local = JSON.parse(
+          localStorage.getItem(`localAnswers_${attemptId}`) || "{}"
+        );
+        allAnswers = { ...answers, ...local };
+      } catch (e) {
+        console.error("Local answers read error:", e);
+      }
+
       const response = await fetch(
         `${API_URL}/api/attempts/${attemptId}/submit`,
         {
@@ -98,6 +108,9 @@ export default function CandidateExam() {
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            answers: allAnswers,
+          }),
         }
       );
 
@@ -125,6 +138,7 @@ export default function CandidateExam() {
        */
       localStorage.removeItem("attemptId");
       localStorage.removeItem("exam");
+      localStorage.removeItem(`localAnswers_${attemptId}`);
 
       /*
        * Examination is successfully terminated.
@@ -268,11 +282,11 @@ export default function CandidateExam() {
          RESTORE ANSWERS
       ------------------------------------------------------- */
 
+      const restoredAnswers = {};
+
       if (
         Array.isArray(data.answers)
       ) {
-        const restoredAnswers = {};
-
         data.answers.forEach(
           (answer) => {
             restoredAnswers[
@@ -281,11 +295,21 @@ export default function CandidateExam() {
               answer.selected_answer;
           }
         );
-
-        setAnswers(
-          restoredAnswers
-        );
       }
+
+      // Merge any answers previously saved in local storage
+      try {
+        const localSaved = JSON.parse(
+          localStorage.getItem(`localAnswers_${attemptId}`) || "{}"
+        );
+        Object.assign(restoredAnswers, localSaved);
+      } catch (e) {
+        console.error("Local storage load error:", e);
+      }
+
+      setAnswers(
+        restoredAnswers
+      );
 
     } catch (err) {
       console.error(
@@ -536,10 +560,7 @@ export default function CandidateExam() {
         return false;
       }
 
-      alert(
-        "Unable to save your answer. Please try again."
-      );
-
+      // Silent resilience: Answer is safely persisted in browser localStorage and will sync on submit
       return false;
     }
   };
@@ -561,20 +582,28 @@ export default function CandidateExam() {
     }
 
     /*
-     * Update UI immediately.
+     * Update UI and persist to localStorage immediately.
      */
-    setAnswers(
-      (previous) => ({
+    setAnswers((previous) => {
+      const updated = {
         ...previous,
-        [questionId]:
-          answer,
-      })
-    );
+        [questionId]: answer,
+      };
+      try {
+        localStorage.setItem(
+          `localAnswers_${attemptId}`,
+          JSON.stringify(updated)
+        );
+      } catch (e) {
+        console.error("Local storage save error:", e);
+      }
+      return updated;
+    });
 
     /*
-     * Save to backend.
+     * Save to backend in background.
      */
-    await saveAnswer(
+    saveAnswer(
       questionId,
       answer
     );
