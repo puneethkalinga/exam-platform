@@ -2,10 +2,10 @@
   "rewrites": [
     {
       "source": "/api/:match*",
-      "destination": "https://exam-platform-qhk8.onrender.com/api/:match*"
+      "destination": "/api/[...path]"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api).*)",
       "destination": "/index.html"
     }
   ]

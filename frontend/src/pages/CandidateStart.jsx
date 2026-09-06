@@ -57,13 +57,24 @@ export default function CandidateStart() {
         }
       );
 
-      const data = await response.json();
+      const contentType = response.headers.get("content-type") || "";
+      let data = {};
+      if (contentType.includes("application/json")) {
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
+      }
 
       console.log("START EXAM RESPONSE:", data);
 
       if (!response.ok) {
+        if (response.status === 502 || response.status === 503 || response.status === 504) {
+          throw new Error("Server is waking up. Please wait 10 seconds and click Start Exam again.");
+        }
         throw new Error(
-          data.message || "Unable to start examination"
+          data.message || `Unable to start examination (${response.status})`
         );
       }
 

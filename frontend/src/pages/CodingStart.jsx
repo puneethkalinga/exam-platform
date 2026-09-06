@@ -30,11 +30,22 @@ const CodingStart = () => {
         `${API_URL}/api/coding-exams/${examId}`
       );
 
-      const data = await response.json();
+      const contentType = response.headers.get("content-type") || "";
+      let data = {};
+      if (contentType.includes("application/json")) {
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
+      }
 
       if (!response.ok) {
+        if (response.status === 502 || response.status === 503 || response.status === 504) {
+          throw new Error("Server is waking up. Please wait 10 seconds and reload.");
+        }
         throw new Error(
-          data.message || "Unable to load coding exam"
+          data.message || `Unable to load coding exam (${response.status})`
         );
       }
 
@@ -92,11 +103,22 @@ const CodingStart = () => {
       }
     );
 
-    const data = await response.json();
+    const contentType = response.headers.get("content-type") || "";
+    let data = {};
+    if (contentType.includes("application/json")) {
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
+    }
 
     if (!response.ok) {
+      if (response.status === 502 || response.status === 503 || response.status === 504) {
+        throw new Error("Server is waking up. Please wait 10 seconds and click Start Coding Exam again.");
+      }
       throw new Error(
-        data.message || "Failed to start coding exam"
+        data.message || `Failed to start coding exam (${response.status})`
       );
     }
 

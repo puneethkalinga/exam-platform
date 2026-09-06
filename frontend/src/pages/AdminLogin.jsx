@@ -26,10 +26,24 @@ export default function AdminLogin({ onLogin }) {
         }),
       });
 
-      const data = await response.json();
+      const contentType = response.headers.get("content-type") || "";
+      let data = {};
+      if (contentType.includes("application/json")) {
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
+      }
 
       if (!response.ok) {
-        throw new Error(data.message || "Login failed");
+        if (response.status === 401) {
+          throw new Error(data.message || "Invalid username or password");
+        }
+        if (response.status === 502 || response.status === 503 || response.status === 504) {
+          throw new Error("Server is waking up (cold start). Please wait 10 seconds and try again.");
+        }
+        throw new Error(data.message || `Login failed (${response.status}). Please try again.`);
       }
 
       localStorage.setItem("adminToken", data.token);
