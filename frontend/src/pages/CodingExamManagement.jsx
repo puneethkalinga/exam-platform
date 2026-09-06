@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CodingExamManagement.css";
 
-const API_URL = "https://exam-platform-qhk8.onrender.com";
+const API_URL = "";
 
 const DEFAULT_LANGUAGES = ["c", "cpp", "java", "python"];
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./CandidateStart.css";
 
-const API_URL = "https://exam-platform-qhk8.onrender.com";
+const API_URL = "";
 
 export default function CandidateStart() {
   const navigate = useNavigate();

@@ -1,0 +1,769 @@
+From 6334300e6c03ab69927ba8be0749cd762c7a899b Mon Sep 17 00:00:00 2001
+From: Puneeth Kumar <puneethkalinga@gmail.com>
+Date: Sun, 6 Sep 2026 17:34:18 +0530
+Subject: [PATCH] feat: production hardening for 800 students - db pool,
+ decoupled coding execution, answer sync, branding, csv export
+
+---
+ backend/src/config/db.js                      |   4 +
+ backend/src/controllers/attemptController.js  |  26 ++-
+ .../controllers/codingExecutionController.js  | 206 ++++++++----------
+ backend/src/server.js                         |  20 +-
+ frontend/index.html                           |  14 +-
+ frontend/src/pages/CandidateExam.jsx          |  63 ++++--
+ frontend/src/pages/CodingExamResults.jsx      |  59 ++++-
+ frontend/src/pages/ExamResults.jsx            |  62 +++++-
+ 8 files changed, 306 insertions(+), 148 deletions(-)
+
+diff --git a/backend/src/config/db.js b/backend/src/config/db.js
+index 72ef2d5..e9a0553 100644
+--- a/backend/src/config/db.js
++++ b/backend/src/config/db.js
+@@ -6,6 +6,10 @@ const pool = new Pool({
+   ssl: {
+     rejectUnauthorized: false,
+   },
++  max: process.env.DB_POOL_MAX ? parseInt(process.env.DB_POOL_MAX, 10) : 40,
++  idleTimeoutMillis: 30000,
++  connectionTimeoutMillis: 10000,
++  keepAlive: true,
+ });
+ 
+ pool.on("error", (err) => {
+diff --git a/backend/src/controllers/attemptController.js b/backend/src/controllers/attemptController.js
+index e4c6fb9..45058ac 100644
+--- a/backend/src/controllers/attemptController.js
++++ b/backend/src/controllers/attemptController.js
+@@ -745,8 +745,30 @@ const submitAttempt = async (req, res) => {
+             1000
+       );
+ 
+-    const isExpired =
+-      new Date() >= expiresAt;
++    /* -----------------------------------------------------
++       BACKUP: ENSURE ALL PENDING ANSWERS ARE SAVED
++    ----------------------------------------------------- */
++    const { answers } = req.body || {};
++    if (answers && typeof answers === "object") {
++      for (const [qId, selectedAns] of Object.entries(answers)) {
++        const cleanAns = String(selectedAns || "").toUpperCase();
++        if (["A", "B", "C", "D"].includes(cleanAns)) {
++          await client.query(
++            `
++            INSERT INTO answers
++              (attempt_id, question_id, selected_answer, answered_at)
++            VALUES
++              ($1, $2, $3, CURRENT_TIMESTAMP)
++            ON CONFLICT (attempt_id, question_id)
++            DO UPDATE SET
++              selected_answer = EXCLUDED.selected_answer,
++              answered_at = CURRENT_TIMESTAMP
++            `,
++            [attemptId, qId, cleanAns]
++          );
++        }
++      }
++    }
+ 
+     /* -----------------------------------------------------
+        CALCULATE SCORE
+diff --git a/backend/src/controllers/codingExecutionController.js b/backend/src/controllers/codingExecutionController.js
+index 4724437..3b5a345 100644
+--- a/backend/src/controllers/codingExecutionController.js
++++ b/backend/src/controllers/codingExecutionController.js
+@@ -254,11 +254,7 @@ exports.runCode = async (req, res) => {
+ // ==================================================
+ 
+ exports.submitCode = async (req, res) => {
+-  const client = await pool.connect();
+-
+   try {
+-    await client.query("BEGIN");
+-
+     // IMPORTANT:
+     // Attempt ID comes from authenticated middleware.
+     const attempt_id = req.params.attemptId;
+@@ -270,8 +266,6 @@ exports.submitCode = async (req, res) => {
+     } = req.body;
+ 
+     if (!question_id || !language) {
+-      await client.query("ROLLBACK");
+-
+       return res.status(400).json({
+         message:
+           "question_id and language are required",
+@@ -279,8 +273,6 @@ exports.submitCode = async (req, res) => {
+     }
+ 
+     if (!source_code || !source_code.trim()) {
+-      await client.query("ROLLBACK");
+-
+       return res.status(400).json({
+         message:
+           "Source code cannot be empty",
+@@ -290,8 +282,6 @@ exports.submitCode = async (req, res) => {
+     const languageId = LANGUAGE_IDS[language];
+ 
+     if (!languageId) {
+-      await client.query("ROLLBACK");
+-
+       return res.status(400).json({
+         message:
+           "Unsupported programming language",
+@@ -299,22 +289,19 @@ exports.submitCode = async (req, res) => {
+     }
+ 
+     // --------------------------------------------------
+-    // 1. Verify attempt
++    // 1. Verify attempt (Quick read query without holding a lock)
+     // --------------------------------------------------
+ 
+-    const attemptResult = await client.query(
++    const attemptResult = await pool.query(
+       `
+       SELECT *
+       FROM coding_attempts
+       WHERE id = $1
+-      FOR UPDATE
+       `,
+       [attempt_id]
+     );
+ 
+     if (attemptResult.rows.length === 0) {
+-      await client.query("ROLLBACK");
+-
+       return res.status(404).json({
+         message:
+           "Coding attempt not found",
+@@ -324,8 +311,6 @@ exports.submitCode = async (req, res) => {
+     const attempt = attemptResult.rows[0];
+ 
+     if (attempt.status !== "in_progress") {
+-      await client.query("ROLLBACK");
+-
+       return res.status(400).json({
+         message:
+           "This coding attempt is already submitted.",
+@@ -340,7 +325,7 @@ exports.submitCode = async (req, res) => {
+       new Date() >=
+       new Date(attempt.ends_at)
+     ) {
+-      await client.query(
++      await pool.query(
+         `
+         UPDATE coding_attempts
+         SET
+@@ -351,8 +336,6 @@ exports.submitCode = async (req, res) => {
+         [attempt_id]
+       );
+ 
+-      await client.query("COMMIT");
+-
+       return res.status(400).json({
+         message:
+           "Coding exam time has expired.",
+@@ -364,7 +347,7 @@ exports.submitCode = async (req, res) => {
+     // --------------------------------------------------
+ 
+     const questionResult =
+-      await client.query(
++      await pool.query(
+         `
+         SELECT *
+         FROM coding_questions
+@@ -380,8 +363,6 @@ exports.submitCode = async (req, res) => {
+     if (
+       questionResult.rows.length === 0
+     ) {
+-      await client.query("ROLLBACK");
+-
+       return res.status(404).json({
+         message:
+           "Question not found.",
+@@ -396,7 +377,7 @@ exports.submitCode = async (req, res) => {
+     // --------------------------------------------------
+ 
+     const testCasesResult =
+-      await client.query(
++      await pool.query(
+         `
+         SELECT *
+         FROM coding_test_cases
+@@ -410,8 +391,6 @@ exports.submitCode = async (req, res) => {
+       testCasesResult.rows;
+ 
+     if (testCases.length === 0) {
+-      await client.query("ROLLBACK");
+-
+       return res.status(400).json({
+         message:
+           "No test cases configured for this question.",
+@@ -419,7 +398,7 @@ exports.submitCode = async (req, res) => {
+     }
+ 
+     // --------------------------------------------------
+-    // 5. Run every test case
++    // 5. Run every test case (NO DB connection is held open during external Judge0 requests!)
+     // --------------------------------------------------
+ 
+     let passedTests = 0;
+@@ -574,90 +553,106 @@ exports.submitCode = async (req, res) => {
+           );
+ 
+     // --------------------------------------------------
+-    // 7. Save submission
++    // 7. Save submission (Quick transaction strictly for writing)
+     // --------------------------------------------------
+ 
+-    await client.query(
+-      `
+-      INSERT INTO coding_submissions (
+-        attempt_id,
+-        question_id,
+-        language,
+-        source_code,
+-        status,
+-        passed_tests,
+-        total_tests,
+-        marks_obtained,
+-        execution_time_ms,
+-        memory_used_kb
+-      )
+-      VALUES (
+-        $1, $2, $3, $4, $5,
+-        $6, $7, $8, $9, $10
+-      )
+-      `,
+-      [
+-        attempt_id,
+-        question_id,
+-        language,
+-        source_code,
+-        finalStatus,
+-        passedTests,
+-        testCases.length,
+-        marksObtained,
+-        totalExecutionTime,
+-        maxMemory,
+-      ]
+-    );
++    const client = await pool.connect();
++    let totalScore = 0;
+ 
+-    // --------------------------------------------------
+-    // 8. Calculate BEST score per question
+-    // --------------------------------------------------
++    try {
++      await client.query("BEGIN");
+ 
+-    const scoreResult =
+       await client.query(
+         `
+-        SELECT COALESCE(
+-          SUM(best_marks),
+-          0
+-        ) AS total_score
+-        FROM (
+-          SELECT
+-            question_id,
+-            MAX(marks_obtained) AS best_marks
+-          FROM coding_submissions
+-          WHERE attempt_id = $1
+-          GROUP BY question_id
+-        ) best_submissions
++        INSERT INTO coding_submissions (
++          attempt_id,
++          question_id,
++          language,
++          source_code,
++          status,
++          passed_tests,
++          total_tests,
++          marks_obtained,
++          execution_time_ms,
++          memory_used_kb
++        )
++        VALUES (
++          $1, $2, $3, $4, $5,
++          $6, $7, $8, $9, $10
++        )
+         `,
+-        [attempt_id]
++        [
++          attempt_id,
++          question_id,
++          language,
++          source_code,
++          finalStatus,
++          passedTests,
++          testCases.length,
++          marksObtained,
++          totalExecutionTime,
++          maxMemory,
++        ]
+       );
+ 
+-    const totalScore =
+-      Number(
+-        scoreResult.rows[0]
+-          .total_score
+-      );
++      // --------------------------------------------------
++      // 8. Calculate BEST score per question
++      // --------------------------------------------------
++
++      const scoreResult =
++        await client.query(
++          `
++          SELECT COALESCE(
++            SUM(best_marks),
++            0
++          ) AS total_score
++          FROM (
++            SELECT
++              question_id,
++              MAX(marks_obtained) AS best_marks
++            FROM coding_submissions
++            WHERE attempt_id = $1
++            GROUP BY question_id
++          ) best_submissions
++          `,
++          [attempt_id]
++        );
+ 
+-    // --------------------------------------------------
+-    // 9. Update attempt score
+-    // --------------------------------------------------
++      totalScore =
++        Number(
++          scoreResult.rows[0]
++            .total_score
++        );
+ 
+-    await client.query(
+-      `
+-      UPDATE coding_attempts
+-      SET total_score = $1
+-      WHERE id = $2
+-      `,
+-      [
+-        totalScore,
+-        attempt_id,
+-      ]
+-    );
++      // --------------------------------------------------
++      // 9. Update attempt score
++      // --------------------------------------------------
+ 
+-    await client.query("COMMIT");
++      await client.query(
++        `
++        UPDATE coding_attempts
++        SET total_score = $1
++        WHERE id = $2
++        `,
++        [
++          totalScore,
++          attempt_id,
++        ]
++      );
+ 
+-    res.json({
++      await client.query("COMMIT");
++    } catch (saveError) {
++      try {
++        await client.query("ROLLBACK");
++      } catch (rbErr) {
++        console.error("Rollback error:", rbErr);
++      }
++      throw saveError;
++    } finally {
++      client.release();
++    }
++
++    return res.json({
+       success: true,
+ 
+       result: {
+@@ -683,28 +678,15 @@ exports.submitCode = async (req, res) => {
+       },
+     });
+   } catch (error) {
+-    try {
+-      await client.query(
+-        "ROLLBACK"
+-      );
+-    } catch (rollbackError) {
+-      console.error(
+-        "Rollback error:",
+-        rollbackError
+-      );
+-    }
+-
+     console.error(
+       "Submit code error:",
+       error
+     );
+ 
+-    res.status(500).json({
++    return res.status(500).json({
+       message:
+         "Code submission failed.",
+     });
+-  } finally {
+-    client.release();
+   }
+ };
+ 
+diff --git a/backend/src/server.js b/backend/src/server.js
+index fac6bfe..68518b4 100644
+--- a/backend/src/server.js
++++ b/backend/src/server.js
+@@ -26,22 +26,38 @@ app.use(helmet());
+ 
+ const allowedOrigins = [
+   "http://localhost:5173",
++  "http://localhost:3000",
+   "https://exam-platform-inky-nine.vercel.app",
++  ...(process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : []),
+ ];
+ 
+ app.use(
+   cors({
+     origin: function (origin, callback) {
+-      // Allow requests without an origin
+-      // such as Postman/server-to-server requests
++      // Allow requests without an origin (Postman, curl, server-to-server)
+       if (!origin) {
+         return callback(null, true);
+       }
+ 
++      // Check if origin is explicitly in allowedOrigins
+       if (allowedOrigins.includes(origin)) {
+         return callback(null, true);
+       }
+ 
++      // Allow any vercel deployment or company domains (e.g. xevotech)
++      try {
++        const url = new URL(origin);
++        if (
++          url.hostname.endsWith(".vercel.app") ||
++          url.hostname.includes("xevotech") ||
++          url.hostname === "localhost"
++        ) {
++          return callback(null, true);
++        }
++      } catch (e) {
++        // Invalid URL format
++      }
++
+       return callback(
+         new Error("Not allowed by CORS")
+       );
+diff --git a/frontend/index.html b/frontend/index.html
+index f94d687..3b32ac7 100644
+--- a/frontend/index.html
++++ b/frontend/index.html
+@@ -2,9 +2,19 @@
+ <html lang="en">
+   <head>
+     <meta charset="UTF-8" />
+-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
++    <link rel="icon" type="image/jpeg" href="/xevotech.jpeg" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-    <title>frontend</title>
++    <title>XEVOTECH | Examination Protocol</title>
++
++    <!-- Prevent search engines from indexing live test links -->
++    <meta name="robots" content="noindex, nofollow" />
++
++    <!-- Open Graph (Social Cards for WhatsApp, Telegram, LinkedIn) -->
++    <meta property="og:type" content="website" />
++    <meta property="og:site_name" content="XEVOTECH" />
++    <meta property="og:title" content="XEVOTECH Examination Protocol - Campus Recruitment Assessment" />
++    <meta property="og:description" content="Official examination and assessment portal for the XEVOTECH campus recruitment drive." />
++    <meta property="og:image" content="/xevotech.jpeg" />
+   </head>
+   <body>
+     <div id="root"></div>
+diff --git a/frontend/src/pages/CandidateExam.jsx b/frontend/src/pages/CandidateExam.jsx
+index 136fb14..e1934ed 100644
+--- a/frontend/src/pages/CandidateExam.jsx
++++ b/frontend/src/pages/CandidateExam.jsx
+@@ -91,6 +91,16 @@ export default function CandidateExam() {
+         attemptId
+       );
+ 
++      let allAnswers = answers;
++      try {
++        const local = JSON.parse(
++          localStorage.getItem(`localAnswers_${attemptId}`) || "{}"
++        );
++        allAnswers = { ...answers, ...local };
++      } catch (e) {
++        console.error("Local answers read error:", e);
++      }
++
+       const response = await fetch(
+         `${API_URL}/api/attempts/${attemptId}/submit`,
+         {
+@@ -98,6 +108,9 @@ export default function CandidateExam() {
+           headers: {
+             "Content-Type": "application/json",
+           },
++          body: JSON.stringify({
++            answers: allAnswers,
++          }),
+         }
+       );
+ 
+@@ -125,6 +138,7 @@ export default function CandidateExam() {
+        */
+       localStorage.removeItem("attemptId");
+       localStorage.removeItem("exam");
++      localStorage.removeItem(`localAnswers_${attemptId}`);
+ 
+       /*
+        * Examination is successfully terminated.
+@@ -268,11 +282,11 @@ export default function CandidateExam() {
+          RESTORE ANSWERS
+       ------------------------------------------------------- */
+ 
++      const restoredAnswers = {};
++
+       if (
+         Array.isArray(data.answers)
+       ) {
+-        const restoredAnswers = {};
+-
+         data.answers.forEach(
+           (answer) => {
+             restoredAnswers[
+@@ -281,12 +295,22 @@ export default function CandidateExam() {
+               answer.selected_answer;
+           }
+         );
++      }
+ 
+-        setAnswers(
+-          restoredAnswers
++      // Merge any answers previously saved in local storage
++      try {
++        const localSaved = JSON.parse(
++          localStorage.getItem(`localAnswers_${attemptId}`) || "{}"
+         );
++        Object.assign(restoredAnswers, localSaved);
++      } catch (e) {
++        console.error("Local storage load error:", e);
+       }
+ 
++      setAnswers(
++        restoredAnswers
++      );
++
+     } catch (err) {
+       console.error(
+         "LOAD QUESTIONS ERROR:",
+@@ -536,10 +560,7 @@ export default function CandidateExam() {
+         return false;
+       }
+ 
+-      alert(
+-        "Unable to save your answer. Please try again."
+-      );
+-
++      // Silent resilience: Answer is safely persisted in browser localStorage and will sync on submit
+       return false;
+     }
+   };
+@@ -561,20 +582,28 @@ export default function CandidateExam() {
+     }
+ 
+     /*
+-     * Update UI immediately.
++     * Update UI and persist to localStorage immediately.
+      */
+-    setAnswers(
+-      (previous) => ({
++    setAnswers((previous) => {
++      const updated = {
+         ...previous,
+-        [questionId]:
+-          answer,
+-      })
+-    );
++        [questionId]: answer,
++      };
++      try {
++        localStorage.setItem(
++          `localAnswers_${attemptId}`,
++          JSON.stringify(updated)
++        );
++      } catch (e) {
++        console.error("Local storage save error:", e);
++      }
++      return updated;
++    });
+ 
+     /*
+-     * Save to backend.
++     * Save to backend in background.
+      */
+-    await saveAnswer(
++    saveAnswer(
+       questionId,
+       answer
+     );
+diff --git a/frontend/src/pages/CodingExamResults.jsx b/frontend/src/pages/CodingExamResults.jsx
+index abc09aa..f4c8969 100644
+--- a/frontend/src/pages/CodingExamResults.jsx
++++ b/frontend/src/pages/CodingExamResults.jsx
+@@ -188,13 +188,58 @@ const CodingExamResults = () => {
+           </p>
+         </div>
+ 
+-        <button
+-          className="coding-refresh-button"
+-          onClick={fetchResults}
+-          disabled={loading}
+-        >
+-          ↻ Refresh
+-        </button>
++        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
++          <button
++            className="coding-refresh-button"
++            style={{ background: "#2563eb", color: "#fff", borderColor: "#2563eb" }}
++            onClick={() => {
++              if (!results || results.length === 0) {
++                alert("No results to export.");
++                return;
++              }
++              const headers = [
++                "Rank",
++                "Candidate Name",
++                "Roll Number",
++                "Course",
++                "Score",
++                "Total Marks",
++                "Percentage",
++                "Status",
++                "Submitted At"
++              ];
++              const rows = results.map((r, index) => [
++                index + 1,
++                `"${(r.candidate_name || "").replace(/"/g, '""')}"`,
++                `"${r.roll_number || ""}"`,
++                `"${r.course || ""}"`,
++                r.total_score ?? 0,
++                r.total_marks ?? 0,
++                `${r.percentage ?? 0}%`,
++                r.status || "Submitted",
++                r.submitted_at ? `"${new Date(r.submitted_at).toLocaleString()}"` : '"—"'
++              ]);
++              const csvContent = [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
++              const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
++              const url = URL.createObjectURL(blob);
++              const link = document.createElement("a");
++              link.setAttribute("href", url);
++              link.setAttribute("download", `${(exam?.title || "Coding_Exam").replace(/\s+/g, "_")}_Results.csv`);
++              document.body.appendChild(link);
++              link.click();
++              document.body.removeChild(link);
++            }}
++          >
++            📥 Export CSV
++          </button>
++          <button
++            className="coding-refresh-button"
++            onClick={fetchResults}
++            disabled={loading}
++          >
++            ↻ Refresh
++          </button>
++        </div>
+ 
+       </header>
+ 
+diff --git a/frontend/src/pages/ExamResults.jsx b/frontend/src/pages/ExamResults.jsx
+index c0c9f4b..4e7f15c 100644
+--- a/frontend/src/pages/ExamResults.jsx
++++ b/frontend/src/pages/ExamResults.jsx
+@@ -225,6 +225,47 @@ setCutoffInput(
+     return true;
+   });
+ 
++  const exportToCSV = () => {
++    if (!results || results.length === 0) {
++      alert("No results to export.");
++      return;
++    }
++
++    const headers = [
++      "Rank",
++      "Candidate Name",
++      "Roll Number",
++      "Course",
++      "Marks Obtained",
++      "Total Marks",
++      "Percentage",
++      "Status",
++      "Submitted At"
++    ];
++
++    const rows = filteredResults.map((r, index) => [
++      index + 1,
++      `"${(r.name || "").replace(/"/g, '""')}"`,
++      `"${r.roll_number || ""}"`,
++      `"${r.course || ""}"`,
++      r.obtained_marks,
++      r.total_marks,
++      `${r.percentage}%`,
++      r.shortlisted ? "SHORTLISTED" : "NOT SHORTLISTED",
++      r.submitted_at ? `"${new Date(r.submitted_at).toLocaleString()}"` : '"—"'
++    ]);
++
++    const csvContent = [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
++    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
++    const url = URL.createObjectURL(blob);
++    const link = document.createElement("a");
++    link.setAttribute("href", url);
++    link.setAttribute("download", `${(exam?.title || "Exam").replace(/\s+/g, "_")}_Results.csv`);
++    document.body.appendChild(link);
++    link.click();
++    document.body.removeChild(link);
++  };
++
+   return (
+     <div className="exam-results">
+ 
+@@ -269,12 +310,21 @@ setCutoffInput(
+ 
+           </div>
+ 
+-          <button
+-            className="refresh-results"
+-            onClick={loadResults}
+-          >
+-            ↻ Refresh
+-          </button>
++          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
++            <button
++              className="refresh-results"
++              style={{ background: "#2563eb", color: "#fff", borderColor: "#2563eb" }}
++              onClick={exportToCSV}
++            >
++              📥 Export CSV
++            </button>
++            <button
++              className="refresh-results"
++              onClick={loadResults}
++            >
++              ↻ Refresh
++            </button>
++          </div>
+ 
+         </div>
+ 
+-- 
+2.55.0.windows.2
+

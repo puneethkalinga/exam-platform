@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./CodingResultDetails.css";
 
 const API_URL =
-  "https://exam-platform-qhk8.onrender.com";
+  "";
 
 const CodingResultDetails = () => {
   const { attemptId } = useParams();

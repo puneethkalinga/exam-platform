@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./CodingTestCaseManagement.css";
 
-const API_URL = "https://exam-platform-qhk8.onrender.com";
+const API_URL = "";
 
 const CodingTestCaseManagement = () => {
   const { examId, questionId } = useParams();

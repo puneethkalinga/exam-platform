@@ -8,7 +8,7 @@ import Editor from "@monaco-editor/react";
 import "./CodingExam.css";
 
 const API_URL =
-  "https://exam-platform-qhk8.onrender.com";
+  "";
 
 const defaultCode = {
   c: `#include <stdio.h>

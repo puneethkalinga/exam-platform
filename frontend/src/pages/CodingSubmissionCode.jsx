@@ -4,7 +4,7 @@ import Editor from "@monaco-editor/react";
 import "./CodingSubmissionCode.css";
 
 const API_URL =
-  "https://exam-platform-qhk8.onrender.com";
+  "";
 
 const CodingSubmissionCode = () => {
   const {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./AdminLogin.css";
 
-const API_URL = "https://exam-platform-qhk8.onrender.com";
+const API_URL = "";
 
 export default function AdminLogin({ onLogin }) {
   const [username, setUsername] = useState("");
