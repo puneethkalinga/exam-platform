@@ -388,4 +388,5 @@ const getCandidateResponses = async (req, res) => {
 module.exports = {
   getExamResults,
   getCandidateResponses,
+  updateExamCutoff
 };
