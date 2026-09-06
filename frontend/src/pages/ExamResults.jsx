@@ -13,6 +13,12 @@ export default function ExamResults() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [cutoff, setCutoff] = useState(0);
+const [cutoffInput, setCutoffInput] = useState("");
+const [statusFilter, setStatusFilter] = useState("all");
+const [updatingCutoff, setUpdatingCutoff] =
+  useState(false);
+
   useEffect(() => {
     loadResults();
   }, [examId]);
@@ -59,7 +65,24 @@ export default function ExamResults() {
       }
 
       setExam(examData.exam || examData);
-      setResults(resultData.results || []);
+      setExam(examData.exam || examData);
+
+setResults(
+  resultData.results || []
+);
+
+const currentCutoff =
+  Number(
+    resultData.cutoff ??
+    examData.exam?.cutoff_percentage ??
+    examData.cutoff_percentage ??
+    0
+  );
+
+setCutoff(currentCutoff);
+setCutoffInput(
+  String(currentCutoff)
+);
 
     } catch (err) {
       console.error("LOAD RESULTS ERROR:", err);
@@ -68,6 +91,88 @@ export default function ExamResults() {
       setLoading(false);
     }
   };
+  const updateCutoff = async () => {
+  const newCutoff =
+    Number(cutoffInput);
+
+  if (
+    !Number.isFinite(newCutoff) ||
+    newCutoff < 0 ||
+    newCutoff > 100
+  ) {
+    alert(
+      "Cutoff must be between 0 and 100."
+    );
+    return;
+  }
+
+  try {
+
+    setUpdatingCutoff(true);
+
+    const token =
+      localStorage.getItem(
+        "adminToken"
+      );
+
+    const response = await fetch(
+      `${API_URL}/api/results/exam/${examId}/cutoff`,
+      {
+        method: "PUT",
+
+        headers: {
+          "Content-Type":
+            "application/json",
+
+          Authorization:
+            `Bearer ${token}`,
+        },
+
+        body: JSON.stringify({
+          cutoffPercentage:
+            newCutoff,
+        }),
+      }
+    );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+          "Failed to update cutoff"
+      );
+    }
+
+    setCutoff(newCutoff);
+
+    setCutoffInput(
+      String(newCutoff)
+    );
+
+    // Reload results so the
+    // shortlist is immediately updated
+    await loadResults();
+
+  } catch (error) {
+
+    console.error(
+      "UPDATE CUTOFF ERROR:",
+      error
+    );
+
+    alert(
+      error.message ||
+        "Failed to update cutoff"
+    );
+
+  } finally {
+
+    setUpdatingCutoff(false);
+
+  }
+};
 
   const formatDate = (date) => {
     if (!date) return "—";
@@ -95,6 +200,30 @@ export default function ExamResults() {
       </div>
     );
   }
+
+  const filteredResults =
+  results.filter((result) => {
+
+    const isShortlisted =
+      Number(result.percentage || 0) >=
+      Number(cutoff);
+
+    if (
+      statusFilter ===
+      "shortlisted"
+    ) {
+      return isShortlisted;
+    }
+
+    if (
+      statusFilter ===
+      "not_shortlisted"
+    ) {
+      return !isShortlisted;
+    }
+
+    return true;
+  });
 
   return (
     <div className="exam-results">
@@ -187,10 +316,11 @@ export default function ExamResults() {
             <strong>
               {
                 results.filter(
-                  (item) =>
-                    item.result_status ===
-                    "shortlisted"
-                ).length
+      (item) =>
+        Number(
+          item.percentage || 0
+        ) >= Number(cutoff)
+    ).length
               }
             </strong>
           </div>
@@ -201,7 +331,7 @@ export default function ExamResults() {
             </span>
 
             <strong>
-              {exam?.cutoff_percentage || 0}%
+                {cutoff}%
             </strong>
           </div>
 
@@ -214,20 +344,104 @@ export default function ExamResults() {
 
           <div className="results-panel-heading">
 
-            <div>
-              <span>
-                CANDIDATE PERFORMANCE
-              </span>
+            <div className="results-panel-heading">
 
-              <h2>
-                Results
-              </h2>
-            </div>
+  <div>
+    <span>
+      CANDIDATE PERFORMANCE
+    </span>
+
+    <h2>
+      Results
+    </h2>
+  </div>
+
+
+  {/* RESULT FILTERS */}
+
+  <div className="results-filters">
+
+    {/* CUTOFF */}
+
+    <div className="cutoff-control">
+
+      <label>
+        CUTOFF
+      </label>
+
+      <div className="cutoff-input-group">
+
+        <input
+          type="number"
+          min="0"
+          max="100"
+          step="0.01"
+          value={cutoffInput}
+          onChange={(e) =>
+            setCutoffInput(
+              e.target.value
+            )
+          }
+        />
+
+        <span>%</span>
+
+        <button
+          type="button"
+          onClick={updateCutoff}
+          disabled={updatingCutoff}
+        >
+          {updatingCutoff
+            ? "Updating..."
+            : "Apply"}
+        </button>
+
+      </div>
+
+    </div>
+
+
+    {/* STATUS FILTER */}
+
+    <div className="status-filter">
+
+      <label>
+        SHOW
+      </label>
+
+      <select
+        value={statusFilter}
+        onChange={(e) =>
+          setStatusFilter(
+            e.target.value
+          )
+        }
+      >
+
+        <option value="all">
+          All Candidates
+        </option>
+
+        <option value="shortlisted">
+          Shortlisted
+        </option>
+
+        <option value="not_shortlisted">
+          Not Shortlisted
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+</div>
 
           </div>
 
 
-          {results.length === 0 ? (
+          {filteredResults.length === 0 ? (
 
             <div className="results-empty">
 
@@ -271,11 +485,11 @@ export default function ExamResults() {
 
                 <tbody>
 
-                  {results.map((result) => {
+                  {filteredResults.map((result) => {
 
                     const shortlisted =
-                      result.result_status ===
-                      "shortlisted";
+  Number(result.percentage || 0) >=
+  Number(cutoff);
 
                     return (
                       <tr

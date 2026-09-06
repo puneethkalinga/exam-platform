@@ -1184,3 +1184,167 @@
 
   border-radius: inherit;
 }
+
+/* =========================================================
+   RESULTS FILTERS
+   ========================================================= */
+
+.results-filters {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   FILTER GROUP
+   ========================================================= */
+
+.cutoff-control,
+.status-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cutoff-control label,
+.status-filter label {
+  color: var(--er-muted);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 1.2px;
+}
+
+
+/* =========================================================
+   CUTOFF INPUT
+   ========================================================= */
+
+.cutoff-input-group {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  background: white;
+  border: 1px solid var(--er-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cutoff-input-group input {
+  width: 72px;
+  height: 100%;
+  padding: 0 10px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--er-text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.cutoff-input-group input:focus {
+  box-shadow: inset 0 0 0 1px var(--er-primary);
+}
+
+.cutoff-input-group span {
+  color: var(--er-muted);
+  font-size: 12px;
+  font-weight: 750;
+  padding-right: 8px;
+}
+
+.cutoff-input-group button {
+  height: 100%;
+  padding: 0 13px;
+  border: 0;
+  border-left: 1px solid var(--er-border);
+  background: var(--er-primary);
+  color: white;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.cutoff-input-group button:hover {
+  background: var(--er-primary-dark);
+}
+
+.cutoff-input-group button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   STATUS FILTER
+   ========================================================= */
+
+.status-filter select {
+  height: 40px;
+  min-width: 170px;
+  padding: 0 34px 0 12px;
+  border: 1px solid var(--er-border);
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  color: var(--er-text);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.status-filter select:focus {
+  border-color: var(--er-primary);
+  box-shadow:
+    0 0 0 3px
+    rgba(37, 99, 235, .08);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .results-panel-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .results-filters {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .results-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cutoff-control,
+  .status-filter {
+    width: 100%;
+  }
+
+  .cutoff-input-group,
+  .status-filter select {
+    width: 100%;
+  }
+
+  .cutoff-input-group input {
+    flex: 1;
+  }
+
+}
