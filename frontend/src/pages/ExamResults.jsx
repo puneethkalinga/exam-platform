@@ -342,7 +342,7 @@ setCutoffInput(
 
         <section className="results-panel">
 
-          <div className="results-panel-heading">
+          
 
             <div className="results-panel-heading">
 
@@ -438,7 +438,7 @@ setCutoffInput(
 
 </div>
 
-          </div>
+          
 
 
           {filteredResults.length === 0 ? (
