@@ -31,48 +31,89 @@ export default async function handler(req, res) {
         out.updatedExam = examRes.rows;
       }
 
-      // 2. Delete test attempts and answers for the roll numbers
+      // 2. Delete test attempts and answers for the roll numbers across all exams and coding exams
       const rolls = Array.isArray(rollNumbers) ? rollNumbers : (rollNumbers ? [rollNumbers] : []);
-      if (rolls.length > 0 && examId) {
-        // Delete answers
+      if (rolls.length > 0) {
+        // Delete MCQ answers
         const delAns = await client.query(
-          "DELETE FROM answers WHERE attempt_id IN (SELECT a.id FROM attempts a JOIN candidates c ON c.id = a.candidate_id WHERE c.roll_number = ANY($1) AND a.exam_id = $2) RETURNING id",
-          [rolls, examId]
+          "DELETE FROM answers WHERE attempt_id IN (SELECT a.id FROM attempts a JOIN candidates c ON c.id = a.candidate_id WHERE c.roll_number = ANY($1)) RETURNING id",
+          [rolls]
         );
         out.deletedAnswers = delAns.rowCount;
 
-        // Delete attempts
+        // Delete MCQ attempts
         const delAtt = await client.query(
-          "DELETE FROM attempts WHERE candidate_id IN (SELECT id FROM candidates WHERE roll_number = ANY($1)) AND exam_id = $2 RETURNING id",
-          [rolls, examId]
+          "DELETE FROM attempts WHERE candidate_id IN (SELECT id FROM candidates WHERE roll_number = ANY($1)) RETURNING id",
+          [rolls]
         );
         out.deletedAttempts = delAtt.rowCount;
 
-        // Delete candidate record if no other attempts exist
-        for (const r of rolls) {
-          const remAtt = await client.query(
-            "SELECT id FROM attempts WHERE candidate_id IN (SELECT id FROM candidates WHERE roll_number = $1)",
-            [r]
+        // Delete Coding submissions, drafts, security events, and attempts
+        try {
+          await client.query(
+            "DELETE FROM coding_submissions WHERE attempt_id IN (SELECT id FROM coding_attempts WHERE candidate_id IN (SELECT id FROM candidates WHERE roll_number = ANY($1)))",
+            [rolls]
           );
-          if (remAtt.rowCount === 0) {
-            await client.query("DELETE FROM candidates WHERE roll_number = $1", [r]);
-            out.deletedCandidate = r;
-          }
+          await client.query(
+            "DELETE FROM coding_drafts WHERE attempt_id IN (SELECT id FROM coding_attempts WHERE candidate_id IN (SELECT id FROM candidates WHERE roll_number = ANY($1)))",
+            [rolls]
+          );
+          await client.query(
+            "DELETE FROM coding_security_events WHERE attempt_id IN (SELECT id FROM coding_attempts WHERE candidate_id IN (SELECT id FROM candidates WHERE roll_number = ANY($1)))",
+            [rolls]
+          );
+          const delCodingAtt = await client.query(
+            "DELETE FROM coding_attempts WHERE candidate_id IN (SELECT id FROM candidates WHERE roll_number = ANY($1)) RETURNING id",
+            [rolls]
+          );
+          out.deletedCodingAttempts = delCodingAtt.rowCount;
+        } catch (cErr) {
+          out.codingDeleteWarning = cErr.message;
         }
+
+        // Delete candidate records so roll number can be re-registered fresh
+        const delCand = await client.query(
+          "DELETE FROM candidates WHERE roll_number = ANY($1) RETURNING id, roll_number",
+          [rolls]
+        );
+        out.deletedCandidates = delCand.rows;
       }
 
-      // 3. Current exam results verification
-      const curResults = await client.query(`
-        SELECT a.id as attempt_id, c.roll_number, c.name, a.status 
+      // 3. Verification checks
+      const remCandidates = await client.query(
+        "SELECT id, name, roll_number FROM candidates WHERE roll_number IN ('XEVO/YEN/T/001', 'XEVO/YEN/T/005')"
+      );
+      out.remCandidates = remCandidates.rows;
+
+      const remAttempts = await client.query(`
+        SELECT a.id, a.exam_id, c.roll_number, c.name, a.status 
         FROM attempts a 
         JOIN candidates c ON c.id = a.candidate_id 
-        WHERE a.exam_id = $1
-      `, [examId || 23]);
-      out.remainingAttempts = curResults.rows;
+        WHERE a.exam_id IN (17, 23, 24)
+      `);
+      out.allMcqAttempts = remAttempts.rows;
 
-      // 4. Current exam status
-      const curExam = await client.query("SELECT id, title, status FROM exams WHERE id = $1", [examId || 23]);
-      out.currentExam = curExam.rows[0];
+      try {
+        const remCoding = await client.query(`
+          SELECT ca.id, ca.coding_exam_id, c.roll_number, c.name, ca.status 
+          FROM coding_attempts ca 
+          JOIN candidates c ON c.id = ca.candidate_id
+        `);
+        out.allCodingAttempts = remCoding.rows;
+      } catch (e) {
+        out.codingQueryWarning = e.message;
+      }
+
+      // 4. Current exam statuses
+      const allExams = await client.query("SELECT id, title, status FROM exams WHERE id IN (17, 23, 24)");
+      out.mcqExams = allExams.rows;
+
+      try {
+        const codingExams = await client.query("SELECT id, title, status FROM coding_exams");
+        out.codingExams = codingExams.rows;
+      } catch (e) {
+        out.codingExamsWarning = e.message;
+      }
 
       await client.end();
       return res.json({ success: true, out });
