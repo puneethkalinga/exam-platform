@@ -162,7 +162,7 @@ export default function CandidateStart() {
 
             <input
               type="text"
-              placeholder="XEVO/YEN/T/001"
+              placeholder="XEVO/YEN/T/001 or XEVO/YEN/NT/001"
               value={rollNumber}
               onChange={(e) =>
                 setRollNumber(e.target.value.toUpperCase())

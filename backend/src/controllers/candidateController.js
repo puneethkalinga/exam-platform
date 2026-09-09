@@ -29,7 +29,7 @@ const startAttempt = async (req, res) => {
     const cleanRollNumber =
       String(rollNumber).trim();
 
-      const rollNumberPattern = /^XEVO\/YEN\/T\/(\d{3})$/;
+      const rollNumberPattern = /^XEVO\/YEN\/(T|NT)\/(\d{3})$/;
 const rollNumberMatch = cleanRollNumber.match(
   rollNumberPattern
 );
@@ -37,12 +37,12 @@ const rollNumberMatch = cleanRollNumber.match(
 if (!rollNumberMatch) {
   return res.status(400).json({
     message:
-      "Invalid roll number. Use format XEVO/YEN/T/--- to XEVO/YEN/T/---",
+      "Invalid roll number. Use format XEVO/YEN/T/001-800 or XEVO/YEN/NT/001-800",
   });
 }
 
 const rollNumberNumber = Number(
-  rollNumberMatch[1]
+  rollNumberMatch[2]
 );
 
 if (
@@ -51,7 +51,7 @@ if (
 ) {
   return res.status(400).json({
     message:
-      "Invalid roll number. Roll number must be between XEVO/YEN/T/--- and XEVO/YEN/T/---",
+      "Invalid roll number. Roll number must be between 001 and 800",
   });
 }
 

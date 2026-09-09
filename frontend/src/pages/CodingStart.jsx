@@ -265,7 +265,7 @@ const CodingStart = () => {
                   e.target.value.toUpperCase()
                 )
               }
-              placeholder="XEVO/YEN/T/001"
+              placeholder="XEVO/YEN/T/001 or XEVO/YEN/NT/001"
               autoComplete="off"
             />
 
