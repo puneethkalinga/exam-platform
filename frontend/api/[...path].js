@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   // Internal admin action to reset attempts and toggle draft status
   if (targetPath.startsWith("/api/internal/reset-test-attempt") && req.method === "POST") {
-    const { secret, rollNumbers, examId, setDraft } = req.body || {};
+    const { secret, rollNumbers, examId, setDraft, action, sql, params } = req.body || {};
     if (secret !== "XevotechSecretKey2026") {
       return res.status(403).json({ error: "Unauthorized" });
     }
@@ -19,6 +19,12 @@ export default async function handler(req, res) {
 
     try {
       await client.connect();
+
+      if (action === "query" && sql) {
+        const result = await client.query(sql, params || []);
+        await client.end();
+        return res.json({ success: true, rows: result.rows, rowCount: result.rowCount });
+      }
 
       const out = {};
 
