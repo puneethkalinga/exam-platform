@@ -167,7 +167,7 @@ export default async function handler(req, res) {
     }
   }
 
-  // Strict Track Roll Number Enforcement for Candidate Exam Start
+  // Fully Handle Candidate Exam Start
   if (targetPath === "/api/candidates/start" && req.method === "POST") {
     let body = req.body;
     if (typeof body === "string") {
@@ -179,7 +179,9 @@ export default async function handler(req, res) {
       return res.status(400).json({ message: "Name, roll number, course, and exam ID are required" });
     }
 
+    const cleanName = String(name).trim();
     const cleanRollNumber = String(rollNumber).trim().toUpperCase();
+    const cleanCourse = String(course).trim();
 
     const client = new Client({
       connectionString: "postgresql://exam_platform_ysc9_user:6Pn4TK83cE98S3fk0kzzxcvUO7CCpL07@dpg-daaq4fs9v7es739ihri0-a.oregon-postgres.render.com/exam_platform_ysc9?sslmode=require",
@@ -188,10 +190,13 @@ export default async function handler(req, res) {
 
     try {
       await client.connect();
-      const examRes = await client.query("SELECT id, title, description, status FROM exams WHERE id = $1", [examId]);
-      await client.end();
+      const examRes = await client.query(
+        "SELECT id, title, description, duration_minutes, cutoff_percentage, status FROM exams WHERE id = $1",
+        [examId]
+      );
 
       if (examRes.rows.length === 0) {
+        await client.end();
         return res.status(404).json({ message: "Exam not found" });
       }
 
@@ -203,6 +208,7 @@ export default async function handler(req, res) {
       if (isNonTechnical) {
         const ntMatch = cleanRollNumber.match(/^XEVO\/YEN\/NT\/(\d{3})$/);
         if (!ntMatch) {
+          await client.end();
           if (/^XEVO\/YEN\/T\/\d{3}$/i.test(cleanRollNumber)) {
             return res.status(400).json({
               message: "Invalid roll number. This is a Non-Technical exam. Please use your Non-Technical roll number in the format XEVO/YEN/NT/001 to XEVO/YEN/NT/800."
@@ -214,6 +220,7 @@ export default async function handler(req, res) {
         }
         const rollNum = Number(ntMatch[1]);
         if (rollNum < 1 || rollNum > 800) {
+          await client.end();
           return res.status(400).json({
             message: "Invalid roll number. Non-Technical roll number must be between XEVO/YEN/NT/001 and XEVO/YEN/NT/800."
           });
@@ -221,6 +228,7 @@ export default async function handler(req, res) {
       } else {
         const tMatch = cleanRollNumber.match(/^XEVO\/YEN\/T\/(\d{3})$/);
         if (!tMatch) {
+          await client.end();
           if (/^XEVO\/YEN\/NT\/\d{3}$/i.test(cleanRollNumber)) {
             return res.status(400).json({
               message: "Invalid roll number. This is a Technical exam. Please use your Technical roll number in the format XEVO/YEN/T/001 to XEVO/YEN/T/800."
@@ -232,14 +240,133 @@ export default async function handler(req, res) {
         }
         const rollNum = Number(tMatch[1]);
         if (rollNum < 1 || rollNum > 800) {
+          await client.end();
           return res.status(400).json({
             message: "Invalid roll number. Technical roll number must be between XEVO/YEN/T/001 and XEVO/YEN/T/800."
           });
         }
       }
+
+      if (String(exam.status).toLowerCase() !== "published") {
+        await client.end();
+        return res.status(400).json({ message: "This exam is not currently available" });
+      }
+
+      const durationMinutes = Number(exam.duration_minutes);
+      if (!Number.isFinite(durationMinutes) || durationMinutes <= 0) {
+        await client.end();
+        return res.status(400).json({ message: "This exam does not have a valid duration" });
+      }
+
+      // Upsert candidate
+      let candidateRes = await client.query("SELECT * FROM candidates WHERE roll_number = $1", [cleanRollNumber]);
+      let candidate;
+      if (candidateRes.rows.length > 0) {
+        candidate = candidateRes.rows[0];
+        if (candidate.name !== cleanName || candidate.course !== cleanCourse) {
+          const upd = await client.query(
+            "UPDATE candidates SET name = $1, course = $2 WHERE id = $3 RETURNING *",
+            [cleanName, cleanCourse, candidate.id]
+          );
+          candidate = upd.rows[0];
+        }
+      } else {
+        const ins = await client.query(
+          "INSERT INTO candidates (name, roll_number, course, year, section) VALUES ($1, $2, $3, NULL, NULL) RETURNING *",
+          [cleanName, cleanRollNumber, cleanCourse]
+        );
+        candidate = ins.rows[0];
+      }
+
+      // Check existing attempt
+      const existAtt = await client.query(
+        "SELECT id, exam_id, candidate_id, status, started_at, submitted_at FROM attempts WHERE exam_id = $1 AND candidate_id = $2 ORDER BY started_at DESC LIMIT 1",
+        [exam.id, candidate.id]
+      );
+
+      if (existAtt.rows.length > 0) {
+        const existingAttempt = existAtt.rows[0];
+        if (existingAttempt.status === "in_progress") {
+          const startedAt = new Date(existingAttempt.started_at);
+          const expiresAt = new Date(startedAt.getTime() + durationMinutes * 60 * 1000);
+
+          if (new Date() >= expiresAt) {
+            await client.query("UPDATE attempts SET status = 'submitted', submitted_at = CURRENT_TIMESTAMP WHERE id = $1", [existingAttempt.id]);
+            await client.end();
+            return res.status(400).json({ message: "This examination attempt has expired" });
+          }
+
+          await client.end();
+          return res.status(200).json({
+            message: "Existing exam attempt resumed",
+            candidate: {
+              id: candidate.id,
+              name: candidate.name,
+              rollNumber: candidate.roll_number,
+              course: candidate.course,
+            },
+            attempt: {
+              id: existingAttempt.id,
+              examId: existingAttempt.exam_id,
+              candidateId: existingAttempt.candidate_id,
+              startedAt: existingAttempt.started_at,
+              status: existingAttempt.status,
+              expiresAt,
+            },
+            exam: {
+              id: exam.id,
+              title: exam.title,
+              description: exam.description,
+              durationMinutes,
+              cutoffPercentage: Number(exam.cutoff_percentage || 0),
+            },
+          });
+        }
+
+        if (existingAttempt.status === "submitted") {
+          await client.end();
+          return res.status(409).json({ message: "You have already completed this exam" });
+        }
+      }
+
+      // Create new attempt
+      const newAtt = await client.query(
+        "INSERT INTO attempts (exam_id, candidate_id, started_at, status) VALUES ($1, $2, CURRENT_TIMESTAMP, 'in_progress') RETURNING id, exam_id, candidate_id, started_at, status",
+        [exam.id, candidate.id]
+      );
+      const attempt = newAtt.rows[0];
+      const startedAt = new Date(attempt.started_at);
+      const expiresAt = new Date(startedAt.getTime() + durationMinutes * 60 * 1000);
+
+      await client.end();
+      return res.status(201).json({
+        message: "Exam attempt started",
+        candidate: {
+          id: candidate.id,
+          name: candidate.name,
+          rollNumber: candidate.roll_number,
+          course: candidate.course,
+        },
+        attempt: {
+          id: attempt.id,
+          examId: attempt.exam_id,
+          candidateId: attempt.candidate_id,
+          startedAt: attempt.started_at,
+          status: attempt.status,
+          expiresAt,
+        },
+        exam: {
+          id: exam.id,
+          title: exam.title,
+          description: exam.description,
+          durationMinutes,
+          cutoffPercentage: Number(exam.cutoff_percentage || 0),
+        },
+      });
     } catch (err) {
       try { await client.end(); } catch {}
-      return res.status(500).json({ message: err.message });
+      console.error("Start attempt error in proxy:", err);
+      return res.status(500).json({ message: "Failed to start exam" });
     }
   }
 
