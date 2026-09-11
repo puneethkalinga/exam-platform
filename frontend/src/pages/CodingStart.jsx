@@ -79,6 +79,16 @@ const CodingStart = () => {
     return;
   }
 
+  const cleanRoll = rollNumber.trim().toUpperCase();
+  if (/^XEVO\/YEN\/NT\/\d{3}$/i.test(cleanRoll)) {
+    setError("This is a Technical Coding exam. Please enter your Technical roll number in format XEVO/YEN/T/001 to XEVO/YEN/T/800.");
+    return;
+  }
+  if (!/^XEVO\/YEN\/T\/\d{3}$/i.test(cleanRoll)) {
+    setError("Invalid roll number format. Technical coding exams require format XEVO/YEN/T/001 to XEVO/YEN/T/800.");
+    return;
+  }
+
   if (!course.trim()) {
     setError("Please enter your course.");
     return;
@@ -265,12 +275,12 @@ const CodingStart = () => {
                   e.target.value.toUpperCase()
                 )
               }
-              placeholder="XEVO/YEN/T/001 or XEVO/YEN/NT/001"
+              placeholder="XEVO/YEN/T/001"
               autoComplete="off"
             />
 
-            <small>
-              Enter your registered roll number.
+            <small style={{ color: "#2563eb", fontWeight: "600" }}>
+              Technical Track: Format XEVO/YEN/T/001 to XEVO/YEN/T/800
             </small>
           </div>
 
@@ -285,9 +295,22 @@ const CodingStart = () => {
               onChange={(e) =>
                 setCourse(e.target.value)
               }
-              placeholder="Enter your course"
+              placeholder="Enter your course (e.g. B.Tech / MCA)"
               autoComplete="off"
             />
+          </div>
+
+          <div style={{
+            margin: "12px 0 16px",
+            padding: "10px 14px",
+            background: "#fef2f2",
+            border: "1px solid #fecaca",
+            borderRadius: "8px",
+            color: "#991b1b",
+            fontSize: "12px",
+            lineHeight: "1.45"
+          }}>
+            <strong>⚠ Anti-Cheating Protocol:</strong> If you switch tabs, minimize the window, or switch to another application, your coding exam will be <strong>immediately auto-submitted and terminated</strong>.
           </div>
 
           {error && (

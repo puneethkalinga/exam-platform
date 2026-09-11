@@ -20,6 +20,7 @@ export default function CandidateExam() {
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [terminateReason, setTerminateReason] = useState(null);
 
   const [timeLeft, setTimeLeft] = useState(null);
 
@@ -38,6 +39,11 @@ export default function CandidateExam() {
    * the examination has successfully loaded.
    */
   const examLoadedRef = useRef(false);
+
+  /*
+   * Guard voluntary submission confirmation from triggering blur.
+   */
+  const isConfirmingRef = useRef(false);
 
   /*
    * Debounce timers for text inputs.
@@ -67,13 +73,17 @@ export default function CandidateExam() {
      * Manual submission confirmation.
      */
     if (!automatic) {
+      isConfirmingRef.current = true;
       const confirmed = window.confirm(
         "Are you sure you want to submit the examination?"
       );
+      isConfirmingRef.current = false;
 
       if (!confirmed) {
         return;
       }
+    } else {
+      setTerminateReason(reason);
     }
 
     /*
@@ -406,13 +416,10 @@ export default function CandidateExam() {
     const handleVisibilityChange = () => {
       /*
        * document.hidden becomes true when the candidate:
-       *
        * - switches browser tab
-       * - minimizes the browser
-       * - switches to another application in many cases
-       * - moves the page out of visibility
+       * - minimizes the browser window
+       * - switches to another application
        */
-
       if (
         document.hidden &&
         examLoadedRef.current &&
@@ -421,9 +428,50 @@ export default function CandidateExam() {
         !submitStartedRef.current
       ) {
         console.log(
-          "TAB SWITCH DETECTED - TERMINATING EXAM"
+          "TAB SWITCH / MINIMIZE DETECTED - TERMINATING EXAM"
         );
 
+        handleSubmit(
+          true,
+          "TAB_SWITCH"
+        );
+      }
+    };
+
+    const handleWindowBlur = () => {
+      /*
+       * blur event fires when:
+       * - candidate clicks another window or application (Alt+Tab, taskbar, split screen)
+       * - browser is minimized or loses focus
+       */
+      if (isConfirmingRef.current) {
+        return;
+      }
+
+      if (
+        examLoadedRef.current &&
+        !submitted &&
+        !submitting &&
+        !submitStartedRef.current
+      ) {
+        console.log(
+          "WINDOW BLUR / APP SWITCH DETECTED - TERMINATING EXAM"
+        );
+
+        handleSubmit(
+          true,
+          "TAB_SWITCH"
+        );
+      }
+    };
+
+    const handlePageHide = () => {
+      if (
+        examLoadedRef.current &&
+        !submitted &&
+        !submitting &&
+        !submitStartedRef.current
+      ) {
         handleSubmit(
           true,
           "TAB_SWITCH"
@@ -435,11 +483,27 @@ export default function CandidateExam() {
       "visibilitychange",
       handleVisibilityChange
     );
+    window.addEventListener(
+      "blur",
+      handleWindowBlur
+    );
+    window.addEventListener(
+      "pagehide",
+      handlePageHide
+    );
 
     return () => {
       document.removeEventListener(
         "visibilitychange",
         handleVisibilityChange
+      );
+      window.removeEventListener(
+        "blur",
+        handleWindowBlur
+      );
+      window.removeEventListener(
+        "pagehide",
+        handlePageHide
       );
     };
   }, [
@@ -659,32 +723,45 @@ export default function CandidateExam() {
   ========================================================= */
 
   if (submitted) {
+    const isViolation = terminateReason === "TAB_SWITCH";
+
     return (
       <div className="exam-submitted-page">
 
         <div className="exam-submitted-card">
 
-          <div className="submitted-icon">
-            ✓
+          <div
+            className="submitted-icon"
+            style={
+              isViolation
+                ? { background: "#fef2f2", color: "#dc2626", borderColor: "#fca5a5" }
+                : {}
+            }
+          >
+            {isViolation ? "⚠" : "✓"}
           </div>
 
-          <span className="submitted-label">
-            EXAMINATION COMPLETE
+          <span
+            className="submitted-label"
+            style={isViolation ? { color: "#dc2626", background: "#fef2f2" } : {}}
+          >
+            {isViolation ? "EXAMINATION TERMINATED" : "EXAMINATION COMPLETE"}
           </span>
 
           <h1>
-            Exam Submitted
+            {isViolation ? "Exam Auto-Submitted" : "Exam Submitted"}
           </h1>
 
           <p>
-            Your examination has been
-            successfully submitted.
+            {isViolation
+              ? "Your examination was automatically submitted and locked because a tab switch, window minimize, or window change was detected."
+              : "Your examination has been successfully submitted."}
           </p>
 
           <div className="submitted-notice">
-            Your responses have been
-            recorded and will be evaluated
-            by the examination administrator.
+            {isViolation
+              ? "Anti-cheating protocols were triggered. All responses submitted up to the moment of violation have been securely recorded."
+              : "Your responses have been recorded and will be evaluated by the examination administrator."}
           </div>
 
           <div className="submitted-message">

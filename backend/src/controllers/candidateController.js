@@ -24,36 +24,8 @@ const startAttempt = async (req, res) => {
       });
     }
     const cleanCourse = String(course).trim();
-
     const cleanName = String(name).trim();
-    const cleanRollNumber =
-      String(rollNumber).trim();
-
-      const rollNumberPattern = /^XEVO\/YEN\/(T|NT)\/(\d{3})$/;
-const rollNumberMatch = cleanRollNumber.match(
-  rollNumberPattern
-);
-
-if (!rollNumberMatch) {
-  return res.status(400).json({
-    message:
-      "Invalid roll number. Use format XEVO/YEN/T/001-800 or XEVO/YEN/NT/001-800",
-  });
-}
-
-const rollNumberNumber = Number(
-  rollNumberMatch[2]
-);
-
-if (
-  rollNumberNumber < 1 ||
-  rollNumberNumber > 800
-) {
-  return res.status(400).json({
-    message:
-      "Invalid roll number. Roll number must be between 001 and 800",
-  });
-}
+    const cleanRollNumber = String(rollNumber).trim().toUpperCase();
 
     if (!cleanName || !cleanRollNumber || !cleanCourse) {
       return res.status(400).json({
@@ -63,7 +35,7 @@ if (
     }
 
     /* =====================================================
-       GET EXAM
+       GET EXAM FIRST TO VALIDATE TRACK / ROLL NUMBER
     ===================================================== */
 
     const examResult = await pool.query(
@@ -88,6 +60,63 @@ if (
     }
 
     const exam = examResult.rows[0];
+
+    /* =====================================================
+       ROLL NUMBER VALIDATION (TECHNICAL VS NON-TECHNICAL)
+    ===================================================== */
+
+    const isNonTechnical =
+      /non[-\s]?technical/i.test(exam.title) ||
+      /non[-\s]?technical/i.test(exam.description || "");
+
+    if (isNonTechnical) {
+      const ntMatch = cleanRollNumber.match(/^XEVO\/YEN\/NT\/(\d{3})$/);
+
+      if (!ntMatch) {
+        if (/^XEVO\/YEN\/T\/\d{3}$/i.test(cleanRollNumber)) {
+          return res.status(400).json({
+            message:
+              "Invalid roll number. This is a Non-Technical exam. Please use your Non-Technical roll number in the format XEVO/YEN/NT/001 to XEVO/YEN/NT/800.",
+          });
+        }
+        return res.status(400).json({
+          message:
+            "Invalid roll number. Non-Technical exams require format XEVO/YEN/NT/001 to XEVO/YEN/NT/800.",
+        });
+      }
+
+      const rollNum = Number(ntMatch[1]);
+      if (rollNum < 1 || rollNum > 800) {
+        return res.status(400).json({
+          message:
+            "Invalid roll number. Non-Technical roll number must be between XEVO/YEN/NT/001 and XEVO/YEN/NT/800.",
+        });
+      }
+    } else {
+      // Technical exam
+      const tMatch = cleanRollNumber.match(/^XEVO\/YEN\/T\/(\d{3})$/);
+
+      if (!tMatch) {
+        if (/^XEVO\/YEN\/NT\/\d{3}$/i.test(cleanRollNumber)) {
+          return res.status(400).json({
+            message:
+              "Invalid roll number. This is a Technical exam. Please use your Technical roll number in the format XEVO/YEN/T/001 to XEVO/YEN/T/800.",
+          });
+        }
+        return res.status(400).json({
+          message:
+            "Invalid roll number. Technical exams require format XEVO/YEN/T/001 to XEVO/YEN/T/800.",
+        });
+      }
+
+      const rollNum = Number(tMatch[1]);
+      if (rollNum < 1 || rollNum > 800) {
+        return res.status(400).json({
+          message:
+            "Invalid roll number. Technical roll number must be between XEVO/YEN/T/001 and XEVO/YEN/T/800.",
+        });
+      }
+    }
 
     /* =====================================================
        ONLY PUBLISHED EXAMS
@@ -451,6 +480,46 @@ if (
   }
 };
 
+/* =========================================================
+   GET PUBLIC EXAM INFO (FOR CANDIDATE START PAGE)
+========================================================= */
+
+const getExamInfo = async (req, res) => {
+  try {
+    const { examId } = req.params;
+
+    const result = await pool.query(
+      `
+      SELECT id, title, description, duration_minutes, status
+      FROM exams
+      WHERE id = $1
+      `,
+      [examId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Exam not found" });
+    }
+
+    const exam = result.rows[0];
+    const isNonTechnical =
+      /non[-\s]?technical/i.test(exam.title) ||
+      /non[-\s]?technical/i.test(exam.description || "");
+
+    return res.json({
+      id: exam.id,
+      title: exam.title,
+      description: exam.description,
+      durationMinutes: exam.duration_minutes,
+      isNonTechnical,
+      expectedPrefix: isNonTechnical ? "XEVO/YEN/NT/" : "XEVO/YEN/T/",
+      status: exam.status,
+    });
+  } catch (error) {
+    console.error("Get exam info error:", error);
+    return res.status(500).json({ message: "Failed to load exam information" });
+  }
+};
 
 /* =========================================================
    EXPORT
@@ -458,4 +527,5 @@ if (
 
 module.exports = {
   startAttempt,
-};
+  getExamInfo,
+};

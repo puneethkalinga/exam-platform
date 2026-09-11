@@ -46,23 +46,29 @@ const startCodingAttempt = async (req, res) => {
     const cleanCourse = course.trim();
 
     /* =====================================================
-       VALIDATE ROLL NUMBER
+       VALIDATE ROLL NUMBER (TECHNICAL TRACK ONLY)
     ===================================================== */
 
-    const rollNumberPattern = /^XEVO\/YEN\/(T|NT)\/(\d{3})$/;
+    const rollNumberPattern = /^XEVO\/YEN\/T\/(\d{3})$/;
 
     const rollMatch = cleanRollNumber.match(
       rollNumberPattern
     );
 
     if (!rollMatch) {
+      if (/^XEVO\/YEN\/NT\/\d{3}$/i.test(cleanRollNumber)) {
+        return res.status(400).json({
+          message:
+            "Invalid roll number. Coding Assessment is a Technical exam. Please enter your Technical roll number in the format XEVO/YEN/T/001 to XEVO/YEN/T/800.",
+        });
+      }
       return res.status(400).json({
         message:
-          "Invalid roll number. Use format XEVO/YEN/T/001-800 or XEVO/YEN/NT/001-800",
+          "Invalid roll number. Technical coding exams require format XEVO/YEN/T/001 to XEVO/YEN/T/800.",
       });
     }
 
-    const rollNumberValue = Number(rollMatch[2]);
+    const rollNumberValue = Number(rollMatch[1]);
 
     if (
       rollNumberValue < 1 ||
@@ -70,7 +76,7 @@ const startCodingAttempt = async (req, res) => {
     ) {
       return res.status(400).json({
         message:
-          "Roll number must be between 001 and 800",
+          "Invalid roll number. Technical roll number must be between XEVO/YEN/T/001 and XEVO/YEN/T/800.",
       });
     }
 

@@ -102,6 +102,8 @@ const CodingExam = () => {
   const timeoutHandled = useRef(false);
 
   const lastFocusState = useRef(null);
+  const handleSubmitExamRef = useRef(null);
+  const isConfirmingRef = useRef(false);
 
   const currentQuestion =
     questions[currentIndex];
@@ -158,6 +160,12 @@ const CodingExam = () => {
         logSecurityEvent("TAB_SWITCH", {
           visibility: "hidden",
         });
+
+        // AUTO-SUBMIT IMMEDIATELY ON TAB SWITCH
+        if (handleSubmitExamRef.current && !submittingExam) {
+          console.warn("TAB_SWITCH detected - auto-submitting coding exam");
+          handleSubmitExamRef.current(true, "TAB_SWITCH");
+        }
       } else {
         lastFocusState.current = "visible";
 
@@ -168,6 +176,10 @@ const CodingExam = () => {
     };
 
     const handleBlur = () => {
+      if (isConfirmingRef.current) {
+        return;
+      }
+
       if (lastFocusState.current === "hidden") {
         return;
       }
@@ -175,6 +187,18 @@ const CodingExam = () => {
       lastFocusState.current = "blur";
 
       logSecurityEvent("WINDOW_BLUR");
+
+      // AUTO-SUBMIT IMMEDIATELY ON WINDOW BLUR / MINIMIZE
+      if (handleSubmitExamRef.current && !submittingExam) {
+        console.warn("WINDOW_BLUR / MINIMIZE detected - auto-submitting coding exam");
+        handleSubmitExamRef.current(true, "TAB_SWITCH");
+      }
+    };
+
+    const handlePageHide = () => {
+      if (handleSubmitExamRef.current && !submittingExam) {
+        handleSubmitExamRef.current(true, "TAB_SWITCH");
+      }
     };
 
     const handleFocus = () => {
@@ -198,6 +222,11 @@ const CodingExam = () => {
     );
 
     window.addEventListener(
+      "pagehide",
+      handlePageHide
+    );
+
+    window.addEventListener(
       "focus",
       handleFocus
     );
@@ -214,11 +243,16 @@ const CodingExam = () => {
       );
 
       window.removeEventListener(
+        "pagehide",
+        handlePageHide
+      );
+
+      window.removeEventListener(
         "focus",
         handleFocus
       );
     };
-  }, [attemptId]);
+  }, [attemptId, submittingExam]);
 
   // =====================================================
   // SECURITY - COPY / PASTE / CUT / RIGHT CLICK
@@ -915,16 +949,19 @@ const CodingExam = () => {
   // =====================================================
 
   const handleSubmitExam = async (
-    automatic = false
+    automatic = false,
+    reason = "MANUAL"
   ) => {
     if (submittingExam) {
       return;
     }
 
     if (!automatic) {
+      isConfirmingRef.current = true;
       const confirmed = window.confirm(
         "Are you sure you want to submit the coding examination?\n\nOnce submitted, you cannot continue the exam."
       );
+      isConfirmingRef.current = false;
 
       if (!confirmed) {
         return;
@@ -945,6 +982,10 @@ const CodingExam = () => {
             "Content-Type": "application/json",
             
           },
+          body: JSON.stringify({
+            reason,
+            automatic,
+          }),
         }
       );
 
@@ -959,9 +1000,10 @@ const CodingExam = () => {
 
       // Log final submission.
       await logSecurityEvent(
-        "EXAM_SUBMITTED",
+        reason === "TAB_SWITCH" ? "AUTO_SUBMIT_TAB_SWITCH" : "EXAM_SUBMITTED",
         {
           automatic,
+          reason,
         }
       );
 
@@ -990,6 +1032,8 @@ const CodingExam = () => {
       setSubmittingExam(false);
     }
   };
+
+  handleSubmitExamRef.current = handleSubmitExam;
 
   // =====================================================
   // TIMEOUT
