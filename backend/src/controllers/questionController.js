@@ -16,27 +16,28 @@ const addQuestion = async (req, res) => {
       questionOrder,
     } = req.body;
 
-    if (
-      !examId ||
-      !questionText ||
-      !optionA ||
-      !optionB ||
-      !optionC ||
-      !optionD ||
-      !correctAnswer ||
-      !questionOrder
-    ) {
+    const isWritten = !optionA && !optionB && !optionC && !optionD;
+
+    if (!questionText || !questionOrder) {
       return res.status(400).json({
-        message: "All required question fields must be provided",
+        message: "Question text and question order are required",
       });
     }
 
-    const validAnswers = ["A", "B", "C", "D"];
+    if (!isWritten) {
+      if (!optionA || !optionB || !optionC || !optionD || !correctAnswer) {
+        return res.status(400).json({
+          message: "All options and correct answer are required for multiple choice questions",
+        });
+      }
 
-    if (!validAnswers.includes(correctAnswer.toUpperCase())) {
-      return res.status(400).json({
-        message: "Correct answer must be A, B, C, or D",
-      });
+      const validAnswers = ["A", "B", "C", "D"];
+
+      if (!validAnswers.includes(String(correctAnswer).toUpperCase())) {
+        return res.status(400).json({
+          message: "Correct answer must be A, B, C, or D",
+        });
+      }
     }
 
     const exam = await pool.query(
@@ -72,11 +73,11 @@ const addQuestion = async (req, res) => {
       [
         examId,
         questionText,
-        optionA,
-        optionB,
-        optionC,
-        optionD,
-        correctAnswer.toUpperCase(),
+        isWritten ? null : optionA,
+        isWritten ? null : optionB,
+        isWritten ? null : optionC,
+        isWritten ? null : optionD,
+        isWritten || !correctAnswer ? null : String(correctAnswer).toUpperCase(),
         marks || 1,
         category || null,
         difficulty || null,
@@ -151,26 +152,28 @@ const updateQuestion = async (req, res) => {
       questionOrder,
     } = req.body;
 
-    if (
-      !questionText ||
-      !optionA ||
-      !optionB ||
-      !optionC ||
-      !optionD ||
-      !correctAnswer ||
-      !questionOrder
-    ) {
+    const isWritten = !optionA && !optionB && !optionC && !optionD;
+
+    if (!questionText || !questionOrder) {
       return res.status(400).json({
-        message: "All required question fields must be provided",
+        message: "Question text and question order are required",
       });
     }
 
-    const validAnswers = ["A", "B", "C", "D"];
+    if (!isWritten) {
+      if (!optionA || !optionB || !optionC || !optionD || !correctAnswer) {
+        return res.status(400).json({
+          message: "All options and correct answer are required for multiple choice questions",
+        });
+      }
 
-    if (!validAnswers.includes(correctAnswer.toUpperCase())) {
-      return res.status(400).json({
-        message: "Correct answer must be A, B, C, or D",
-      });
+      const validAnswers = ["A", "B", "C", "D"];
+
+      if (!validAnswers.includes(String(correctAnswer).toUpperCase())) {
+        return res.status(400).json({
+          message: "Correct answer must be A, B, C, or D",
+        });
+      }
     }
 
     const result = await pool.query(
@@ -192,11 +195,11 @@ const updateQuestion = async (req, res) => {
       `,
       [
         questionText,
-        optionA,
-        optionB,
-        optionC,
-        optionD,
-        correctAnswer.toUpperCase(),
+        isWritten ? null : optionA,
+        isWritten ? null : optionB,
+        isWritten ? null : optionC,
+        isWritten ? null : optionD,
+        isWritten || !correctAnswer ? null : String(correctAnswer).toUpperCase(),
         marks || 1,
         category || null,
         difficulty || null,

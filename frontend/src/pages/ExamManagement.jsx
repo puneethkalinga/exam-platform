@@ -338,52 +338,66 @@ export default function ExamManagement() {
             <div className="question-list">
 
               {questions.map(
-                (question, index) => (
+                (question, index) => {
+                  const hasOptions = Boolean(
+                    question.option_a ||
+                    question.option_b ||
+                    question.option_c ||
+                    question.option_d
+                  );
 
-                  <div
-                    className="question-card"
-                    key={question.id}
-                  >
+                  return (
+                    <div
+                      className="question-card"
+                      key={question.id}
+                    >
+                      <div className="question-number">
+                        {index + 1}
+                      </div>
 
-                    <div className="question-number">
-                      {index + 1}
-                    </div>
+                      <div className="question-content">
+                        <h3>
+                          {question.question_text}
+                        </h3>
 
-                    <div className="question-content">
+                        {hasOptions ? (
+                          <div className="options-grid">
+                            <span>
+                              <b>A</b>
+                              {question.option_a}
+                            </span>
 
-                      <h3>
-                        {question.question_text}
-                      </h3>
+                            <span>
+                              <b>B</b>
+                              {question.option_b}
+                            </span>
 
-                      <div className="options-grid">
+                            <span>
+                              <b>C</b>
+                              {question.option_c}
+                            </span>
 
-                        <span>
-                          <b>A</b>
-                          {question.option_a}
-                        </span>
-
-                        <span>
-                          <b>B</b>
-                          {question.option_b}
-                        </span>
-
-                        <span>
-                          <b>C</b>
-                          {question.option_c}
-                        </span>
-
-                        <span>
-                          <b>D</b>
-                          {question.option_d}
-                        </span>
+                            <span>
+                              <b>D</b>
+                              {question.option_d}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="written-admin-preview">
+                            <div className="written-admin-tag">
+                              ✎ WRITTEN / SHORT ANSWER (NO OPTIONS)
+                            </div>
+                            <div className="written-admin-box">
+                              Candidates type their answers freely in an expandable text area. No multiple choice options.
+                            </div>
+                          </div>
+                        )}
 
                       </div>
 
-                    </div>
-
-                    <div className="question-meta">
-                      {question.marks || 1} mark
-                    </div>
+                      <div className="question-meta">
+                        {question.marks || 1} mark
+                      </div>
 
                     {/* ACTIONS */}
 
@@ -410,11 +424,10 @@ export default function ExamManagement() {
                       </button>
 
                     </div>
-
                   </div>
-
-                )
-              )}
+                );
+              }
+            )}
 
             </div>
 

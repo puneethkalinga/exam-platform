@@ -801,6 +801,41 @@
     11px;
 }
 
+/* =========================================================
+   WRITTEN / SHORT ANSWER PREVIEW (ADMIN)
+   ========================================================= */
+
+.written-admin-preview {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.written-admin-tag {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 4px 10px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.3px;
+}
+
+.written-admin-box {
+  padding: 12px 14px;
+  background: #f8fafc;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 
 /* =========================================================
    QUESTION META

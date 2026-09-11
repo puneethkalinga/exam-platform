@@ -47,7 +47,16 @@ const [difficulty, setDifficulty] = useState(
 const [questionOrder, setQuestionOrder] =
   useState(question?.question_order || 1);
 
-  const [error, setError] = useState("");
+const isExistingWritten = Boolean(
+  question &&
+  !question.option_a &&
+  !question.option_b &&
+  !question.option_c &&
+  !question.option_d
+);
+const [isWrittenQuestion, setIsWrittenQuestion] = useState(isExistingWritten);
+
+const [error, setError] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -63,11 +72,11 @@ const [questionOrder, setQuestionOrder] =
     const payload = {
       examId,
       questionText: questionText.trim(),
-      optionA: optionA.trim(),
-      optionB: optionB.trim(),
-      optionC: optionC.trim(),
-      optionD: optionD.trim(),
-      correctAnswer,
+      optionA: isWrittenQuestion ? null : optionA.trim(),
+      optionB: isWrittenQuestion ? null : optionB.trim(),
+      optionC: isWrittenQuestion ? null : optionC.trim(),
+      optionD: isWrittenQuestion ? null : optionD.trim(),
+      correctAnswer: isWrittenQuestion ? null : correctAnswer,
       marks: Number(marks),
       category,
       difficulty,
@@ -164,57 +173,71 @@ console.log("UPDATE URL:", url);
             required
           />
 
-          <div className="options-form">
-
-            <div>
-              <label>OPTION A</label>
-
-              <input
-                value={optionA}
-                onChange={(e) =>
-                  setOptionA(e.target.value)
-                }
-                required
-              />
-            </div>
-
-            <div>
-              <label>OPTION B</label>
-
-              <input
-                value={optionB}
-                onChange={(e) =>
-                  setOptionB(e.target.value)
-                }
-                required
-              />
-            </div>
-
-            <div>
-              <label>OPTION C</label>
-
-              <input
-                value={optionC}
-                onChange={(e) =>
-                  setOptionC(e.target.value)
-                }
-                required
-              />
-            </div>
-
-            <div>
-              <label>OPTION D</label>
-
-              <input
-                value={optionD}
-                onChange={(e) =>
-                  setOptionD(e.target.value)
-                }
-                required
-              />
-            </div>
-
+          <div style={{ margin: "14px 0 16px", padding: "10px 14px", background: "#f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", gap: "10px" }}>
+            <input
+              type="checkbox"
+              id="isWrittenToggle"
+              checked={isWrittenQuestion}
+              onChange={(e) => setIsWrittenQuestion(e.target.checked)}
+              style={{ width: "18px", height: "18px", cursor: "pointer" }}
+            />
+            <label htmlFor="isWrittenToggle" style={{ fontSize: "13px", fontWeight: "600", color: "#334155", cursor: "pointer", margin: 0 }}>
+              Written / Short Answer Question (No multiple choice options)
+            </label>
           </div>
+
+          {!isWrittenQuestion ? (
+            <div className="options-form">
+              <div>
+                <label>OPTION A</label>
+                <input
+                  value={optionA}
+                  onChange={(e) =>
+                    setOptionA(e.target.value)
+                  }
+                  required={!isWrittenQuestion}
+                />
+              </div>
+
+              <div>
+                <label>OPTION B</label>
+                <input
+                  value={optionB}
+                  onChange={(e) =>
+                    setOptionB(e.target.value)
+                  }
+                  required={!isWrittenQuestion}
+                />
+              </div>
+
+              <div>
+                <label>OPTION C</label>
+                <input
+                  value={optionC}
+                  onChange={(e) =>
+                    setOptionC(e.target.value)
+                  }
+                  required={!isWrittenQuestion}
+                />
+              </div>
+
+              <div>
+                <label>OPTION D</label>
+                <input
+                  value={optionD}
+                  onChange={(e) =>
+                    setOptionD(e.target.value)
+                  }
+                  required={!isWrittenQuestion}
+                />
+              </div>
+            </div>
+          ) : (
+            <div style={{ padding: "12px 14px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: "8px", color: "#1e40af", fontSize: "13px", margin: "10px 0 16px", lineHeight: "1.5" }}>
+              ✎ <strong>Written Question:</strong> Candidates will be given a blank text box in the exam to type their answers freely. No multiple-choice options will be shown.
+            </div>
+          )}
+
           <div className="question-settings">
 
   <div>
@@ -228,6 +251,7 @@ console.log("UPDATE URL:", url);
       <option value="Aptitude">Aptitude</option>
       <option value="Reasoning">Reasoning</option>
       <option value="Verbal">Verbal</option>
+      <option value="Short Answer">Short Answer</option>
       <option value="General">General</option>
     </select>
   </div>
@@ -268,21 +292,23 @@ console.log("UPDATE URL:", url);
 
           <div className="question-settings">
 
-            <div>
-              <label>CORRECT ANSWER</label>
+            {!isWrittenQuestion && (
+              <div>
+                <label>CORRECT ANSWER</label>
 
-              <select
-                value={correctAnswer}
-                onChange={(e) =>
-                  setCorrectAnswer(e.target.value)
-                }
-              >
-                <option value="A">Option A</option>
-                <option value="B">Option B</option>
-                <option value="C">Option C</option>
-                <option value="D">Option D</option>
-              </select>
-            </div>
+                <select
+                  value={correctAnswer}
+                  onChange={(e) =>
+                    setCorrectAnswer(e.target.value)
+                  }
+                >
+                  <option value="A">Option A</option>
+                  <option value="B">Option B</option>
+                  <option value="C">Option C</option>
+                  <option value="D">Option D</option>
+                </select>
+              </div>
+            )}
 
             <div>
               <label>MARKS</label>
