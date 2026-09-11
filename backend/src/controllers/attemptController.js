@@ -494,20 +494,14 @@ const saveAnswer = async (req, res) => {
        VALIDATION
     ===================================================== */
 
-    if (!questionId || !selectedAnswer) {
+    if (!questionId || selectedAnswer === undefined || selectedAnswer === null) {
       return res.status(400).json({
         message:
           "Question ID and selected answer are required",
       });
     }
 
-    const answer = String(selectedAnswer).toUpperCase();
-
-    if (!["A", "B", "C", "D"].includes(answer)) {
-      return res.status(400).json({
-        message: "Invalid answer",
-      });
-    }
+    const answer = String(selectedAnswer).trim();
 
     /* =====================================================
        GET ATTEMPT + CHECK EXPIRY IN POSTGRES
@@ -751,8 +745,8 @@ const submitAttempt = async (req, res) => {
     const { answers } = req.body || {};
     if (answers && typeof answers === "object") {
       for (const [qId, selectedAns] of Object.entries(answers)) {
-        const cleanAns = String(selectedAns || "").toUpperCase();
-        if (["A", "B", "C", "D"].includes(cleanAns)) {
+        const cleanAns = String(selectedAns || "").trim();
+        if (cleanAns) {
           await client.query(
             `
             INSERT INTO answers

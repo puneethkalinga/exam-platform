@@ -159,6 +159,13 @@ const [candidate, setCandidate] = useState(null);
   String(selected).toUpperCase() ===
     String(correct).toUpperCase();
 
+                const hasOptions = Boolean(
+                  response.option_a ||
+                  response.option_b ||
+                  response.option_c ||
+                  response.option_d
+                );
+
                 return (
                   <article
                     className="response-card"
@@ -171,80 +178,110 @@ const [candidate, setCandidate] = useState(null);
 
                     <div className="response-content">
 
-                      <div className="response-status">
-                        {selected
-                          ? isCorrect
-                            ? "✓ CORRECT"
-                            : "✕ INCORRECT"
-                          : "— UNANSWERED"}
+                      <div className={`response-status ${!hasOptions && selected ? "written-status" : ""}`}>
+                        {hasOptions
+                          ? selected
+                            ? isCorrect
+                              ? "✓ CORRECT"
+                              : "✕ INCORRECT"
+                            : "— UNANSWERED"
+                          : selected && selected.trim()
+                            ? "✎ WRITTEN RESPONSE"
+                            : "— UNANSWERED"}
                       </div>
 
                       <h2>
                         {response.question_text}
                       </h2>
 
-                      <div className="response-options">
+                      {hasOptions ? (
+                        <div className="response-options">
 
-                        {[
-                          ["A", response.option_a],
-                          ["B", response.option_b],
-                          ["C", response.option_c],
-                          ["D", response.option_d],
-                        ].map(([letter, text]) => {
+                          {[
+                            ["A", response.option_a],
+                            ["B", response.option_b],
+                            ["C", response.option_c],
+                            ["D", response.option_d],
+                          ].map(([letter, text]) => {
 
-                          const isSelected =
-                            selected === letter;
+                            const isSelected =
+                              selected === letter;
 
-                          const isAnswer =
-                            correct === letter;
+                            const isAnswer =
+                              correct === letter;
 
-                          return (
-                            <div
-                              key={letter}
-                              className={[
-                                "response-option",
+                            return (
+                              <div
+                                key={letter}
+                                className={[
+                                  "response-option",
 
-                                isSelected
-                                  ? "candidate-answer"
-                                  : "",
+                                  isSelected
+                                    ? "candidate-answer"
+                                    : "",
 
-                                isAnswer
-                                  ? "correct-answer"
-                                  : "",
+                                  isAnswer
+                                    ? "correct-answer"
+                                    : "",
 
-                                isSelected &&
-                                !isAnswer
-                                  ? "wrong-answer"
-                                  : "",
-                              ].join(" ")}
-                            >
+                                  isSelected &&
+                                  !isAnswer
+                                    ? "wrong-answer"
+                                    : "",
+                                ].join(" ")}
+                              >
 
-                              <span className="response-option-letter">
-                                {letter}
-                              </span>
-
-                              <span className="response-option-text">
-                                {text}
-                              </span>
-
-                              {isSelected && (
-                                <span className="answer-label">
-                                  CANDIDATE
+                                <span className="response-option-letter">
+                                  {letter}
                                 </span>
-                              )}
 
-                              {!isSelected &&
-                                isAnswer && (
+                                <span className="response-option-text">
+                                  {text}
+                                </span>
+
+                                {isSelected && (
                                   <span className="answer-label">
-                                    CORRECT
+                                    CANDIDATE
                                   </span>
                                 )}
 
-                            </div>
-                          );
-                        })}
+                                {!isSelected &&
+                                  isAnswer && (
+                                    <span className="answer-label">
+                                      CORRECT
+                                    </span>
+                                  )}
 
-                      </div>
+                              </div>
+                            );
+                          })}
+
+                        </div>
+                      ) : (
+                        <div className="written-response-box">
+                          <div className="written-response-header">
+                            <span className="written-response-label">
+                              CANDIDATE WRITTEN RESPONSE
+                            </span>
+                            <span className="written-response-words">
+                              {selected && selected.trim()
+                                ? `${selected.trim().split(/\s+/).filter(Boolean).length} words`
+                                : "0 words"}
+                            </span>
+                          </div>
+                          <div className="written-response-body">
+                            {selected && selected.trim() ? (
+                              <div className="written-response-text">
+                                {selected}
+                              </div>
+                            ) : (
+                              <span className="written-response-empty">
+                                No response submitted by candidate.
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
 
                     </div>
 

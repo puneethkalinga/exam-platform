@@ -39,6 +39,11 @@ export default function CandidateExam() {
    */
   const examLoadedRef = useRef(false);
 
+  /*
+   * Debounce timers for text inputs.
+   */
+  const debounceTimersRef = useRef({});
+
   /* =========================================================
      SUBMIT EXAM
   ========================================================= */
@@ -571,7 +576,8 @@ export default function CandidateExam() {
 
   const handleAnswer = async (
     questionId,
-    answer
+    answer,
+    isText = false
   ) => {
     if (
       submitting ||
@@ -602,11 +608,18 @@ export default function CandidateExam() {
 
     /*
      * Save to backend in background.
+     * Debounce text inputs to avoid flooding requests on every keystroke.
      */
-    saveAnswer(
-      questionId,
-      answer
-    );
+    if (isText) {
+      if (debounceTimersRef.current[questionId]) {
+        clearTimeout(debounceTimersRef.current[questionId]);
+      }
+      debounceTimersRef.current[questionId] = setTimeout(() => {
+        saveAnswer(questionId, answer);
+      }, 700);
+    } else {
+      saveAnswer(questionId, answer);
+    }
   };
 
   /* =========================================================
@@ -714,10 +727,17 @@ export default function CandidateExam() {
   const question =
     questions[currentIndex];
 
+  const hasOptions = Boolean(
+    question?.option_a ||
+    question?.option_b ||
+    question?.option_c ||
+    question?.option_d
+  );
+
   const answeredCount =
-    Object.keys(
+    Object.values(
       answers
-    ).length;
+    ).filter((val) => val && String(val).trim().length > 0).length;
 
   /* =========================================================
      RENDER EXAM
@@ -821,69 +841,102 @@ export default function CandidateExam() {
   {question.question_text}
 </div>
 
-          {/* OPTIONS */}
-
-          <div className="exam-options">
-
-            {[
-              [
-                "A",
-                question.option_a,
-              ],
-              [
-                "B",
-                question.option_b,
-              ],
-              [
-                "C",
-                question.option_c,
-              ],
-              [
-                "D",
-                question.option_d,
-              ],
-            ].map(
-              ([letter, text]) => (
-
-                <button
-                  key={letter}
-                  type="button"
-
-                  className={
-                    answers[
-                      question.id
-                    ] === letter
-                      ? "exam-option selected"
-                      : "exam-option"
-                  }
-
-                  onClick={() =>
-                    handleAnswer(
-                      question.id,
-                      letter
-                    )
-                  }
-
-                  disabled={
-                    submitting ||
-                    submitted
-                  }
-                >
-
-                  <span className="option-letter">
-                    {letter}
-                  </span>
-
-                  <span className="option-text">
-                    {text}
-                  </span>
-
-                </button>
-
-              )
-            )}
-
-          </div>
+          {/* OPTIONS OR WRITTEN TEXTAREA */}
+          {hasOptions ? (
+            <div className="exam-options">
+              {[
+                [
+                  "A",
+                  question.option_a,
+                ],
+                [
+                  "B",
+                  question.option_b,
+                ],
+                [
+                  "C",
+                  question.option_c,
+                ],
+                [
+                  "D",
+                  question.option_d,
+                ],
+              ].map(
+                ([letter, text]) => (
+                  <button
+                    key={letter}
+                    type="button"
+                    className={
+                      answers[
+                        question.id
+                      ] === letter
+                        ? "exam-option selected"
+                        : "exam-option"
+                    }
+                    onClick={() =>
+                      handleAnswer(
+                        question.id,
+                        letter
+                      )
+                    }
+                    disabled={
+                      submitting ||
+                      submitted
+                    }
+                  >
+                    <span className="option-letter">
+                      {letter}
+                    </span>
+                    <span className="option-text">
+                      {text}
+                    </span>
+                  </button>
+                )
+              )}
+            </div>
+          ) : (
+            <div className="written-answer-container">
+              <div className="written-answer-toolbar">
+                <span className="written-answer-badge">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "6px", verticalAlign: "middle" }}>
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                  </svg>
+                  Type Your Response
+                </span>
+                <span className="written-word-badge">
+                  {answers[question.id] && answers[question.id].trim()
+                    ? `${answers[question.id].trim().split(/\s+/).filter(Boolean).length} words`
+                    : "0 words"}
+                </span>
+              </div>
+              <textarea
+                className="written-answer-textarea"
+                placeholder="Type your response here... You can write freely, and your progress is saved automatically as you type."
+                value={answers[question.id] || ""}
+                onChange={(e) =>
+                  handleAnswer(
+                    question.id,
+                    e.target.value,
+                    true
+                  )
+                }
+                disabled={
+                  submitting ||
+                  submitted
+                }
+                rows={8}
+              />
+              <div className="written-answer-footer">
+                <span className="written-autosave-info">
+                  ✓ Auto-saved
+                </span>
+                <span className="written-char-count">
+                  {(answers[question.id] || "").length} characters
+                </span>
+              </div>
+            </div>
+          )}
 
         </section>
 
@@ -929,7 +982,12 @@ export default function CandidateExam() {
                     } ${
                       answers[
                         item.id
-                      ]
+                      ] &&
+                      String(
+                        answers[
+                          item.id
+                        ]
+                      ).trim().length > 0
                         ? "answered"
                         : ""
                     }`

@@ -1202,3 +1202,109 @@
       12px;
   }
 }
+
+/* =========================================================
+   WRITTEN / SHORT ANSWER INPUT STYLES
+   ========================================================= */
+
+.written-answer-container {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.written-answer-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.written-answer-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  color: #166534;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.3px;
+}
+
+.written-word-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 4px 11px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.written-answer-textarea {
+  width: 100%;
+  max-width: 100%;
+  min-height: 190px;
+  box-sizing: border-box;
+  padding: 16px 18px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--exam-navy-dark, #0f172a);
+  background: #ffffff;
+  border: 1.5px solid var(--exam-border, #cbd5e1);
+  border-radius: 12px;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  outline: none;
+  display: block;
+}
+
+.written-answer-textarea:focus {
+  border-color: var(--exam-primary, #2563eb);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  background: #fcfdff;
+}
+
+.written-answer-textarea::placeholder {
+  color: #94a3b8;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.written-answer-textarea:disabled {
+  background: #f8fafc;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.written-answer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #64748b;
+  padding: 0 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.written-autosave-info {
+  display: inline-flex;
+  align-items: center;
+  color: #059669;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.written-char-count {
+  font-size: 12px;
+  color: #94a3b8;
+}
