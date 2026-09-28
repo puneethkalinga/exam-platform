@@ -512,6 +512,21 @@ export default function CodingExamManagement() {
 
                       <div className="coding-exam-actions">
                         <button
+                          style={{
+                            background: "#2563eb",
+                            color: "#ffffff",
+                            fontWeight: "600",
+                          }}
+                          onClick={() => {
+                            const url = `${window.location.origin}/coding-exam/${exam.id}`;
+                            navigator.clipboard.writeText(url);
+                            alert(`Student Link copied to clipboard:\n\n${url}`);
+                          }}
+                        >
+                          📋 Copy Student Link
+                        </button>
+
+                        <button
                           onClick={() =>
                             navigate(
                               `/admin/coding-exams/${exam.id}`

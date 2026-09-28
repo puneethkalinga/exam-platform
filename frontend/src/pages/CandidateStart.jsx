@@ -24,6 +24,10 @@ export default function CandidateStart() {
         const res = await fetch(`${API_URL}/api/candidates/exam-info/${examId}`);
         if (res.ok) {
           const data = await res.json();
+          if (data.isCodingExam) {
+            navigate(`/coding-exam/${examId}`, { replace: true });
+            return;
+          }
           setExamInfo(data);
         }
       } catch (e) {
@@ -31,7 +35,7 @@ export default function CandidateStart() {
       }
     };
     fetchInfo();
-  }, [examId]);
+  }, [examId, navigate]);
 
   const handleStart = async (e) => {
     e.preventDefault();
@@ -115,6 +119,11 @@ export default function CandidateStart() {
         throw new Error(
           data.message || `Unable to start examination (${response.status})`
         );
+      }
+
+      if (data.isCodingExam && data.redirectUrl) {
+        navigate(data.redirectUrl, { replace: true });
+        return;
       }
 
       // Save attempt

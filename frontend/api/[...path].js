@@ -140,24 +140,36 @@ export default async function handler(req, res) {
     });
     try {
       await client.connect();
-      const examRes = await client.query(
+      let examRes = await client.query(
         "SELECT id, title, description, duration_minutes, cutoff_percentage, status FROM exams WHERE id = $1",
         [examId]
       );
+      let isCodingExam = false;
+      if (examRes.rows.length === 0) {
+        examRes = await client.query(
+          "SELECT id, title, description, duration_minutes, status FROM coding_exams WHERE id = $1",
+          [examId]
+        );
+        if (examRes.rows.length > 0) {
+          isCodingExam = true;
+        }
+      }
       await client.end();
       if (examRes.rows.length === 0) {
         return res.status(404).json({ message: "Exam not found" });
       }
       const exam = examRes.rows[0];
-      const isNonTechnical =
+      const isNonTechnical = !isCodingExam && (
         /non[-\s]?technical/i.test(exam.title) ||
-        /non[-\s]?technical/i.test(exam.description || "");
+        /non[-\s]?technical/i.test(exam.description || "")
+      );
       return res.json({
         success: true,
         examId: exam.id,
         title: exam.title,
         description: exam.description,
         durationMinutes: exam.duration_minutes,
+        isCodingExam,
         isNonTechnical,
         expectedPrefix: isNonTechnical ? "XEVO/YEN/NT/" : "XEVO/YEN/T/"
       });
@@ -190,12 +202,21 @@ export default async function handler(req, res) {
 
     try {
       await client.connect();
-      const examRes = await client.query(
+      let examRes = await client.query(
         "SELECT id, title, description, duration_minutes, cutoff_percentage, status FROM exams WHERE id = $1",
         [examId]
       );
 
       if (examRes.rows.length === 0) {
+        // Check if this is a coding exam!
+        const codingCheck = await client.query("SELECT id FROM coding_exams WHERE id = $1", [examId]);
+        if (codingCheck.rows.length > 0) {
+          await client.end();
+          return res.json({
+            isCodingExam: true,
+            redirectUrl: `/coding-exam/${examId}`
+          });
+        }
         await client.end();
         return res.status(404).json({ message: "Exam not found" });
       }
